@@ -1,6 +1,5 @@
-export const FunctionNames= {
-  index: '',
-  Keyst10200: "スキルシート",
+export const FunctionNames = {
+  Keyst10200: { id: 'Keyst10200', name: 'スキルシート' }
 } as const;
 
 type FunctionNames = typeof FunctionNames[keyof typeof FunctionNames];

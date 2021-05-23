@@ -13,8 +13,8 @@
 </template>
 <script lang='ts'>
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import Header from '~/components/Header/Header';
+import Sidebar from '@/components/Sidebar/Sidebar.vue';
+import Header from '~/components/Header/Header.vue';
 import { FunctionNames } from '~/constant/functionNames';
 
 @Component({
@@ -25,12 +25,14 @@ import { FunctionNames } from '~/constant/functionNames';
 })
 
 export default class extends Vue {
-  get currentPath() {
-    return this.$route.name;
-  }
+  // TODO 別途検討
+  // get currentPath() {
+  //   return typeof this.$route.name === 'string'? this.$route.name: '';
+  // }
+  //
+  // get functionName() {
+  //   return FunctionNames[this.currentPath];
+  // }
 
-  get functionName(): string {
-    return FunctionNames[this.currentPath];
-  }
 };
 </script>
