@@ -77,7 +77,7 @@
 
           <li class='items-center'>
             <NuxtLink
-              to='/admin/settings'
+              to='/keyst10200'
               class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
@@ -85,7 +85,7 @@
                 icon='tools'
                 class=' mr-2 text-sm'
               />
-              Settings
+              スキルシート
             </NuxtLink>
           </li>
 
