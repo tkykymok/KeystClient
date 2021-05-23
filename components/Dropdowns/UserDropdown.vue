@@ -1,53 +1,53 @@
 <template>
   <div>
     <a
-      class="text-blueGray-500 block"
-      href="#pablo"
-      ref="btnDropdownRef"
-      v-on:click="toggleDropdown($event)"
+        class='text-blueGray-500 block'
+        href='#pablo'
+        ref='btnDropdownRef'
+        v-on:click='toggleDropdown($event)'
     >
-      <div class="items-center flex">
+      <div class='items-center flex'>
         <span
-          class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
+            class='w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full'
         >
           <img
-            alt="..."
-            class="w-full rounded-full align-middle border-none shadow-lg"
-            :src="image"
+              alt='...'
+              class='w-full rounded-full align-middle border-none shadow-lg'
+              :src='image'
           />
         </span>
       </div>
     </a>
     <div
-      ref="popoverDropdownRef"
-      class="bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-      v-bind:class="{
+        ref='popoverDropdownRef'
+        class='bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48'
+        v-bind:class='{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
-      }"
+      }'
     >
       <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+          href='javascript:void(0);'
+          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
       >
         Action
       </a>
       <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+          href='javascript:void(0);'
+          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
       >
         Another action
       </a>
       <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+          href='javascript:void(0);'
+          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
       >
         Something else here
       </a>
-      <div class="h-0 my-2 border border-solid border-blueGray-100" />
+      <div class='h-0 my-2 border border-solid border-blueGray-100' />
       <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+          href='javascript:void(0);'
+          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
       >
         Seprated link
       </a>
@@ -57,13 +57,12 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
-import { createPopper } from "@popperjs/core";
+import { createPopper } from '@popperjs/core';
 
-@Component({
-})
+@Component({})
 export default class UserDropdown extends Vue {
   dropdownPopoverShow: boolean = false;
-  image: any = require("@/assets/img/team-1-800x800.jpg")
+  image: NodeRequireFunction = require('@/assets/img/team-1-800x800.jpg')
 
   toggleDropdown(event: any) {
     event.preventDefault();
@@ -74,7 +73,7 @@ export default class UserDropdown extends Vue {
       const reference: any = this.$refs.btnDropdownRef;
       const popper: any = this.$refs.popoverDropdownRef;
       createPopper(reference, popper, {
-        placement: "bottom-start",
+        placement: 'bottom-start'
       });
     }
   }
