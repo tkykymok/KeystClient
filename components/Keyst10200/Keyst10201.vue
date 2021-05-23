@@ -1,5 +1,6 @@
 <template>
   <table class='w-3/4 table-fixed'>
+    <tbody>
     <tr>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>ふりがな</th>
       <td class='p-3 text-gray-800 border border-b' colspan='2'>やまおか たかゆき</td>
@@ -48,6 +49,7 @@
         <textarea class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline'></textarea>
       </td>
     </tr>
+    </tbody>
   </table>
 </template>
 
@@ -55,9 +57,8 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component({
-  name: 'Keyst10201'
 })
-export default class extends Vue {
+export default class Keyst10201 extends Vue {
 
 }
 </script>
