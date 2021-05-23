@@ -1,200 +1,198 @@
 <template>
   <nav
-    class='md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6'
+      class='md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6'
   >
     <div
-      class='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto'
+        class='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto'
     >
       <!-- Toggler -->
-      <!-- Brand -->
-      <div
-        class='md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0'
+      <button
+          class='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
+          type='button'
+          v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
       >
-        システム名
-      </div>
-      <!-- User -->
+        <font-awesome-icon icon='bars' />
+      </button>
+      <!-- Brand -->
+      <NuxtLink
+          class='md:block text-left md:pb-2 text-gray-800 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0'
+          to='/'
+      >
+        KeyStone
+      </NuxtLink>
+
       <!-- Collapse -->
       <div
-        class='md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded'
+          class='md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded'
+          v-bind:class='collapseShow'
       >
         <!-- Collapse header -->
         <div
-          class='md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200'
+            class='md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-gray-200'
         >
           <div class='flex flex-wrap'>
             <div class='w-6/12'>
-              <div
-                class='md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0'
+              <NuxtLink
+                  class='md:block text-left md:pb-2 text-gray-800 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0'
+                  to='/'
               >
-                Vue Notus
-              </div>
+                KeyStone
+              </NuxtLink>
             </div>
             <div class='w-6/12 flex justify-end'>
               <button
-                type='button'
-                class='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
+                  type='button'
+                  class='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
+                  v-on:click="toggleCollapseShow('hidden')"
               >
-                <i class='fas fa-times'></i>
+                <font-awesome-icon icon='times' />
               </button>
             </div>
           </div>
         </div>
-        <!-- Divider -->
-        <hr class='my-4 md:min-w-full' />
+
         <!-- Heading -->
         <h6
-          class='md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline'
+            class='md:min-w-full text-gray-800 text-xs uppercase font-bold block pt-1 pb-4 no-underline'
         >
           メニュー
         </h6>
         <!-- Navigation -->
+
         <ul class='md:flex-col md:min-w-full flex flex-col list-none'>
           <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
+            <NuxtLink
+                to='/admin/dashboard'
+                v-slot='{ href, navigate, isActive }'
             >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
+              <a
+                  :href='href'
+                  @click='navigate'
+                  class='text-xs uppercase py-3 font-bold block'
+                  :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-700 hover:text-gray-500',
+                ]"
+              >
+                <font-awesome-icon
+                    icon='tv'
+                    class=' mr-2 text-sm'
+                    :class="[isActive ? 'opacity-75' : 'text-gray-300']"
+                />
+                Dashboard
+              </a>
+            </NuxtLink>
           </li>
+
           <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
+            <NuxtLink
+                to='/admin/settings'
+                v-slot='{ href, navigate, isActive }'
             >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
+              <a
+                  :href='href'
+                  @click='navigate'
+                  class='text-xs uppercase py-3 font-bold block'
+                  :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-700 hover:text-gray-500',
+                ]"
+              >
+                <font-awesome-icon
+                    icon='tools'
+                    class=' mr-2 text-sm'
+                    :class="[isActive ? 'opacity-75' : 'text-gray-300']"
+                />
+                Settings
+              </a>
+            </NuxtLink>
           </li>
+
           <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
+            <NuxtLink
+                to='/admin/tables'
+                v-slot='{ href, navigate, isActive }'
             >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
+              <a
+                  :href='href'
+                  @click='navigate'
+                  class='text-xs uppercase py-3 font-bold block'
+                  :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-700 hover:text-gray-500',
+                ]"
+              >
+                <font-awesome-icon
+                    icon='table'
+                    class='mr-2 text-sm'
+                    :class="[isActive ? 'opacity-75' : 'text-gray-300']"
+                />
+                Tables
+              </a>
+            </NuxtLink>
           </li>
+
           <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "tv" class='mr-2 text-sm' />
-              テキスト
-            </div>
+            <NuxtLink to='/admin/maps' v-slot='{ href, navigate, isActive }'>
+              <a
+                  :href='href'
+                  @click='navigate'
+                  class='text-xs uppercase py-3 font-bold block'
+                  :class="[
+                  isActive
+                    ? 'text-green-500 hover:text-green-600'
+                    : 'text-gray-700 hover:text-gray-500',
+                ]"
+              >
+                <font-awesome-icon
+                    icon='map-marked'
+                    class='mr-2 text-sm'
+                    :class="[isActive ? 'opacity-75' : 'text-gray-300']"
+                />
+                Maps
+              </a>
+            </NuxtLink>
           </li>
         </ul>
+
         <!-- Divider -->
         <hr class='my-4 md:min-w-full' />
         <!-- Heading -->
         <h6
-          class='md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline'
+            class='md:min-w-full text-gray-800 text-xs uppercase font-bold block pt-1 pb-4 no-underline'
         >
           管理者メニュー
         </h6>
         <!-- Navigation -->
+
         <ul class='md:flex-col md:min-w-full flex flex-col list-none md:mb-4'>
           <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
+            <NuxtLink
+                class='text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+                to='/auth/login'
             >
-              <font-awesome-icon icon = "clipboard-list" class='text-blueGray-300 mr-2 text-sm' />
-              テキスト
-            </div>
+              <font-awesome-icon
+                  icon='fingerprint'
+                  class='text-gray-300 mr-2 text-sm'
+              />
+              Login
+            </NuxtLink>
           </li>
+
           <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
+            <NuxtLink
+                class='text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+                to='/auth/register'
             >
-              <font-awesome-icon icon = "clipboard-list" class='text-blueGray-300 mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "clipboard-list" class='text-blueGray-300 mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "clipboard-list" class='text-blueGray-300 mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "clipboard-list" class='text-blueGray-300 mr-2 text-sm' />
-              テキスト
-            </div>
-          </li>
-          <li class='items-center'>
-            <div
-              class='text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block'
-            >
-              <font-awesome-icon icon = "clipboard-list" class='text-blueGray-300 mr-2 text-sm' />
-              テキスト
-            </div>
+              <font-awesome-icon
+                  icon='clipboard-list'
+                  class='text-gray-300 mr-2 text-sm'
+              />
+              Register
+            </NuxtLink>
           </li>
         </ul>
       </div>
@@ -202,12 +200,17 @@
   </nav>
 </template>
 <script lang='ts'>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component({
-  name: 'Sidebar'
 })
-export default class extends Vue {
+export default class Sidebar extends Vue {
+
+  collapseShow: string = 'hidden';
+
+  toggleCollapseShow(classes: string) {
+    this.collapseShow = classes;
+  }
 
 }
 </script>
