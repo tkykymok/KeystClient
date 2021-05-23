@@ -6,7 +6,7 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
-import Keyst10201 from '~/components/Keyst10200/Keyst10201';
+import Keyst10201 from '~/components/Keyst10200/Keyst10201.vue';
 
 @Component({
   name: 'Keyst10200',

@@ -25,7 +25,7 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
-import UserDropdown from '~/components/Dropdowns/UserDropdown';
+import UserDropdown from '~/components/Dropdowns/UserDropdown.vue';
 
 @Component({
   components: {
