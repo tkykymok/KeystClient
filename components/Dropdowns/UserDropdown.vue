@@ -62,7 +62,7 @@ import { createPopper } from '@popperjs/core';
 @Component({})
 export default class UserDropdown extends Vue {
   dropdownPopoverShow: boolean = false;
-  image: NodeRequireFunction = require('@/assets/img/team-1-800x800.jpg')
+  image: NodeRequireFunction = require('@/assets/img/user.png')
 
   toggleDropdown(event: any) {
     event.preventDefault();
