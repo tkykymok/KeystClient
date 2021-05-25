@@ -1,5 +1,5 @@
 <template>
-  <table class='w-3/4 table-fixed'>
+  <table class='w-3/4 table-fixed shadow-md'>
     <tbody>
     <tr>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>ふりがな</th>
