@@ -49,12 +49,13 @@
           <span
             v-for='option in selectedOptions' :key='option.code'
             class='px-3 py-1 justify-around border-1 border-gray-100 bg-yellow-200 rounded-lg m-1'
-          >{{ option.name }}
+          >
             <font-awesome-icon
               icon='times-circle'
-              class='ml-2 text-sm cursor-pointer text-red-600 hover:text-red-400'
+              class='mr-1 text-sm cursor-pointer text-red-600 hover:text-red-400'
               @click='removeSkill(option.code)'
             />
+            {{ option.name }}
           </span>
         </div>
       </td>
@@ -103,7 +104,7 @@ export default class Keyst10201 extends Vue {
     { code: '9', name: 'Golang' },
     { code: '10', name: 'C#' },
     { code: '11', name: 'Kotlin' },
-    { code: '12', name: 'Swift' },
+    { code: '12', name: 'Swift' }
   ];
 
   // 暫定
