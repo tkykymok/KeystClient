@@ -2,9 +2,7 @@
   <div>
     <Sidebar />
     <div class='md:ml-64 bg-gray-100'>
-      <Header
-        :functionName='functionName'
-      />
+      <Header />
       <div class='px-4 md:px-10 mx-auto w-full'>
         <Nuxt />
       </div>
