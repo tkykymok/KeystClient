@@ -27,15 +27,23 @@
       <td class='p-3 text-gray-800 border border-b' colspan='7'>○○大学　卒業</td>
     </tr>
     <tr>
-      <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>資格</th>
+      <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12' rowspan='3'>資格</th>
+      <td class='p-3 text-gray-800 border border-b' colspan='2'>2019年3月</td>
+      <td class='p-3 text-gray-800 border border-b' colspan='7'>○○○○　取得</td>
+    </tr>
+    <tr>
       <td class='p-3 text-gray-800 border border-b' colspan='2'>2020年3月</td>
+      <td class='p-3 text-gray-800 border border-b' colspan='7'>○○○○　取得</td>
+    </tr>
+    <tr>
+      <td class='p-3 text-gray-800 border border-b' colspan='2'>2021年3月</td>
       <td class='p-3 text-gray-800 border border-b' colspan='7'>○○○○　取得</td>
     </tr>
     <tr>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>保有スキル</th>
       <td class='p-3 text-gray-800 border border-b' colspan='2'>
         <select
-          class='p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+          class='p-1 w-3/4 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
           v-model='selected'
           @change='addSkill(selected)'
         >
