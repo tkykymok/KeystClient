@@ -1,11 +1,11 @@
 import { Store } from 'vuex';
 import { getModule } from 'vuex-module-decorators';
-import Todo from '~/store/todo';
+import Keyst10200 from '~/store/keyst10200';
 
-let TodoModule: Todo;
+let Keyst10200Module: Keyst10200;
 
 function initialiseStores(store: Store<any>): void {
-  TodoModule = getModule(Todo, store);
+  Keyst10200Module = getModule(Keyst10200, store);
 }
 
-export { initialiseStores, TodoModule };
+export { initialiseStores, Keyst10200Module};
