@@ -29,7 +29,6 @@ export type SkillSheetHeader = {
   strongArea: string,
   pr: string,
   evaluationOfSales: string,
-  deleteFlg: string,
   versionExKey: number | null,
 }
 
