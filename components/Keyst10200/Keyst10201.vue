@@ -83,7 +83,7 @@
       </td>
     </tr>
     <tr>
-      <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>営業コメント</th>
+      <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>営業評価</th>
       <td class='p-3 text-gray-800 border border-b' colspan='9'>
         <textarea
           class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'></textarea>
