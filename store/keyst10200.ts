@@ -23,7 +23,7 @@ export type SkillSheetHeader = {
   nearestStation: string,
   finalEducationDate: string,
   finalEducationContent: string,
-  skills: string[],
+  skillList: string[],
   qualificationList: Qualification[],
   skillSheetId: number | null,
   strongArea: string,
