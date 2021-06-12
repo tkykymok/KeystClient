@@ -5,57 +5,15 @@ import {
   Mutation
 } from 'vuex-module-decorators';
 import { $axios } from '~/utils/api';
-
-export type SkillSheetInfo = {
-  skillSheetId: number | null,
-  skillSheetRegDatetime: string
-}
-
-export type SkillSheetHeader = {
-  userId: number | null,
-  userName: string,
-  userNameKana: string,
-  gender: string,
-  age: number | null,
-  birthday: string,
-  nationality: string,
-  partnerFlg: string,
-  nearestStation: string,
-  finalEducationDate: string,
-  finalEducationContent: string,
-  skillList: string[],
-  qualificationList: Qualification[],
-  skillSheetId: number | null,
-  strongArea: string,
-  pr: string,
-  evaluationOfSales: string,
-  versionExKey: number | null,
-}
-
-export type SkillSheetDetail = {
-  prjCode: string,
-  prjStartDate: string,
-  prjEndDate: string,
-  bizInCharge: string,
-  comment: string,
-  devScale: string,
-  os: string,
-  db: string,
-  fwMwTool: string[],
-  pgLang: string,
-  scopeOfWork: string,
-  versionExKey: number | null
-}
-
-export type Qualification = {
-  qualifiedDate: string,
-  qualificationContent: string
-}
+import SkillSheetInfo from '~/classes/skillSheetInfo';
+import SkillSheetHeader from '~/classes/skillSheetHeader';
+import SkillSheetDetail from '~/classes/skillSheetDetail';
+import Keyst10200InitS from '~/classes/resform/keyst10200InitS';
 
 export interface IKeyst10200 {
   skillSheetInfoList: SkillSheetInfo[],
   skillSheetHeader: SkillSheetHeader | null,
-  SkillSheetDetail: SkillSheetDetail | null,
+  skillSheetDetail: SkillSheetDetail[] | null,
 }
 
 @Module({
@@ -67,20 +25,20 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
   /** スキルシート情報一覧 */
   private _skillSheetInfoList: SkillSheetInfo[] = [];
   /** スキルシートヘッダー  */
-  private _skillSheetHeader: SkillSheetHeader | null = null;
+  private _skillSheetHeader: SkillSheetHeader = new SkillSheetHeader();
   /** スキルシート明細 */
-  private _SkillSheetDetail: SkillSheetDetail | null = null;
+  private _skillSheetDetail: SkillSheetDetail[] = [];
 
   get skillSheetInfoList(): SkillSheetInfo[] {
     return this._skillSheetInfoList;
   }
 
-  get skillSheetHeader(): SkillSheetHeader | null {
+  get skillSheetHeader(): SkillSheetHeader {
     return this._skillSheetHeader;
   }
 
-  get SkillSheetDetail(): SkillSheetDetail | null {
-    return this._SkillSheetDetail;
+  get skillSheetDetail(): SkillSheetDetail[] {
+    return this._skillSheetDetail;
   }
 
   @Mutation
@@ -89,13 +47,19 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
   }
 
   @Mutation
-  SET_SKILL_SHEET_HEADER(value: SkillSheetHeader | null) {
-    this._skillSheetHeader = value;
+  SET_SKILL_SHEET_HEADER(value: SkillSheetHeader) {
+    Object.assign(this._skillSheetHeader, value);
   }
 
   @Mutation
-  SET_SKILL_SHEET_DETAIL(value: SkillSheetDetail | null) {
-    this._SkillSheetDetail = value;
+  SET_USER_BASIC_INFO(value: SkillSheetHeader) {
+    Object.assign(this._skillSheetHeader, value);
+    this._skillSheetHeader.qualificationList = value.qualificationList;
+  }
+
+  @Mutation
+  SET_SKILL_SHEET_DETAIL(value: SkillSheetDetail[]) {
+    this._skillSheetDetail = value;
   }
 
   @Action({ rawError: true })
@@ -103,6 +67,10 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     const { data } = await $axios.get(
       'http://localhost:8080/api/keyst10200'
     );
-    await this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
+    // レスポンスデータをinitSに移送する。
+    let resForm: Keyst10200InitS = new Keyst10200InitS();
+    Object.assign(resForm, data);
+    await this.SET_SKILL_SHEET_INFO_LIST(resForm.skillSheetInfoList);
+    await this.SET_USER_BASIC_INFO(resForm.userBasicInfo);
   }
 }

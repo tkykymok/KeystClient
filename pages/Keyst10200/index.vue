@@ -20,7 +20,7 @@ import Keyst10202 from '~/components/Keyst10200/Keyst10202.vue';
 import Keyst10203 from '~/components/Keyst10200/Keyst10203.vue';
 import { Keyst10200Module } from '~/utils/store-accessor';
 import { $axios } from '~/utils/api';
-import { SkillSheetInfo } from '~/store/keyst10200';
+import SkillSheetInfo from '~/classes/skillSheetInfo';
 
 @Component({
   name: 'Keyst10200',
