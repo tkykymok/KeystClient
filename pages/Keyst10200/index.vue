@@ -4,7 +4,9 @@
       <!-- スキルシートヘッダー部 -->
       <Keyst10201 />
       <!-- スキルシート一覧-->
-      <Keyst10203 />
+      <Keyst10203
+        :skillSheetInfoList='skillSheetInfoList'
+      />
     </div>
     <!-- スキルシート明細部 -->
     <Keyst10202 />
@@ -18,6 +20,7 @@ import Keyst10202 from '~/components/Keyst10200/Keyst10202.vue';
 import Keyst10203 from '~/components/Keyst10200/Keyst10203.vue';
 import { Keyst10200Module } from '~/utils/store-accessor';
 import { $axios } from '~/utils/api';
+import { SkillSheetInfo } from '~/store/keyst10200';
 
 @Component({
   name: 'Keyst10200',
@@ -31,13 +34,12 @@ import { $axios } from '~/utils/api';
   }
 })
 export default class extends Vue {
-
-
-
-  mounted() {
-
+  /**
+   * スキルシート情報一覧
+   */
+  get skillSheetInfoList(): SkillSheetInfo[] {
+    return Keyst10200Module.skillSheetInfoList;
   }
-
 
 }
 </script>

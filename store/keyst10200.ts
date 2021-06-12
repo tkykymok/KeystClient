@@ -64,9 +64,12 @@ export interface IKeyst10200 {
   namespaced: true,
   name: 'keyst10200'
 })
-export default class Keyst10200 extends VuexModule implements IKeyst10200{
-  private _skillSheetInfoList: SkillSheetInfo[] = []
+export default class Keyst10200 extends VuexModule implements IKeyst10200 {
+  /** スキルシート情報一覧 */
+  private _skillSheetInfoList: SkillSheetInfo[] = [];
+  /** スキルシートヘッダー  */
   private _skillSheetHeader: SkillSheetHeader | null = null;
+  /** スキルシート明細 */
   private _SkillSheetDetail: SkillSheetDetail | null = null;
 
   get skillSheetInfoList(): SkillSheetInfo[] {
@@ -85,10 +88,12 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200{
   SET_SKILL_SHEET_INFO_LIST(value: SkillSheetInfo[]) {
     this._skillSheetInfoList = value;
   }
+
   @Mutation
   SET_SKILL_SHEET_HEADER(value: SkillSheetHeader | null) {
     this._skillSheetHeader = value;
   }
+
   @Mutation
   SET_SKILL_SHEET_DETAIL(value: SkillSheetDetail | null) {
     this._SkillSheetDetail = value;
@@ -96,9 +101,9 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200{
 
   @Action({ rawError: true })
   public async initialize() {
-    const {data} = await $axios.get(
-      '/keyst10200'
-    )
-    await this.SET_SKILL_SHEET_INFO_LIST(data);
+    const { data } = await $axios.get(
+      'http://localhost:8080/api/keyst10200'
+    );
+    await this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
   }
 }
