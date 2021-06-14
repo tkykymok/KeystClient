@@ -31,7 +31,7 @@
       <td class='p-3 text-gray-800 border border-b' colspan='2'>
         {{ convertDateToYearMonth(skillSheetHeader.finalEducationDate) }}
       </td>
-      <td class='p-3 text-gray-800 border border-b' colspan='7'>○○大学　卒業</td>
+      <td class='p-3 text-gray-800 border border-b' colspan='7'>{{ skillSheetHeader.finalEducationContent }}</td>
     </tr>
     <tr>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'
