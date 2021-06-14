@@ -1,4 +1,5 @@
 import Qualification from '~/classes/qualification';
+import Skill from '~/classes/skill';
 
 export default class SkillSheetHeader {
   userId: number | null = null;
@@ -12,7 +13,7 @@ export default class SkillSheetHeader {
   nearestStation: string = '';
   finalEducationDate: string = '';
   finalEducationContent: string = '';
-  skillList: string[] = [];
+  skillList: Skill[] = [];
   qualificationList: Qualification[] = [];
   skillSheetId: number | null = null;
   strongArea: string = '';
