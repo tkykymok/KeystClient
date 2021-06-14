@@ -2,7 +2,9 @@
   <div>
     <div class='p-4 flex'>
       <!-- スキルシートヘッダー部 -->
-      <Keyst10201 />
+      <Keyst10201
+        :skillSheetHeader='skillSheetHeader'
+      />
       <!-- スキルシート一覧-->
       <Keyst10203
         :skillSheetInfoList='skillSheetInfoList'
@@ -19,8 +21,8 @@ import Keyst10201 from '~/components/Keyst10200/Keyst10201.vue';
 import Keyst10202 from '~/components/Keyst10200/Keyst10202.vue';
 import Keyst10203 from '~/components/Keyst10200/Keyst10203.vue';
 import { Keyst10200Module } from '~/utils/store-accessor';
-import { $axios } from '~/utils/api';
 import SkillSheetInfo from '~/classes/skillSheetInfo';
+import SkillSheetHeader from '~/classes/skillSheetHeader';
 
 @Component({
   name: 'Keyst10200',
@@ -39,6 +41,13 @@ export default class extends Vue {
    */
   get skillSheetInfoList(): SkillSheetInfo[] {
     return Keyst10200Module.skillSheetInfoList;
+  }
+
+  /**
+   * スキルシートヘッダー
+   */
+  get skillSheetHeader(): SkillSheetHeader {
+    return Keyst10200Module.skillSheetHeader;
   }
 
 }
