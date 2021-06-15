@@ -20,8 +20,8 @@
       <td class='p-3 text-gray-800 border border-b'>{{ skillSheetHeader.nationality }}</td>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-1/12'>配偶者</th>
       <td class='p-3 text-gray-800 border border-b'>
-        <span v-if="skillSheetHeader.partnerFlg === '0' ">無</span>
-        <span v-else>有</span>
+        <span v-if="skillSheetHeader.partnerFlg">有</span>
+        <span v-else>無</span>
       </td>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>最寄駅</th>
       <td class='p-3 text-gray-800 border border-b' colspan='2'>{{ skillSheetHeader.nearestStation }}　駅</td>

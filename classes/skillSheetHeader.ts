@@ -9,7 +9,7 @@ export default class SkillSheetHeader {
   age: number | null = null;
   birthday: string = '';
   nationality: string = '';
-  partnerFlg: string = '';
+  partnerFlg: boolean = false;
   nearestStation: string = '';
   finalEducationDate: string = '';
   finalEducationContent: string = '';
