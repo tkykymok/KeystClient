@@ -64,9 +64,7 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
 
   @Action({ rawError: true })
   public async initialize() {
-    const { data } = await $axios.get(
-      'http://localhost:8080/api/keyst10200'
-    );
+    const { data } = await $axios.get('/keyst10200');
     // レスポンスデータをinitSに移送する。
     let resForm: Keyst10200InitS = new Keyst10200InitS();
     Object.assign(resForm, data);
