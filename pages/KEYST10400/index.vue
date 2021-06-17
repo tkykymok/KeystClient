@@ -4,7 +4,7 @@
       メンバー一覧
     </div>
     <keyst10401 />
-    <Keyst10402 /
+    <Keyst10402 />
   </div>
 </template>
 
