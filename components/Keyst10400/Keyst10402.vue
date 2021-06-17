@@ -2,11 +2,31 @@
   <div>
     <table class="w-full mt-16">
       <tr class="flex justify-between border-t-2 border-b-2">
-        <th class="w-1/6">名前</th>
-        <th class="w-1/6">チーム</th>
-        <th class="w-1/6">スキル</th>
-        <th class="w-1/6">勉強時間</th>
-        <th class="w-1/6">案件</th>
+        <th class="w-1/6">
+          名前
+          <button>▲</button>
+          <button>▼</button>
+        </th>
+        <th class="w-1/6">
+          チーム
+          <button>▲</button>
+          <button>▼</button>
+        </th>
+        <th class="w-1/6">
+          スキル
+          <button>▲</button>
+          <button>▼</button>
+        </th>
+        <th class="w-1/6">
+          勉強時間
+          <button>▲</button>
+          <button>▼</button>
+        </th>
+        <th class="w-1/6">
+          案件
+          <button>▲</button>
+          <button>▼</button>
+        </th>
       </tr>
       <tr class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
