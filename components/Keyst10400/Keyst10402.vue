@@ -30,7 +30,7 @@
       </tr>
       <tr class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
-          <img src="/_nuxt/assets/img/team-1-800x800.jpg" alt="" class="w-12 h-12 mr-4 rounded-full border-none shadow-lg">
+          <img src="/_nuxt/assets/img/user.png" alt="" class="w-12 h-12 mr-4 rounded-full border-none shadow-lg">
           関根健太
         </th>
         <th class="w-1/6">チームA</th>
