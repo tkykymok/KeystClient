@@ -50,7 +50,10 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 
 @Component({
-  name: 'Keyst10402'
+  name: 'Keyst10402',
+  components: {
+    Keyst10403,
+  },
 })
 export default class extends Vue {
   data() {

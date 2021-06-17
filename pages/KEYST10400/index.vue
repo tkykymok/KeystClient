@@ -10,10 +10,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import Keyst10401 from '~/components/Keyst10400/Keyst10402.vue';
+import Keyst10401 from '~/components/Keyst10400/Keyst10401.vue';
+import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
 
 @Component({
-  name: 'Keyst10400'
+  name: 'Keyst10400',
+  components: {
+    Keyst10401,
+    Keyst10402,
+  },
 })
 export default class extends Vue {
 
