@@ -42,9 +42,9 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr v-for='(skillSheetDetail, idx) in skillSheetDetailList' :key='idx'>
         <!-- No. -->
-        <td class='p-3 text-gray-800 border border-b'>1</td>
+        <td class='p-3 text-gray-800 border border-b'>{{ idx + 1 }}</td>
         <!-- 稼働期間 -->
         <td class='p-3 text-gray-800 border border-b'>
           <!-- 稼働開始日 -->
@@ -218,13 +218,25 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
+import { Keyst10200Module } from '~/utils/store-accessor';
 import { ja } from 'vuejs-datepicker/dist/locale';
+import SkillSheetDetail from '~/classes/skillSheetDetail';
 
 @Component({})
 export default class Keyst10202 extends Vue {
   language = {
     ja: ja
   };
+
+  /**
+   * スキルシート明細一覧
+   */
+  get skillSheetDetailList(): SkillSheetDetail[] {
+    return Keyst10200Module.skillSheetDetailList;
+  }
+
+
+
 
   public prjOptions: any[] = [
     { val: 1, text: '案件名1' },

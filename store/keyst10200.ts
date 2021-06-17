@@ -13,7 +13,7 @@ import Keyst10200InitS from '~/classes/resform/keyst10200InitS';
 export interface IKeyst10200 {
   skillSheetInfoList: SkillSheetInfo[],
   skillSheetHeader: SkillSheetHeader | null,
-  skillSheetDetail: SkillSheetDetail[] | null,
+  skillSheetDetailList: SkillSheetDetail[] | null,
 }
 
 @Module({
@@ -27,7 +27,7 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
   /** スキルシートヘッダー  */
   private _skillSheetHeader: SkillSheetHeader = new SkillSheetHeader();
   /** スキルシート明細 */
-  private _skillSheetDetail: SkillSheetDetail[] = [];
+  private _skillSheetDetailList: SkillSheetDetail[] = [new SkillSheetDetail()];
 
   get skillSheetInfoList(): SkillSheetInfo[] {
     return this._skillSheetInfoList;
@@ -37,8 +37,8 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     return this._skillSheetHeader;
   }
 
-  get skillSheetDetail(): SkillSheetDetail[] {
-    return this._skillSheetDetail;
+  get skillSheetDetailList(): SkillSheetDetail[] {
+    return this._skillSheetDetailList;
   }
 
   @Mutation
@@ -59,7 +59,7 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
 
   @Mutation
   SET_SKILL_SHEET_DETAIL(value: SkillSheetDetail[]) {
-    this._skillSheetDetail = value;
+    this._skillSheetDetailList = value;
   }
 
   @Action({ rawError: true })
