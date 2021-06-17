@@ -33,7 +33,7 @@ import UserDropdown from '~/components/Dropdowns/UserDropdown.vue';
   }
 })
 export default class Header extends Vue {
-  @Prop({ required: true, default: '' })
+  @Prop({ required: false, default: '' })
   functionName!: string;
 }
 </script>

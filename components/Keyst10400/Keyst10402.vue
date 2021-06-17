@@ -1,34 +1,43 @@
 <template>
-  <div class="w-full h-full p-6 flex justify-center items-center z-10 fixed top-0 left-0 bg-black bg-opacity-50">
-    <div class="w-1/2 p-8 bg-white">
-      <h1 class="text-center">案件情報</h1>
-      <div class="flex justify-around pt-8">
-        <p>稼働開始年月日</p>
-        <p>2021/04/01</p>
-      </div>
-      <div class="flex justify-around pt-8">
-        <p>案件名</p>
-        <p>案件A</p>
-      </div>
-      <div class="flex justify-around pt-8">
-        <p>単価</p>
-        <p>330,000円</p>
-      </div>
-      <div class="pt-8">
-        <button @click="$emit('closeModal')">閉じる</button>
-      </div>
-    </div>
+  <div>
+    <table class="w-full mt-16">
+      <tr class="flex justify-between border-t-2 border-b-2">
+        <th class="w-1/6">名前</th>
+        <th class="w-1/6">チーム</th>
+        <th class="w-1/6">スキル</th>
+        <th class="w-1/6">勉強時間</th>
+        <th class="w-1/6">案件</th>
+      </tr>
+      <tr class="p-2 flex justify-between items-center border-b-2">
+        <th class="w-1/6 flex justify-center items-center">
+          <img src="/_nuxt/assets/img/team-1-800x800.jpg" alt="" class="w-12 h-12 mr-4 rounded-full border-none shadow-lg">
+          関根健太
+        </th>
+        <th class="w-1/6">チームA</th>
+        <th class="w-1/6">Java, AWS</th>
+        <th class="w-1/6">5時間</th>
+        <th class="w-1/6">
+          <button class=" bg-gray-300 border border-gray-300 rounded-md px-4 py-2" @click="show=true">案件</button>
+        </th>
+      </tr>
+    </table>
+    <Keyst10403 @closeModal="show=false" v-if="show" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 
 @Component({
-  name: 'Base'
+  name: 'Keyst10402'
 })
 export default class extends Vue {
-
+  data() {
+    return {
+      show: false,
+    }
+  }
 }
 </script>
 
