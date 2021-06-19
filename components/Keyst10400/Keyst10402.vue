@@ -33,12 +33,12 @@
           <button @click="showImage=true">
             <img src="/_nuxt/assets/img/user.png" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
-          <p class="ml-4">関根健太</p>
+          <p class="ml-4 font-normal">関根健太</p>
         </th>
-        <th class="w-1/6">チームA</th>
-        <th class="w-1/6">Java, AWS</th>
-        <th class="w-1/6">5時間</th>
-        <th class="w-1/6">
+        <th class="w-1/6 font-normal">チームA</th>
+        <th class="w-1/6 font-normal">Java, AWS</th>
+        <th class="w-1/6 font-normal">5時間</th>
+        <th class="w-1/6 font-normal">
           <button class=" bg-gray-300 border border-gray-300 rounded-md px-4 py-2" @click="show=true">案件</button>
         </th>
       </tr>
