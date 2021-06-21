@@ -21,6 +21,10 @@ export default {
   plugins: [
     { src: '~/plugins/vuejs-datepicker.ts', mode: 'client', ssr: false},
     '~/plugins/axios-accessor',
+    {
+      src: '@/plugins/plugin',
+      mode: 'client'
+    }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
