@@ -14,15 +14,14 @@ export default {
 
   // ssr: false,
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [
-  ],
+  css: [],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    { src: '~/plugins/vuejs-datepicker.ts', mode: 'client', ssr: false},
+    { src: '~/plugins/vuejs-datepicker.ts', mode: 'client', ssr: false },
     '~/plugins/axios-accessor',
     {
-      src: '@/plugins/plugin',
+      src: '@/plugins/vue-ctk-date-time-picker.ts',
       mode: 'client'
     }
   ],
@@ -35,14 +34,14 @@ export default {
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
+    '@nuxtjs/tailwindcss'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    'nuxt-fontawesome',
+    'nuxt-fontawesome'
   ],
 
   fontawesome: {
@@ -58,6 +57,5 @@ export default {
   axios: {},
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {
-  }
-}
+  build: {}
+};
