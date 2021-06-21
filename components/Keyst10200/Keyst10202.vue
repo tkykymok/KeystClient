@@ -6,7 +6,7 @@
         <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-10'
             rowspan='2'>No.
         </th>
-        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-24'
+        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-32'
             rowspan='2'>稼働期間
         </th>
         <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-64'
@@ -49,10 +49,10 @@
         <td class='p-3 text-gray-800 border border-b'>
           <!-- 稼働開始日 -->
           <div class='space-y-6 '>
-            <div class='w-full'>
+            <div class='w-full border border-b bg-white rounded-md'>
               <client-only placeholder='loading...'>
                 <Datepicker
-                  inputClass='w-5/6 p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+                  inputClass='w-5/6 ml-1 p-1 active:outline-none focus:outline-none focus:outline-none'
                   calendarClass='rounded-md bg-blue-300'
                   placeholder='稼働開始日'
                   format='yyyy-MM-dd'
@@ -67,10 +67,10 @@
               />
             </div>
             <!-- 稼働終了日 -->
-            <div class='w-full'>
+            <div class='w-full border border-b bg-white rounded-md'>
               <client-only placeholder='loading...'>
                 <Datepicker
-                  inputClass='w-5/6 p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+                  inputClass='w-5/6 ml-1 p-1 active:outline-none focus:outline-none focus:outline-none'
                   calendarClass='rounded-md'
                   placeholder='稼働終了日'
                   format='yyyy-MM-dd'
@@ -179,14 +179,7 @@
           </div>
         </td>
         <td class='p-3 text-gray-800 border border-b'>
-          <div>
-            <select
-              class='p-1 w-full border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
-            >
-              <option disabled selected>使用言語</option>
-              <option v-for='option of langOptions' :key='option.val' v-text='option.text' />
-            </select>
-          </div>
+          <PgLang/>
         </td>
 
         <td class='text-center p-1 text-gray-800 border border-b'>
@@ -221,8 +214,13 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import { Keyst10200Module } from '~/utils/store-accessor';
 import { ja } from 'vuejs-datepicker/dist/locale';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
+import PgLang from '~/components/SelectOptions/PgLang.vue';
 
-@Component({})
+@Component({
+  components: {
+    PgLang,
+  }
+})
 export default class Keyst10202 extends Vue {
   language = {
     ja: ja
