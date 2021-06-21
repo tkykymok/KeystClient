@@ -5,7 +5,7 @@
       class='p-1 w-full align-top border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
       @change='add(selected)'
     >
-      <option v-text='"使用言語"'/>
+      <option v-text='"使用言語"' />
       <option v-for='option of selectOptionList' :key='option.code' :value='option.code' v-text='option.name' />
     </select>
 
@@ -46,14 +46,20 @@ export default class PgLang extends SelectOptionBase {
     const { data } = await $axios.get('/selectOption/pgLang');
     this.selectOptionList = data;
     this._pgLangList.forEach(value => {
-      this.selectedLangList.push(this.selectOptionList.find(obj => obj.code === value));
+      let selectOption = this.selectOptionList.find(obj => obj.code === value);
+      if (selectOption) {
+        this.selectedLangList.push();
+      }
     });
   }
 
   add(value: string) {
     if (!this._pgLangList.includes(value)) {
       this._pgLangList.push(value);
-      this.selectedLangList.push(this.selectOptionList.find(obj => obj.code === value));
+      let selectOption = this.selectOptionList.find(obj => obj.code === value);
+      if (selectOption) {
+        this.selectedLangList.push(selectOption);
+      }
     }
     this.selected = '';
   }
