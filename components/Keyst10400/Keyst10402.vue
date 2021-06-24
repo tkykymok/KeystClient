@@ -4,8 +4,8 @@
       <tr class="flex justify-between border-t-2 border-b-2">
         <th class="w-1/6">
           名前
-          <button>▲</button>
-          <button>▼</button>
+          <button @click="buttonU" v-if="showButtonU">▲</button>
+          <button @click="buttonD" v-if="showButtonD">▼</button>
         </th>
         <th class="w-1/6">
           チーム
@@ -61,11 +61,18 @@ import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
   },
 })
 export default class extends Vue {
-  data() {
-    return {
-      show: false,
-      showImage: false,
-    }
+  public show = false;
+  public showImage = false;
+  public showButtonU = false;
+  public showButtonD = true;
+
+  buttonU() {
+    this.showButtonU = false;
+    this.showButtonD = true;
+  }
+  buttonD() {
+    this.showButtonU = true;
+    this.showButtonD = false;
   }
 }
 </script>
