@@ -8,7 +8,7 @@ export default class SkillSheetDetail {
   os: string = '';
   db: string = '';
   fwMwTool: string[] = [];
-  pgLang: string = '';
+  pgLangList: string[] = [];
   scopeOfWork: string = '';
   versionExKey: number | null = null;
 }
