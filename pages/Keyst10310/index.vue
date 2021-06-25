@@ -10,6 +10,14 @@
       </p>
     </div>
 
+    <div>
+      <button @click="show">クリックする</button>
+
+      <modal name="modal-content">
+        <p>モーダルウィンドウで表示されるコンテンツ</p>
+      </modal>
+    </div>
+
     <keyst10301 />
     <keyst10302 />
 
@@ -29,6 +37,13 @@ import keyst10302 from '~/components/Keyst10300/Keyst10302.vue';
   }
 })
 export default class extends Vue {
+
+  show() {
+    this.$modal.show("modal-content");
+  }
+  hide() {
+    this.$modal.hide("modal-content");
+  }
 
 }
 </script>
