@@ -3,10 +3,7 @@
     <table class='w-screen table-fixed shadow-md'>
       <thead>
       <tr>
-        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-10'
-            rowspan='2'>No.
-        </th>
-        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-32'
+        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-40'
             rowspan='2'>稼働期間
         </th>
         <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-64'
@@ -18,13 +15,13 @@
         <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-24'
             rowspan='2'>OS
         </th>
-        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-24'
+        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-32'
             rowspan='2'>DB
         </th>
-        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-24'
+        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-40'
             rowspan='2'>FW・MW・ツール等
         </th>
-        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-24'
+        <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-32'
             rowspan='2'>使用言語
         </th>
         <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-48'
@@ -43,21 +40,21 @@
       </thead>
       <tbody>
       <tr v-for='(skillSheetDetail, idx) in skillSheetDetailList' :key='idx'>
-        <!-- No. -->
-        <td class='p-3 text-gray-800 border border-b'>{{ idx + 1 }}</td>
         <!-- 稼働期間 -->
         <td class='p-3 text-gray-800 border border-b'>
           <!-- 稼働開始日 -->
           <div class='space-y-6 '>
             <div class='w-full border border-b bg-white rounded-md'>
               <client-only placeholder='loading...'>
-                <Datepicker
-                  inputClass='w-5/6 ml-1 p-1 active:outline-none focus:outline-none focus:outline-none'
-                  calendarClass='rounded-md bg-blue-300'
-                  placeholder='稼働開始日'
-                  format='yyyy-MM-dd'
-                  :clearButton='true'
-                  :language='language.ja'
+                <VueCtkDateTimePicker
+                  v-model='sampleDate'
+                  only-date
+                  no-button
+                  autoclose
+                  noHeader
+                  format='YYYY-MM-DD'
+                  formatted='YYYY-MM-DD'
+                  label='稼働開始日'
                 />
               </client-only>
             </div>
@@ -69,13 +66,15 @@
             <!-- 稼働終了日 -->
             <div class='w-full border border-b bg-white rounded-md'>
               <client-only placeholder='loading...'>
-                <Datepicker
-                  inputClass='w-5/6 ml-1 p-1 active:outline-none focus:outline-none focus:outline-none'
-                  calendarClass='rounded-md'
-                  placeholder='稼働終了日'
-                  format='yyyy-MM-dd'
-                  :clearButton='true'
-                  :language='language.ja'
+                <VueCtkDateTimePicker
+                  v-model='sampleDate'
+                  only-date
+                  no-button
+                  autoclose
+                  noHeader
+                  format='YYYY-MM-DD'
+                  formatted='YYYY-MM-DD'
+                  label='稼働終了日'
                 />
               </client-only>
             </div>
@@ -145,22 +144,12 @@
         </td>
         <td class='p-3 text-gray-800 border border-b'>
           <div>
-            <select
-              class='p-1 w-full border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
-            >
-              <option disabled selected>OS</option>
-              <option v-for='option of osOptions' :key='option.val' v-text='option.text' />
-            </select>
+            <Os :os='skillSheetDetail.os'/>
           </div>
         </td>
         <td class='p-3 text-gray-800 border border-b'>
           <div>
-            <select
-              class='p-1 w-full border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
-            >
-              <option disabled selected>OS</option>
-              <option v-for='option of osOptions' :key='option.val' v-text='option.text' />
-            </select>
+            <Db :db='skillSheetDetail.db'/>
           </div>
         </td>
         <td class='p-3 text-gray-800 border border-b'>
@@ -179,7 +168,7 @@
           </div>
         </td>
         <td class='p-3 text-gray-800 border border-b'>
-          <PgLang/>
+          <PgLang />
         </td>
 
         <td class='text-center p-1 text-gray-800 border border-b'>
@@ -215,16 +204,16 @@ import { Keyst10200Module } from '~/utils/store-accessor';
 import { ja } from 'vuejs-datepicker/dist/locale';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
 import PgLang from '~/components/SelectOptions/PgLang.vue';
+import Os from '~/components/SelectOptions/Os.vue';
+import Db from '~/components/SelectOptions/Db.vue';
 
 @Component({
   components: {
-    PgLang,
+    PgLang, Os, Db
   }
 })
 export default class Keyst10202 extends Vue {
-  language = {
-    ja: ja
-  };
+  sampleDate: string = '';
 
   /**
    * スキルシート明細一覧
@@ -232,9 +221,6 @@ export default class Keyst10202 extends Vue {
   get skillSheetDetailList(): SkillSheetDetail[] {
     return Keyst10200Module.skillSheetDetailList;
   }
-
-
-
 
   public prjOptions: any[] = [
     { val: 1, text: '案件名1' },
