@@ -20,5 +20,4 @@ export default class SkillSheetHeader {
   pr: string = '';
   evaluationOfSales: string = '';
   versionExKey: number | null = null;
-
 }
