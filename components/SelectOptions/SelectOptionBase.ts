@@ -8,4 +8,5 @@ export default class SelectOptionBase extends Vue {
 export type selectOption = {
   code: string,
   name: string
+  disableFlg: boolean
 }
