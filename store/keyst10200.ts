@@ -8,7 +8,6 @@ import { $axios } from '~/utils/api';
 import SkillSheetInfo from '~/classes/skillSheetInfo';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
-import Keyst10200InitS from '~/classes/resform/keyst10200InitS';
 
 export interface IKeyst10200 {
   skillSheetInfoList: SkillSheetInfo[],
@@ -27,7 +26,7 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
   /** スキルシートヘッダー  */
   private _skillSheetHeader: SkillSheetHeader = new SkillSheetHeader();
   /** スキルシート明細 */
-  private _skillSheetDetailList: SkillSheetDetail[] = [new SkillSheetDetail()];
+  private _skillSheetDetailList: SkillSheetDetail[] = [];
 
   get skillSheetInfoList(): SkillSheetInfo[] {
     return this._skillSheetInfoList;
@@ -43,7 +42,10 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
 
   @Mutation
   SET_SKILL_SHEET_INFO_LIST(value: SkillSheetInfo[]) {
-    this._skillSheetInfoList = value;
+    // スキルシート情報一覧を初期化する。
+    this._skillSheetInfoList.splice(0);
+    // サーバーから取得したスキルシート情報一覧全件を追加する。
+    this._skillSheetInfoList.push(...value);
   }
 
   @Mutation
@@ -54,21 +56,47 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
   @Mutation
   SET_USER_BASIC_INFO(value: SkillSheetHeader) {
     Object.assign(this._skillSheetHeader, value);
-    this._skillSheetHeader.qualificationList = value.qualificationList;
   }
 
   @Mutation
   SET_SKILL_SHEET_DETAIL(value: SkillSheetDetail[]) {
-    this._skillSheetDetailList = value;
+    // スキルシート明細一覧を初期化する。
+    this._skillSheetDetailList.splice(0);
+    // サーバーから取得したスキルシート明細一覧全件を追加する。
+    this._skillSheetDetailList.push(...value);
+  }
+
+  @Mutation
+  ADD_ROW_4_SKILL_SHEET_DETAIL() {
+    let newRow: SkillSheetDetail = new SkillSheetDetail();
+    this._skillSheetDetailList.push(newRow);
+  }
+
+  @Mutation
+  REMOVE_ROW_4_SKILL_SHEET_DETAIL(idx: number) {
+    this._skillSheetDetailList.splice(idx, 1);
+  }
+
+  @Mutation
+  ADD_ROW_4_FW_MW_TOOL(idx: number) {
+    this._skillSheetDetailList[idx].fwMwTool.push('');
   }
 
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10200');
-    // レスポンスデータをinitSに移送する。
-    let resForm: Keyst10200InitS = new Keyst10200InitS();
-    Object.assign(resForm, data);
-    await this.SET_SKILL_SHEET_INFO_LIST(resForm.skillSheetInfoList);
-    await this.SET_USER_BASIC_INFO(resForm.userBasicInfo);
+    await this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
+    await this.SET_USER_BASIC_INFO(data.userBasicInfo);
   }
+
+  @Action({ rawError: true })
+  public async displaySkillSheet(skillSheetId: number) {
+    const { data } = await $axios.get(
+      '/keyst10200/displaySkillSheet', {
+        params: { skillSheetId: skillSheetId }
+      });
+    await this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
+    await this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+  }
+
 }
