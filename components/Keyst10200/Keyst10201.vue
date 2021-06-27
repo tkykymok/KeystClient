@@ -94,7 +94,6 @@
 import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import { convertDateToYearMonth, convertDateToYearMonthDay } from '~/utils/converter';
-import { Keyst10200Module } from '~/utils/store-accessor';
 
 @Component({})
 export default class Keyst10201 extends Vue {
@@ -102,7 +101,14 @@ export default class Keyst10201 extends Vue {
   @PropSync('skillSheetHeader',{ required: true, default: null })
   _skillSheetHeader!: SkillSheetHeader;
 
+  /**
+   * yyyy年MM月dd日の形式に変換する
+   */
   public convertDateToYearMonthDay = convertDateToYearMonthDay;
+
+  /**
+   * yyyy年MM月の形式に変換する
+   */
   public convertDateToYearMonth = convertDateToYearMonth;
 
 }

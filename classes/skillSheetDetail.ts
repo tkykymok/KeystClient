@@ -1,4 +1,5 @@
 export default class SkillSheetDetail {
+  refNo: number | null = null;
   prjCode: string = '';
   prjStartDate: string = '';
   prjEndDate: string = '';
@@ -8,7 +9,7 @@ export default class SkillSheetDetail {
   os: string = '';
   db: string = '';
   fwMwTool: string[] = [];
-  pgLangList: string[] = [];
+  pgLang: string[] = [];
   sowManagement: boolean = false;
   sowReqDefinition: boolean = false;
   sowBasicDesign: boolean = false;

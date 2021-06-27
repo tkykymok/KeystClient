@@ -2,6 +2,15 @@
   <table class='w-screen table-fixed shadow-md'>
     <thead>
     <tr>
+      <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-8'
+          rowspan='2'>
+        <!-- 行追加 -->
+        <font-awesome-icon
+          icon='plus-circle'
+          class='mr-2 text-green-600 cursor-pointer hover:text-green-400'
+          @click='addRow4SkillSheerDetail'
+        />
+      </th>
       <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-40'
           rowspan='2'>稼働期間
       </th>
@@ -39,6 +48,14 @@
     </thead>
     <tbody>
     <tr v-for='(skillSheetDetail, idx) of _skillSheetDetailList' :key='idx'>
+      <!-- 削除 -->
+      <td class='p-3 text-gray-800 border border-b'>
+        <font-awesome-icon
+          icon='times-circle'
+          class='cursor-pointer text-red-600 hover:text-red-400'
+          @click='removeRow4SkillSheerDetail(idx)'
+        />
+      </td>
       <!-- 稼働期間 -->
       <td class='p-3 text-gray-800 border border-b'>
         <!-- 稼働開始日 -->
@@ -101,6 +118,7 @@
         <div class='pt-1'>
           <label for='bizInCharge'>担当業務</label>
           <textarea
+            v-model='skillSheetDetail.bizInCharge'
             id='bizInCharge'
             class='w-full p-2 h-32 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
           />
@@ -108,6 +126,7 @@
         <div>
           <label for='comment'>コメント</label>
           <textarea
+            v-model='skillSheetDetail.comment'
             id='comment'
             class='w-full p-2 h-32 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
           />
@@ -119,6 +138,7 @@
             <label :for='`team-${idx}`'>チーム</label>
             <div class='flex justify-around'>
               <input
+                v-model='skillSheetDetail.devScale[0]'
                 type='text'
                 :id='`team-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
@@ -130,6 +150,7 @@
             <label :for='`dev-${idx}`'>開発</label>
             <div class='flex justify-around'>
               <input
+                v-model='skillSheetDetail.devScale[1]'
                 type='text'
                 :id='`dev-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
@@ -141,6 +162,7 @@
             <label :for='`all-${idx}`'>全体</label>
             <div class='flex justify-around'>
               <input
+                v-model='skillSheetDetail.devScale[2]'
                 type='text'
                 :id='`all-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
@@ -161,9 +183,10 @@
         </div>
       </td>
       <td class='p-3 text-gray-800 border border-b'>
-        <div class='space-y-3 '>
+        <div class='space-y-3'>
           <input
-            v-for='(option, idx) of skillSheetDetail.fwMwTool'
+            v-for='(fwMwTool, idx) in skillSheetDetail.fwMwTool'
+            v-model='skillSheetDetail.fwMwTool[idx]'
             :key='idx'
             type='text'
             class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
@@ -171,33 +194,36 @@
           <font-awesome-icon
             icon='plus-circle'
             class='mr-2 text-green-600 cursor-pointer hover:text-green-400'
+            @click='addRow4FwMwTool(idx)'
           />
         </div>
       </td>
       <td class='p-3 text-gray-800 border border-b'>
-        <PgLang />
+        <PgLang
+          :pgLang.sync='skillSheetDetail.pgLang'
+        />
       </td>
 
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowManagement' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowReqDefinition' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowBasicDesign' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowDetailDesign' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowImplementation' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowTest' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
       <td class='text-center p-1 text-gray-800 border border-b'>
-        <input type='checkbox' class='h-4 w-4 cursor-pointer'>
+        <input v-model='skillSheetDetail.sowMaintenanceOperation' type='checkbox' class='h-4 w-4 cursor-pointer'>
       </td>
     </tr>
     </tbody>
@@ -207,12 +233,10 @@
 <script lang='ts'>
 import { Component, PropSync, Vue, Watch } from 'nuxt-property-decorator';
 import { Keyst10200Module } from '~/utils/store-accessor';
-import { ja } from 'vuejs-datepicker/dist/locale';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
 import PgLang from '~/components/SelectOptions/PgLang.vue';
 import Os from '~/components/SelectOptions/Os.vue';
 import Db from '~/components/SelectOptions/Db.vue';
-import SkillSheetInfo from '~/classes/skillSheetInfo';
 
 @Component({
   components: {
@@ -221,7 +245,7 @@ import SkillSheetInfo from '~/classes/skillSheetInfo';
 })
 export default class Keyst10202 extends Vue {
   /** 入力パラメータ スキルシート明細一覧 */
-  @PropSync('skillSheetDetailList', { required: true, default: [] })
+  @PropSync('skillSheetDetailList', { required: true, default: () => ([]) })
   _skillSheetDetailList!: SkillSheetDetail[];
 
   public prjOptions: any[] = [
@@ -232,16 +256,53 @@ export default class Keyst10202 extends Vue {
     { val: 5, text: '案件名5' }
   ];
 
+  // 稼働開始日・終了日を一時的に保存する配列
+  // カレンダーから選択した日付が画面に反映されない事象を解決するための対応
   public prjStartDate: string[] = [''];
   public prjEndDate: string[] = [''];
 
-  @Watch('_skillSheetDetailList.length',{immediate: true, deep: true})
+  /**
+   * スキルシート明細一覧の長さを監視する関数
+   */
+  @Watch('_skillSheetDetailList.length', { immediate: true, deep: true })
   watchDetailListLength() {
-    for (let i = 0; i < this._skillSheetDetailList.length; i++) {
-      this.$set(this.prjStartDate, i, '');
-      this.$set(this.prjEndDate, i, '');
-    }
+    // 配列を初期化する
+    this.prjStartDate.splice(0);
+    this.prjEndDate.splice(0);
+    // スキルシート明細一覧全件に対して以下の処理をする。
+    this._skillSheetDetailList.forEach(obj => {
+      // スキルシート明細の数分、稼働開始日・終了日の配列に追加する。
+      this.prjStartDate.push(obj.prjStartDate);
+      this.prjEndDate.push(obj.prjEndDate);
+    });
   }
+
+  /**
+   * スキルシート明細部行追加イベント
+   */
+  addRow4SkillSheerDetail() {
+    Keyst10200Module.SET_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
+    Keyst10200Module.ADD_ROW_4_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
+  }
+
+  /**
+   * スキルシート明細部行削除イベント
+   * @param idx
+   */
+  removeRow4SkillSheerDetail(idx: number) {
+    Keyst10200Module.SET_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
+    Keyst10200Module.REMOVE_ROW_4_SKILL_SHEET_DETAIL(idx);
+  }
+
+  /**
+   * FW・MW・TOOL等の入力欄追加イベント
+   * @param idx
+   */
+  addRow4FwMwTool(idx: number) {
+    Keyst10200Module.SET_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
+    Keyst10200Module.ADD_ROW_4_FW_MW_TOOL(idx);
+  }
+
 }
 </script>
 

@@ -5,19 +5,13 @@
       <Keyst10201
         :skillSheetHeader.sync='skillSheetHeader'
       />
-      <!-- スキルシート一覧-->
+      <!-- スキルシート情報一覧-->
       <Keyst10203
         :skillSheetInfoList='skillSheetInfoList'
       />
     </div>
 
     <div class='pt-12 overflow-x-auto'>
-      <div class='mb-2'>
-        <font-awesome-icon
-          icon='plus-circle'
-          class='mr-2 text-green-600 cursor-pointer hover:text-green-400'
-        />
-      </div>
       <!-- スキルシート明細部 -->
       <Keyst10202
         :skillSheetDetailList.sync='skillSheetDetailList'
@@ -66,7 +60,7 @@ export default class extends Vue {
    * スキルシートヘッダー
    */
   get skillSheetHeader(): SkillSheetHeader {
-    return Object.assign(new SkillSheetHeader(), Keyst10200Module.skillSheetHeader);
+    return JSON.parse(JSON.stringify(Keyst10200Module.skillSheetHeader));
   }
 
   /**
@@ -75,13 +69,14 @@ export default class extends Vue {
   get skillSheetDetailList(): SkillSheetDetail[] {
     let skillSheetDetailList: SkillSheetDetail[] = [];
     Keyst10200Module.skillSheetDetailList.forEach(obj => {
-        let skillSheetDetail = new SkillSheetDetail();
-        Object.assign(skillSheetDetail, obj);
+        let skillSheetDetail = JSON.parse(JSON.stringify(obj));
         skillSheetDetailList.push(skillSheetDetail);
       }
     );
     return skillSheetDetailList;
   }
+
+
 
   test() {
     console.log(this.skillSheetHeader);
