@@ -8,7 +8,7 @@
         <font-awesome-icon
           icon='plus-circle'
           class='mr-2 text-green-600 cursor-pointer hover:text-green-400'
-          @click='addRow4SkillSheerDetail'
+          @click='addRow4SkillSheetDetail'
         />
       </th>
       <th class='p-3 text-center font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-40'
@@ -53,7 +53,7 @@
         <font-awesome-icon
           icon='times-circle'
           class='cursor-pointer text-red-600 hover:text-red-400'
-          @click='removeRow4SkillSheerDetail(idx)'
+          @click='removeRow4SkillSheetDetail(idx)'
         />
       </td>
       <!-- 稼働期間 -->
@@ -108,26 +108,23 @@
       <!-- 業務概要 -->
       <td class='p-3 text-gray-800 border border-b'>
         <div>
-          <select
-            class='p-1 w-full border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
-          >
-            <option disabled selected>案件名を選択してください。</option>
-            <option v-for='option of prjOptions' :key='option.val' v-text='option.text' />
-          </select>
+          <PrjName
+            :prjCode='skillSheetDetail.prjCode'
+          />
         </div>
         <div class='pt-1'>
-          <label for='bizInCharge'>担当業務</label>
+          <label :for='`bizInCharge-${idx}`'>担当業務</label>
           <textarea
             v-model='skillSheetDetail.bizInCharge'
-            id='bizInCharge'
+            :id='`bizInCharge-${idx}`'
             class='w-full p-2 h-32 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
           />
         </div>
         <div>
-          <label for='comment'>コメント</label>
+          <label :for='`comment-${idx}`'>コメント</label>
           <textarea
             v-model='skillSheetDetail.comment'
-            id='comment'
+            :id='`comment-${idx}`'
             class='w-full p-2 h-32 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
           />
         </div>
@@ -237,10 +234,11 @@ import SkillSheetDetail from '~/classes/skillSheetDetail';
 import PgLang from '~/components/SelectOptions/PgLang.vue';
 import Os from '~/components/SelectOptions/Os.vue';
 import Db from '~/components/SelectOptions/Db.vue';
+import PrjName from '~/components/SelectOptions/PrjName.vue';
 
 @Component({
   components: {
-    PgLang, Os, Db
+    PgLang, Os, Db, PrjName
   }
 })
 export default class Keyst10202 extends Vue {
@@ -280,16 +278,16 @@ export default class Keyst10202 extends Vue {
   /**
    * スキルシート明細部行追加イベント
    */
-  addRow4SkillSheerDetail() {
+  addRow4SkillSheetDetail() {
     Keyst10200Module.SET_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
-    Keyst10200Module.ADD_ROW_4_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
+    Keyst10200Module.ADD_ROW_4_SKILL_SHEET_DETAIL();
   }
 
   /**
    * スキルシート明細部行削除イベント
    * @param idx
    */
-  removeRow4SkillSheerDetail(idx: number) {
+  removeRow4SkillSheetDetail(idx: number) {
     Keyst10200Module.SET_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
     Keyst10200Module.REMOVE_ROW_4_SKILL_SHEET_DETAIL(idx);
   }
