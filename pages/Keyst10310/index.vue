@@ -10,15 +10,38 @@
       </p>
     </div>
 
-    <div>
-      <button @click="show">クリックする</button>
+    <div class='w-1/2'>
+      <p class='py-3 font-bold text-gray-600'>面談可能日時</p>
+      <div class='w-56'>
+        <VueCtkDateTimePicker v-model="FromTimeValue"></VueCtkDateTimePicker>
+        <p class='text-center'>～</p>
+        <VueCtkDateTimePicker v-model="ToTimeValue"></VueCtkDateTimePicker>
+        <div class='text-right'>
+          <button class='p-2 mt-1 font-bold text-gray-200 bg-blue-500 border rounded-lg cursor-pointer' @click="show">登録</button>
+        </div>
+      </div>
+    </div>
 
-      <modal name="modal-content">
-        <p>モーダルウィンドウで表示されるコンテンツ</p>
+    <div>
+      <modal name="modal-content" class='bg-gary-300' :width='400' :height='200'>
+        <div class='flex justify-center'>
+          <a href="" class='w-1/3 p-4 hover:bg-gray-100'>
+            <img alt='' :src='sunImage' />
+          </a>
+          <a href="" class='w-1/3 p-4 hover:bg-gray-100'>
+            <img alt='' :src='cloudImage' />
+          </a>
+          <a href="" class='w-1/3 p-4 hover:bg-gray-100'>
+            <img alt='' :src='rainImage' />
+          </a>
+
+        </div>
+        <div class='text-center'>
+          <input type="submit" class='p-2 mt-1 font-bold text-gray-200 bg-blue-500 border rounded-lg  cursor-pointer' value="登録" />
+        </div>
       </modal>
     </div>
 
-    <keyst10301 />
     <keyst10302 />
 
   </div>
@@ -37,6 +60,9 @@ import keyst10302 from '~/components/Keyst10300/Keyst10302.vue';
   }
 })
 export default class extends Vue {
+  sunImage: NodeRequireFunction = require('@/assets/img/sun.png')
+  cloudImage: NodeRequireFunction = require('@/assets/img/cloud.png')
+  rainImage: NodeRequireFunction = require('@/assets/img/rain.png')
 
   show() {
     this.$modal.show("modal-content");
@@ -48,4 +74,8 @@ export default class extends Vue {
 }
 </script>
 
-<style></style>
+<style>
+modal {
+  color: red;
+}
+</style>

@@ -22,21 +22,6 @@
         </tbody>
       </table>
 
-      <!-- <table class='w-1/2 ml-10'>
-        <tbody>
-          <tr class=''>
-            <th></th>
-          </tr>
-          <tr class=''>
-            <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 text-left'>担当者のコメント</th>
-          </tr>
-          <tr>
-            <th class='bg-gray-200 border border-gray-300'>
-            <textarea rows="5" cols="50" class='border border-gray-300' /></th>
-          </tr>
-        </tbody>
-      </table> -->
-
     </div>
   </div>
 </template>

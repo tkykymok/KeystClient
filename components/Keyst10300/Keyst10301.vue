@@ -8,7 +8,7 @@
       <div class='text-right'>
         <input type="submit" class='p-2 mt-1 font-bold text-gray-200 bg-blue-500 border rounded-lg cursor-pointer' value="登録" />
       </div>
-  </div>
+    </div>
   </div>
 </template>
 
