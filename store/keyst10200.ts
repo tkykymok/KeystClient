@@ -84,7 +84,7 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
 
   @Action({ rawError: true })
   public async initialize() {
-    const { data } = await $axios.get('/keyst10200');
+    const { data } = await $axios.get('/keyst10200/initialize');
     await this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
     await this.SET_USER_BASIC_INFO(data.userBasicInfo);
   }
