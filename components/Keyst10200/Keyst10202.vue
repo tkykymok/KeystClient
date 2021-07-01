@@ -246,14 +246,6 @@ export default class Keyst10202 extends Vue {
   @PropSync('skillSheetDetailList', { required: true, default: () => ([]) })
   _skillSheetDetailList!: SkillSheetDetail[];
 
-  public prjOptions: any[] = [
-    { val: 1, text: '案件名1' },
-    { val: 2, text: '案件名2' },
-    { val: 3, text: '案件名3' },
-    { val: 4, text: '案件名4' },
-    { val: 5, text: '案件名5' }
-  ];
-
   // 稼働開始日・終了日を一時的に保存する配列
   // カレンダーから選択した日付が画面に反映されない事象を解決するための対応
   public prjStartDate: string[] = [''];
