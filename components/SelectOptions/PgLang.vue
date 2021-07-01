@@ -47,12 +47,29 @@ export default class PgLang extends SelectOptionBase {
   }
 
   /**
+   * パラメータとして渡された使用言語の変更を監視する、
+   */
+  @Watch('_pgLang', {immediate: false, deep: true})
+  watchPgLang() {
+    this.refreshSelectedLangList();
+  }
+
+  /**
    * 使用言語の選択リストを取得する
    */
   async getPgLangOptions() {
     const { data } = await $axios.get('/selectOption/pgLang');
     this.selectOptionList = data;
+    this.refreshSelectedLangList();
+  }
 
+
+  /**
+   * 選択済みリストの表示内容を更新する。
+   */
+  refreshSelectedLangList() {
+    // 選択済みリストを初期化する
+    this.selectedLangList.splice(0);
     this._pgLang.forEach(value => {
       let selectOption = this.selectOptionList.find(obj => obj.code === value);
       if (selectOption) {
