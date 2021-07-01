@@ -21,10 +21,10 @@ export default class PrjName extends SelectOptionBase {
   _prjCode!: string;
 
   created() {
-    this.getOsOptions();
+    this.getPrjNameOptions();
   }
 
-  async getOsOptions() {
+  async getPrjNameOptions() {
     const { data } = await $axios.get('/selectOption/prjName');
     this.selectOptionList = data;
   }
