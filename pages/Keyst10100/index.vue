@@ -4,8 +4,8 @@
     <table class="w-9/12 mx-auto text-left min-w-full text-xs">
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
-        <td class="p-2 border-2 border-gray">江田桃子</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray"><span id="name1">江田桃子</span><input type="text" id="" class="hidden bg-yellow-200" /></td>
+        <td class="p-2"><button @click="edit()">aa</button></td>
         <th class="p-2 bg-green-300 border-2 border-gray">郵便番号</th>
         <td colspan="2" class="p-2 border-2 border-gray">332-0012</td>
         <td class="p-2"><button>aa</button></td>
@@ -114,6 +114,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 })
 export default class extends Vue {
 
+  public count: number = 0
 
 }
 </script>
