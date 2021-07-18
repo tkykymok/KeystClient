@@ -60,6 +60,7 @@ export default class Authentication extends VuexModule implements IAuthenticatio
 
   @Action({ rawError: true })
   public async signUp(signUpForm: SignUpQ) {
+    this.DESTROY_JWT_LOGIN_USER_INFO();
     const { data } = await $axios.post(
       '/session/signUp', signUpForm
     );
