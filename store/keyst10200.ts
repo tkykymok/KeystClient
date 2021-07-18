@@ -85,8 +85,8 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10200/initialize');
-    await this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
-    await this.SET_USER_BASIC_INFO(data.userBasicInfo);
+    this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
+    this.SET_USER_BASIC_INFO(data.userBasicInfo);
   }
 
   @Action({ rawError: true })
@@ -95,8 +95,8 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
       '/keyst10200/displaySkillSheet', {
         params: { skillSheetId: skillSheetId }
       });
-    await this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
-    await this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+    this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
+    this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
   }
 
 }

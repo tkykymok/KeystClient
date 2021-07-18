@@ -44,8 +44,12 @@ import SkillSheetDetail from '~/classes/skillSheetDetail';
     Keyst10202,
     Keyst10203
   },
-  async asyncData() {
-    await Keyst10200Module.initialize();
+  async asyncData({redirect, store}) {
+    try {
+      await Keyst10200Module.initialize();
+    } catch (error) {
+      redirect('/login')
+    }
   }
 })
 export default class extends Vue {
@@ -75,7 +79,6 @@ export default class extends Vue {
     );
     return skillSheetDetailList;
   }
-
 
 
   test() {

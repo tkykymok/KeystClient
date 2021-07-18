@@ -3,6 +3,9 @@
  * @param date
  */
 export const convertDateToYearMonthDay = (date: string) => {
+  if (!date) {
+    return null;
+  }
   let yearMonthDay = date.split('-');
   return yearMonthDay[0] + '年' + yearMonthDay[1] + '月' + yearMonthDay[2] + '日';
 };
@@ -12,6 +15,9 @@ export const convertDateToYearMonthDay = (date: string) => {
  * @param date
  */
 export const convertDateToYearMonth = (date: string) => {
+  if (!date) {
+    return null;
+  }
   let yearMonthDay = date.split('-');
   return yearMonthDay[0] + '年' + yearMonthDay[1] + '月';
 };
