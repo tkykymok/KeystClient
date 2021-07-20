@@ -10,20 +10,10 @@
       </p>
     </div>
 
-    <div class='w-1/2'>
-      <p class='py-3 font-bold text-gray-600'>面談可能日時</p>
-      <div class='w-56'>
-        <VueCtkDateTimePicker v-model="FromTimeValue"></VueCtkDateTimePicker>
-        <p class='text-center'>～</p>
-        <VueCtkDateTimePicker v-model="ToTimeValue"></VueCtkDateTimePicker>
-        <div class='text-right'>
-          <button class='p-2 mt-1 font-bold text-gray-200 bg-blue-500 border rounded-lg cursor-pointer' @click="show">登録</button>
-        </div>
-      </div>
-    </div>
-
     <div>
-      <modal name="modal-content" class='bg-gary-300' :width='400' :height='200'>
+      <button class='p-2 mt-1 font-bold text-gray-200 bg-blue-500 border rounded-lg cursor-pointer' @click='show'>予約</button>
+
+      <modal name='modal-content' class='bg-gary-300' :width='400' :height='200'>
         <div class='flex justify-center'>
           <a href="" class='w-1/3 p-4 hover:bg-gray-100'>
             <img alt='' :src='sunImage' />
@@ -34,7 +24,6 @@
           <a href="" class='w-1/3 p-4 hover:bg-gray-100'>
             <img alt='' :src='rainImage' />
           </a>
-
         </div>
         <div class='text-center'>
           <input type="submit" class='p-2 mt-1 font-bold text-gray-200 bg-blue-500 border rounded-lg  cursor-pointer' value="登録" />
@@ -49,13 +38,11 @@
 
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
-import keyst10301 from '~/components/Keyst10300/Keyst10301.vue';
 import keyst10302 from '~/components/Keyst10300/Keyst10302.vue';
 
 @Component({
   name: 'Keyst10310',
   components: {
-    keyst10301,
     keyst10302
   }
 })
@@ -65,17 +52,13 @@ export default class extends Vue {
   rainImage: NodeRequireFunction = require('@/assets/img/rain.png')
 
   show() {
-    this.$modal.show("modal-content");
+    this.$modal.show('modal-content');
   }
   hide() {
-    this.$modal.hide("modal-content");
+    this.$modal.hide('modal-content');
   }
 
 }
 </script>
 
-<style>
-modal {
-  color: red;
-}
-</style>
+<style></style>
