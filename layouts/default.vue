@@ -10,10 +10,9 @@
   </div>
 </template>
 <script lang='ts'>
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator';
 import Sidebar from '@/components/Sidebar/Sidebar.vue';
 import Header from '~/components/Header/Header.vue';
-import { FunctionNames } from '~/constant/functionNames';
 
 @Component({
   name: 'default-layout',
@@ -21,16 +20,6 @@ import { FunctionNames } from '~/constant/functionNames';
     Sidebar, Header
   }
 })
-
 export default class extends Vue {
-  // TODO 別途検討
-  // get currentPath() {
-  //   return typeof this.$route.name === 'string'? this.$route.name: '';
-  // }
-  //
-  // get functionName() {
-  //   return FunctionNames[this.currentPath];
-  // }
-
 };
 </script>
