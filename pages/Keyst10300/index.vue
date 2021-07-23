@@ -42,14 +42,11 @@ import ResrveHeader from '~/classes/reserveHeader';
     keyst10302,
     keyst10303
   },
-  async asyncData() {
-    await Keyst10300Module.initialize();
-  }
+    async asyncData() {
+      await Keyst10300Module.initialize();
+    }
 })
 export default class extends Vue {
-    /**
-   * スキルシート情報一覧
-   */
   get resrveHeaderList(): ResrveHeader[] {
     return Keyst10300Module.resrveHeaderList;
   }

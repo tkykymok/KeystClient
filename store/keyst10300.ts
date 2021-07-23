@@ -35,8 +35,9 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
 
   @Action({ rawError: true })
   public async initialize() {
-    const { data } = await $axios.get('/keyst10300/initialize');
-    await this.SET_RESERVE_HEADER_LIST(data.resrveHeaderList);
+    alert('aaa');
+    // const { data } = await $axios.get('/keyst10300/initialize');
+    // await this.SET_RESERVE_HEADER_LIST(data.resrveHeaderList);
   }
 
 }
