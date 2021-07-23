@@ -42,9 +42,9 @@ import ResrveHeader from '~/classes/reserveHeader';
     keyst10302,
     keyst10303
   },
-    async asyncData() {
-      await Keyst10300Module.initialize();
-    }
+  // async asyncData() {
+  //   await Keyst10300Module.initialize();
+  // }
 })
 export default class extends Vue {
   get resrveHeaderList(): ResrveHeader[] {
