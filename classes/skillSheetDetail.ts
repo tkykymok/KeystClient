@@ -17,5 +17,4 @@ export default class SkillSheetDetail {
   sowImplementation: boolean = false;
   sowTest: boolean = false;
   sowMaintenanceOperation: boolean = false;
-  versionExKey: number | null = null;
 }
