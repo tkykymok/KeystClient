@@ -27,7 +27,7 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 @Component({})
 export default class Keyst10302 extends Vue{
       show() {

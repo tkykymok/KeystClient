@@ -2,7 +2,7 @@
 <template>
   <div class='w-1/2'>
     <p class='py-3 font-bold text-gray-600'>面談可能日時</p>
-    <!-- <p>テスト：{{ _reserveHeader.reserveId }}</p> -->
+    <p>テスト：{{ _reserveHeader.reserveId }}</p>
     <div class='w-1/3'>
       <VueCtkDateTimePicker
         v-model='sample1'
