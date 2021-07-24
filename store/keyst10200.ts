@@ -8,6 +8,7 @@ import { $axios } from '~/utils/api';
 import SkillSheetInfo from '~/classes/skillSheetInfo';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
+import Keyst10200SaveQ from '~/classes/form/keyst10200SaveQ';
 
 export interface IKeyst10200 {
   skillSheetInfoList: SkillSheetInfo[],
@@ -82,6 +83,9 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     this._skillSheetDetailList[idx].fwMwTool.push('');
   }
 
+  /**
+   * 初期表示
+   */
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10200/initialize');
@@ -89,6 +93,10 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     this.SET_USER_BASIC_INFO(data.userBasicInfo);
   }
 
+  /**
+   * スキルシート表示
+   * @param skillSheetId
+   */
   @Action({ rawError: true })
   public async displaySkillSheet(skillSheetId: number) {
     const { data } = await $axios.get(
@@ -97,6 +105,15 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
       });
     this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
     this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+  }
+
+  @Action({ rawError: true })
+  public async save(reqForm: Keyst10200SaveQ) {
+    const { data } = await $axios.post(
+      '/keyst10200/save', reqForm
+    );
+
+    // await this.displaySkillSheet(data.skillSheetId);
   }
 
 }

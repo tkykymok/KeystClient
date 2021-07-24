@@ -20,7 +20,7 @@
     <div class='py-4'>
       <button
         class='px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'
-        @click='test'
+        @click='save'
       >保存
       </button>
     </div>
@@ -36,6 +36,10 @@ import { Keyst10200Module } from '~/utils/store-accessor';
 import SkillSheetInfo from '~/classes/skillSheetInfo';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
+
+import _ from 'lodash';
+import Keyst10200SaveQ from '~/classes/form/keyst10200SaveQ';
+import Keyst10200SaveQ1 from '~/classes/form/keyst10200SaveQ1';
 
 @Component({
   name: 'Keyst10200',
@@ -78,6 +82,18 @@ export default class extends Vue {
       }
     );
     return skillSheetDetailList;
+  }
+
+  save() {
+    // スキルシートヘッダー部をリクエストFormに移送する。
+    let reqForm: Keyst10200SaveQ = _.assign(new Keyst10200SaveQ(), _.pick(this.skillSheetHeader, _.keys(new Keyst10200SaveQ())));
+    // スキルシート明細部をリクエストFormに移送する。
+    this.skillSheetDetailList.forEach(obj => {
+      let skillSheetDetail: Keyst10200SaveQ1 =
+        _.assign(new Keyst10200SaveQ1(), _.pick(obj, _.keys(new Keyst10200SaveQ1())));
+      reqForm.skillSheetDetail.push(skillSheetDetail);
+    });
+    Keyst10200Module.save(reqForm);
   }
 
 
