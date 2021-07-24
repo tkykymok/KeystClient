@@ -5,10 +5,10 @@ export default class SkillSheetDetail {
   prjEndDate: string = '';
   bizInCharge: string = '';
   comment: string = '';
-  devScale: string[] = [];
+  devScale: string[] = ['','',''];
   os: string = '';
   db: string = '';
-  fwMwTool: string[] = [];
+  fwMwTool: string[] = ['','',''];
   pgLang: string[] = [];
   sowManagement: boolean = false;
   sowReqDefinition: boolean = false;
