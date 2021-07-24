@@ -2,6 +2,9 @@
   <div class='h-screen'>
     <div class='w-2/5 m-auto p-32'>
       <div class='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col'>
+        <ul v-show='errorMessages.length'>
+          <li class='px-2 text-red-600 ' v-for='message of errorMessages'>{{ message }}</li>
+        </ul>
         <form @submit.prevent='signUp'>
           <div class='mb-4'>
             <label class='block text-grey-darker text-sm font-bold mb-2' for='userName'>
@@ -36,9 +39,6 @@
               type='password'
               placeholder='Password'>
           </div>
-          <div class='h-8'>
-            <span class='px-2 text-red-600'>{{ errorMessage }}</span>
-          </div>
           <div class='flex items-center justify-between'>
             <button
               class='bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 active:outline-none focus:outline-none rounded'
@@ -67,11 +67,15 @@ export default class extends Vue {
   private userName: string = '';
   private loginId: string = '';
   private loginPw: string = '';
-  private errorMessage: string = '';
+  public errorMessages: string[] = [];
 
-  @Watch('loginId', { immediate: false, deep: true })
-  watchCompositeKye() {
-    this.errorMessage = '';
+  get compositeKey() {
+    return this.userName + this.loginId + this.loginPw;
+  }
+
+  @Watch('compositeKey', { immediate: false, deep: true })
+  watchCompositeKey() {
+    this.errorMessages.splice(0);
   }
 
   async signUp() {
@@ -83,7 +87,8 @@ export default class extends Vue {
       await AuthenticationModule.signUp(signUpForm);
       await this.$router.push('/login');
     } catch (error) {
-      this.errorMessage = error.response.data.message;
+      this.errorMessages.splice(0);
+      this.errorMessages.push(...error.response.data.messageList);
     }
   }
 

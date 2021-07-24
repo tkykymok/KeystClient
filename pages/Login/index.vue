@@ -27,7 +27,11 @@
             >
           </div>
           <div class='h-8'>
-            <span class='px-2 text-red-600'>{{ errorMessage }}</span>
+            <ul>
+              <li class='px-2 text-red-600' v-for='(message, idx) of errorMessages' :key='idx'>
+                {{ message }}
+              </li>
+            </ul>
           </div>
           <div class='flex items-center justify-between'>
             <button
@@ -62,7 +66,7 @@ import { AuthenticationModule } from '~/utils/store-accessor';
 export default class extends Vue {
   private loginId: string = '';
   private loginPw: string = '';
-  private errorMessage: string = '';
+  public errorMessages: string[] = [];
 
   get compositeKye() {
     return this.loginId + this.loginPw;
@@ -70,7 +74,7 @@ export default class extends Vue {
 
   @Watch('compositeKye', { immediate: false, deep: true })
   watchCompositeKye() {
-    this.errorMessage = '';
+    this.errorMessages.splice(0);
   }
 
   async login() {
@@ -81,7 +85,7 @@ export default class extends Vue {
       await AuthenticationModule.login(loginForm);
       await this.$router.push('/keyst10200');
     } catch (error) {
-      this.errorMessage = error.response.data.message;
+      this.errorMessages = error.response.data.messageList;
     }
   }
 
