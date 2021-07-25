@@ -4,7 +4,10 @@
       メンバー一覧
     </div>
     <keyst10401 />
-    <Keyst10402 />
+    <Keyst10402 
+      :memberInfoList="memberInfoList"
+      :prjInfoList="prjInfoList"
+    />
   </div>
 </template>
 
@@ -12,6 +15,9 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import Keyst10401 from '~/components/Keyst10400/Keyst10401.vue';
 import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
+import { Keyst10400Module } from '~/utils/store-accessor';
+import MemberInfoList from '~/classes/memberInfoList';
+import PrjInfoList from '~/classes/prjInfoList';
 
 @Component({
   name: 'Keyst10400',
@@ -19,9 +25,21 @@ import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
     Keyst10401,
     Keyst10402,
   },
+  async asyncData() {
+    await Keyst10400Module.initialize();
+  }
 })
 export default class extends Vue {
 
+  // メンバー情報一覧
+  get memberInfoList(): MemberInfoList[] {
+    return Keyst10400Module.memberInfoList;
+  }
+
+  // 案件情報一覧
+  get prjInfoList(): PrjInfoList[] {
+    return Keyst10400Module.prjInfoList;
+  }
 }
 </script>
 
