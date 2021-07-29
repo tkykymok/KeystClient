@@ -16,7 +16,7 @@ import SelectOptionBase, { selectOption } from '~/components/SelectOptions/Selec
 
 @Component({})
 export default class Db extends SelectOptionBase {
-  /** 入力パラメータ 使用言語リスト */
+  /** 入力パラメータ DB */
   @PropSync('db', { required: false, default: null })
   _db!: string;
 
