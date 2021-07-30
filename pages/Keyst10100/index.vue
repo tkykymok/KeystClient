@@ -4,100 +4,174 @@
     <table class="w-9/12 mx-auto text-left min-w-full text-xs">
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
-        <td class="p-2 border-2 border-gray"><span id="name1">江田桃子</span><input type="text" id="" class="hidden bg-yellow-200" /></td>
-        <td class="p-2"><button @click="edit()">aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="name">江田桃子</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="nameBtn">aa</button></td>
         <th class="p-2 bg-green-300 border-2 border-gray">郵便番号</th>
-        <td colspan="2" class="p-2 border-2 border-gray">332-0012</td>
-        <td class="p-2"><button>aa</button></td>
+        <td colspan="2" class="p-2 border-2 border-gray">
+          <span v-if="postalCode">332-0012</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="postalCodeBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名(カナ)</th>
-        <td class="p-2 border-2 border-gray">エダモモコ</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="nameKana">エダモモコ</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="nameKanaBtn">aa</button></td>
         <th class="p-2 bg-green-300 border-2 border-gray">住所</th>
-        <td colspan="2" class="p-2 border-2 border-gray">埼玉県川口市１１１ー１１１</td>
-        <td class="p-2"><button>aa</button></td>
+        <td colspan="2" class="p-2 border-2 border-gray">
+          <span v-if="address">埼玉県川口市１１１ー１１１</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="addressBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">メールアドレス</th>
-        <td class="p-2 border-2 border-gray">m.eda@c4c.co.jp</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="mail">m.eda@c4c.co.jp</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="mailBtn">aa</button></td>
         <th class="p-2 bg-green-300 border-2 border-gray">電話番号</th>
-        <td colspan="2" class="p-2 border-2 border-gray">09012345678</td>
-        <td class="p-2"><button>aa</button></td>
+        <td colspan="2" class="p-2 border-2 border-gray">
+          <span v-if="phoneNumber">09012345678</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="phoneNumberBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">ログインID</th>
-        <td class="p-2 border-2 border-gray">momokoeda</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="loginId">momokoeda</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="loginIdBtn">aa</button></td>
         <th rowspan="6" class="p-2 bg-green-300 border-2 border-gray">銀行口座</th>
         <td class="p-2 border-2 border-gray">銀行名</td>
-        <td class="p-2 border-2 border-gray">◯◯銀行</td>
-        <td class="p-2 "><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="bankName">埼玉銀行</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="bankNameBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">ログインパスワード</th>
-        <td class="p-2 border-2 border-gray">***********</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="loginPw">**************</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="loginPwBtn">aa</button></td>
         <td class="p-2 border-2 border-gray">支店名</td>
-        <td class="p-2 border-2 border-gray">◯◯支店</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="branchName">川口支店</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="branchNameBtn">aa</button></td>
       </tr>
       <tr class="">
         <th rowspan="3" class="p-2 bg-green-300 border-2 border-gray">プロフィール画像</th>
-        <td rowspan="3" class="p-2 border-2 border-gray">画像いれる</td>
-        <td rowspan="3" class="p-2"><button>aa</button></td>
+        <td rowspan="3" class="p-2 border-2 border-gray">
+          <img v-if="prfImgStrgDrctry" src="*" />
+          <input type="file" v-else value="" />
+        </td>
+        <td rowspan="3" class="p-2"><button @click="prfImgStrgDrctryBtn">aa</button></td>
         <td class="p-2 border-2 border-gray">支店番号</td>
-        <td class="p-2 border-2 border-gray">XXX</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="branchId">999</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="branchIdBtn">aa</button></td>
       </tr>
       <tr class="">
         <td class="p-2 border-2 border-gray">口座種別</td>
-        <td class="p-2 border-2 border-gray">普通預金</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="accountType">普通預金</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="accountTypeBtn">aa</button></td>
       </tr>
       <tr class="">
         <td class="p-2 border-2 border-gray">口座番号</td>
-        <td class="p-2 border-2 border-gray">XXXXXXX</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="accountNumber">12345678</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="accountNumberBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">性別</th>
-        <td class="p-2 border-2 border-gray"><input type="radio" id="men" value="1"><label for="men">男</label><input type="radio" id="women" value="2"><label for="women">女</label></td>
+        <td class="p-2 border-2 border-gray">
+          <input type="radio" id="men" value="1"><label for="men">男</label>
+          <input type="radio" id="women" value="2"><label for="women">女</label>
+        </td>
         <td class="p-2"></td>
         <td class="p-2 border-2 border-gray">名義人(カナ)</td>
-        <td class="p-2 border-2 border-gray">エダモモコ</td>
-        <td class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="accountName">エダモモコ</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td class="p-2"><button @click="accountNameBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">生年月日</th>
-        <td class="p-2 border-2 border-gray">1995/10/20</td>
-        <td colspan="5" class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="birthday">1995/10/20</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td colspan="5" class="p-2"><button @click="birthdayBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">国籍</th>
-        <td class="p-2 border-2 border-gray">日本</td>
-        <td colspan="5" class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="nationality">日本</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td colspan="5" class="p-2"><button @click="nationalityBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">配偶者</th>
-        <td class="p-2 border-2 border-gray"><input type="radio" id="partnerOn" value="1"><label for="partnerOn">あり</label><input type="radio" id="partnerOff" value="2"><label for="partnerOff">なし</label></td>
+        <td class="p-2 border-2 border-gray">
+          <input type="radio" id="partnerOn" value="1"><label for="partnerOn">あり</label>
+          <input type="radio" id="partnerOff" value="2"><label for="partnerOff">なし</label>
+        </td>
         <td colspan="5" class="p-2"></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">最寄り駅</th>
-        <td class="p-2 border-2 border-gray">川口</td>
-        <td colspan="5" class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="nearestStation">川口</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td colspan="5" class="p-2"><button @click="nearestStationBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">最終学歴年月日</th>
-        <td class="p-2 border-2 border-gray">2019年3月</td>
-        <td colspan="5" class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="finalEducationDate">2019年3月</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td colspan="5" class="p-2"><button @click="finalEducationDateBtn">aa</button></td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">最終学歴</th>
-        <td class="p-2 border-2 border-gray">津田塾大学◎◎学部</td>
-        <td colspan="5" class="p-2"><button>aa</button></td>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="finalEducationContent">津田塾大学◯◯学部</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td colspan="5" class="p-2"><button @click="finalEducationContentBtn">aa</button></td>
+      </tr>
+      <tr class="">
+        <th class="p-2 bg-green-300 border-2 border-gray">保有スキル</th>
+        <td class="p-2 border-2 border-gray">
+          <span v-if="skills">Java</span>
+          <input type="text" v-else class="bg-yellow-200" value="" />
+        </td>
+        <td colspan="5" class="p-2"><button @click="skillsBtn">aa</button></td>
       </tr>
     </table>
     <input type="button" class="block p-2 w-40 m-5 mx-auto rounded bg-blue-200" value="登録" />
@@ -114,7 +188,91 @@ import { Component, Vue } from 'nuxt-property-decorator';
 })
 export default class extends Vue {
 
-  public count: number = 0
+  name = true;
+  postalCode = true;
+  nameKana = true;
+  address = true;
+  mail = true;
+  phoneNumber = true;
+  loginId = true;
+  bankName = true;
+  loginPw = true;
+  branchName = true;
+  prfImgStrgDrctry =true;
+  branchId = true;
+  accountType = true;
+  accountNumber = true;
+  accountName = true;
+  birthday = true;
+  nationality = true;
+  nearestStation = true;
+  finalEducationDate = true;
+  finalEducationContent = true;
+  skills = true;
+
+  nameBtn() {
+    this.name = !this.name
+  }
+  postalCodeBtn() {
+    this.postalCode = !this.postalCode
+  }
+  nameKanaBtn () {
+    this.nameKana = !this.nameKana
+  }
+  addressBtn() {
+    this.address = !this.address
+  }
+  mailBtn() {
+    this.mail = !this.mail
+  }
+  phoneNumberBtn() {
+    this.phoneNumber = !this.phoneNumber
+  }
+  loginIdBtn() {
+    this.loginId = !this.loginId
+  }
+  bankNameBtn() {
+    this.bankName = !this.bankName
+  }
+  loginPwBtn() {
+    this.loginPw = !this.loginPw
+  }
+  branchNameBtn() {
+    this.branchName = !this.branchName
+  }
+  prfImgStrgDrctryBtn() {
+    this.prfImgStrgDrctry = !this.prfImgStrgDrctry
+  }
+  branchIdBtn() {
+    this.branchId = !this.branchId
+  }
+  accountTypeBtn() {
+    this.accountType = !this.accountType
+  }
+  accountNumberBtn() {
+    this.accountNumber = !this.accountNumber
+  }
+  accountNameBtn() {
+    this.accountName = !this.accountName
+  }
+  birthdayBtn() {
+    this.birthday = !this.birthday
+  }
+  nationalityBtn() {
+    this.nationality = !this.nationality
+  }
+  nearestStationBtn() {
+    this.nearestStation = !this.nearestStation
+  }
+  finalEducationDateBtn() {
+    this.finalEducationDate = !this.finalEducationDate
+  }
+  finalEducationContentBtn() {
+    this.finalEducationContent = !this.finalEducationContent
+  }
+  skillsBtn() {
+    this.skills = !this.skills
+  }
 
 }
 </script>
