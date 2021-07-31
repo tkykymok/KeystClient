@@ -5,7 +5,7 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="name">江田桃子</span>
+          <span v-if="name">{{ _MemberInfo.userName }}</span>
           <input type="text" v-else class="bg-yellow-200" value="" />
         </td>
         <td class="p-2"><button @click="nameBtn">aa</button></td>
@@ -136,8 +136,8 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">配偶者</th>
         <td class="p-2 border-2 border-gray">
-          <input type="radio" id="partnerOn" value="1"><label for="partnerOn">あり</label>
-          <input type="radio" id="partnerOff" value="2"><label for="partnerOff">なし</label>
+          <input type="radio" id="partnerOn" value="true"><label for="partnerOn">あり</label>
+          <input type="radio" id="partnerOff" value="false"><label for="partnerOff">なし</label>
         </td>
         <td colspan="5" class="p-2"></td>
       </tr>
@@ -179,14 +179,35 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue } from 'nuxt-property-decorator';
+import { Keyst10100Module } from '~/utils/store-accessor';
+import MemberInfo from '~/classes/memberInfo';
 
 @Component({
   name: 'Keyst10100',
   components: {
+  },
+  async asyncData({redirect, store}) {
+    try {
+      await Keyst10100Module.initialize();
+    } catch (error) {
+      redirect('/login')
+    }
   }
+
 })
 export default class extends Vue {
+  
+  /**
+   * メンバー情報
+   */
+  get MemberInfo(): MemberInfo {
+    return JSON.parse(JSON.stringify(Keyst10100Module.MemberInfo));
+  }
+
+  /** 入力パラメータ メンバー情報 */
+  @PropSync('memberInfo',{ required: true, default: null })
+  _MemberInfo!: MemberInfo;
 
   name = true;
   postalCode = true;
