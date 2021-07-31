@@ -31,8 +31,10 @@
           </button>
           <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
         </th>
-        <th class="w-1/6 font-normal">チームA</th>
-        <th class="w-1/6 font-normal">Java, AWS</th>
+        <th class="w-1/6 font-normal">{{ userInfo.team }}</th>
+        <th class="w-1/6 font-normal">
+          <span v-for='skill in userInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span>
+        </th>
         <th class="w-1/6 font-normal">
           <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="show=true">案件</button>
           <a href="/keyst10200" class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2">スキルシート</a>

@@ -54,7 +54,11 @@ export default class Keyst10400 extends VuexModule implements IKeyst10400 {
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10400/initialize');
-    this.SET_USER_BASIC_INFO_LIST(data.userBasicInfo);
-    this.SET_PRJ_INFO_LIST(data.prjInfo);
+    let dataList: any[] = data;
+    dataList.forEach(obj => {
+      this.SET_USER_BASIC_INFO_LIST(obj.userBasicInfo);
+      this.SET_PRJ_INFO_LIST(obj.prjInfo);
+      console.log(obj);
+    });
   }
 }
