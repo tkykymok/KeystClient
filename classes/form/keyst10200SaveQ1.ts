@@ -1,4 +1,4 @@
-export default class SkillSheetDetail {
+export default class Keyst10200SaveQ1 {
   refNo: number | null = null;
   prjCode: string = '';
   prjStartDate: string = '';

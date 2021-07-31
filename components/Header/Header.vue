@@ -7,15 +7,15 @@
       class='w-full mx-auto items-center flex justify-between md:flex-nowrap flex-wrap md:px-10 px-4'
     >
       <!-- Brand -->
-      <a
-        class='text-gray-800 text-sm uppercase hidden lg:inline-block font-semibold'
-        href='javascript:void(0)'
+      <div
+        class='text-gray-800 text-lg hidden lg:inline-block font-bold'
       >
         {{ functionName }}
-      </a>
+      </div>
 
       <!-- User -->
       <ul class='flex-col md:flex-row list-none items-center hidden md:flex'>
+        <li class='mr-2 mt-2 text-gray-800'>{{ userName }}</li>
         <UserDropdown />
       </ul>
     </div>
@@ -24,8 +24,10 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator';
 import UserDropdown from '~/components/Dropdowns/UserDropdown.vue';
+import { FunctionNames } from '~/constant/functionNames';
+import { AuthenticationModule } from '~/utils/store-accessor';
 
 @Component({
   components: {
@@ -33,7 +35,19 @@ import UserDropdown from '~/components/Dropdowns/UserDropdown.vue';
   }
 })
 export default class Header extends Vue {
-  @Prop({ required: false, default: '' })
-  functionName!: string;
+  private functionName?: string = '';
+
+  get userName() {
+    return AuthenticationModule.loginUserInfo.userName;
+  }
+
+  get currentPath() {
+    return typeof this.$route.name === 'string' ? this.$route.name : '';
+  }
+
+  @Watch('currentPath', { immediate: true, deep: true })
+  watchCurrentPath() {
+    this.functionName = Object.values(FunctionNames).find(obj => obj.id === this.currentPath.toUpperCase())?.name;
+  }
 }
 </script>

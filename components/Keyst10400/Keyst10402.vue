@@ -4,8 +4,8 @@
       <tr class="flex justify-between border-t-2 border-b-2">
         <th class="w-1/6">
           名前
-          <button>▲</button>
-          <button>▼</button>
+          <button @click="buttonU" v-if="showButtonU">▲</button>
+          <button @click="buttonD" v-if="showButtonD">▼</button>
         </th>
         <th class="w-1/6">
           チーム
@@ -18,28 +18,24 @@
           <button>▼</button>
         </th>
         <th class="w-1/6">
-          勉強時間
-          <button>▲</button>
-          <button>▼</button>
-        </th>
-        <th class="w-1/6">
           案件
           <button>▲</button>
           <button>▼</button>
         </th>
       </tr>
-      <tr class="p-2 flex justify-between items-center border-b-2">
+      <tr v-for='userInfo in _userBasicInfoList' :key='userInfo.userId'
+      class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImage=true">
             <img src="/_nuxt/assets/img/user.png" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
-          <p class="ml-4 font-normal">関根健太</p>
+          <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
         </th>
         <th class="w-1/6 font-normal">チームA</th>
         <th class="w-1/6 font-normal">Java, AWS</th>
-        <th class="w-1/6 font-normal">5時間</th>
         <th class="w-1/6 font-normal">
-          <button class=" bg-gray-300 border border-gray-300 rounded-md px-4 py-2" @click="show=true">案件</button>
+          <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="show=true">案件</button>
+          <a href="/keyst10200" class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2">スキルシート</a>
         </th>
       </tr>
     </table>
@@ -49,9 +45,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
+import UserBasicInfo from '~/classes/userBasicInfo';
+import PrjInfo from '~/classes/prjInfo';
 
 @Component({
   name: 'Keyst10402',
@@ -60,12 +58,25 @@ import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
     Keyst10404,
   },
 })
-export default class extends Vue {
-  data() {
-    return {
-      show: false,
-      showImage: false,
-    }
+export default class Keyst10402 extends Vue {
+  @PropSync('userBasicInfoList', { required: true, default: () => ([]) })
+  _userBasicInfoList!: UserBasicInfo[];
+
+  @PropSync('prjInfoList', { required: true, default: () => ([]) })
+  _prjInfoList!: PrjInfo[];
+
+  public show = false;
+  public showImage = false;
+  public showButtonU = false;
+  public showButtonD = true;
+
+  buttonU() {
+    this.showButtonU = false;
+    this.showButtonD = true;
+  }
+  buttonD() {
+    this.showButtonU = true;
+    this.showButtonD = false;
   }
 }
 </script>

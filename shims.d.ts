@@ -5,4 +5,7 @@ declare module '*.vue' {
 
 declare module 'vuejs-datepicker'
 declare module 'vuejs-datepicker/dist/locale'
+declare module 'vue-ctk-date-time-picker'
+declare module 'js-cookie'
+declare module 'lodash'
 
