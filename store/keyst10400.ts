@@ -5,12 +5,12 @@ import {
   Mutation
 } from 'vuex-module-decorators';
 import { $axios } from '~/utils/api';
-import MemberInfoList from '~/classes/memberInfoList';
-import PrjInfoList from '~/classes/prjInfoList';
+import UserBasicInfo from '~/classes/userBasicInfo';
+import PrjInfo from '~/classes/prjInfo';
 
 export interface IKeyst10400 {
-  memberInfoList: MemberInfoList[];
-  prjInfoList: PrjInfoList[];
+  userBasicInfoList: UserBasicInfo[];
+  prjInfoList: PrjInfo[];
 }
 
 @Module({
@@ -22,40 +22,39 @@ export interface IKeyst10400 {
 })
 export default class Keyst10400 extends VuexModule implements IKeyst10400 {
   // Stateを作成
-  // メンバー情報一覧
-  private _memberInfoList: MemberInfoList[] = [];
+  // ユーザー情報一覧
+  private _userBasicInfoList: UserBasicInfo[] = [];
   // 案件情報一覧
-  private _prjInfoList: PrjInfoList[] = [];
+  private _prjInfoList: PrjInfo[] = [];
 
   // 上記のStateにアクセスするgetterを作成
-  get memberInfoList(): MemberInfoList[] {
-    return this._memberInfoList;
+  get userBasicInfoList(): UserBasicInfo[] {
+    return this._userBasicInfoList;
   }
 
-  get prjInfoList(): PrjInfoList[] {
+  get prjInfoList(): PrjInfo[] {
     return this._prjInfoList;
   }
 
   @Mutation
-  SET_MEMBER_INFO_LIST(value: MemberInfoList[]) {
+  SET_USER_BASIC_INFO_LIST(value: UserBasicInfo) {
     // メンバー情報一覧を初期化する
-    this._memberInfoList.splice(0);
+    this._userBasicInfoList.splice(0);
     // サーバーから取得したメンバー情報一覧全件を追加する
-    this._memberInfoList.push(...value);
+    this._userBasicInfoList.push(value);
   }
 
   @Mutation
-  SET_PRJ_INFO_LIST(value: PrjInfoList[]) {
+  SET_PRJ_INFO_LIST(value: PrjInfo) {
     // サーバーから取得した案件情報一覧全件を追加する。
-    this._prjInfoList.push(...value);
+    this._prjInfoList.push(value);
   }
 
   // actionメソッド内のerrorをthrowしたい場合は「rawError: true」を記述する
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10400/initialize');
-    await this.SET_MEMBER_INFO_LIST(data.memberInfoList);
-    await this.SET_PRJ_INFO_LIST(data.prjInfoList);
+    this.SET_USER_BASIC_INFO_LIST(data.userBasicInfo);
+    this.SET_PRJ_INFO_LIST(data.prjInfo);
   }
 }
-

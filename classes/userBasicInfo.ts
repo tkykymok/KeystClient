@@ -1,6 +1,6 @@
 import Skill from "./skill";
 
-export default class MemberInfoList {
+export default class UserBasicInfo {
   userId: number | null = null;
   userName: string = '';
   team: string = '';

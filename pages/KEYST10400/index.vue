@@ -5,8 +5,8 @@
     </div>
     <keyst10401 />
     <Keyst10402 
-      :memberInfoList="memberInfoList"
-      :prjInfoList="prjInfoList"
+      :userBasicInfoList.sync='userBasicInfoList'
+      :prjInfoList.sync='prjInfoList'
     />
   </div>
 </template>
@@ -16,8 +16,8 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import Keyst10401 from '~/components/Keyst10400/Keyst10401.vue';
 import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
 import { Keyst10400Module } from '~/utils/store-accessor';
-import MemberInfoList from '~/classes/memberInfoList';
-import PrjInfoList from '~/classes/prjInfoList';
+import UserBasicInfo from '~/classes/userBasicInfo';
+import PrjInfoList from '~/classes/prjInfo';
 
 @Component({
   name: 'Keyst10400',
@@ -32,8 +32,8 @@ import PrjInfoList from '~/classes/prjInfoList';
 export default class extends Vue {
 
   // メンバー情報一覧
-  get memberInfoList(): MemberInfoList[] {
-    return Keyst10400Module.memberInfoList;
+  get userBasicInfoList(): UserBasicInfo[] {
+    return Keyst10400Module.userBasicInfoList;
   }
 
   // 案件情報一覧
