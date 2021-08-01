@@ -5,73 +5,93 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="name">{{ memberInfo.userName }}</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.userName.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.userName }}</span>
         </td>
-        <td class="p-2"><button @click="nameBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.userName)">aa</button>
+        </td>
         <th class="p-2 bg-green-300 border-2 border-gray">郵便番号</th>
         <td colspan="2" class="p-2 border-2 border-gray">
-          <span v-if="postalCode">332-0012</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.postalCode.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.postalCode }}</span>
         </td>
-        <td class="p-2"><button @click="postalCodeBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.postalCode)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名(カナ)</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="nameKana">エダモモコ</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.userNameKana.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.userNameKana }}</span>
         </td>
-        <td class="p-2"><button @click="nameKanaBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.userNameKana)">aa</button>
+        </td>
         <th class="p-2 bg-green-300 border-2 border-gray">住所</th>
         <td colspan="2" class="p-2 border-2 border-gray">
-          <span v-if="address">埼玉県川口市１１１ー１１１</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.address.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.address }}</span>
         </td>
-        <td class="p-2"><button @click="addressBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.address)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">メールアドレス</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="mail">m.eda@c4c.co.jp</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.email.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.email }}</span>
         </td>
-        <td class="p-2"><button @click="mailBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.email)">aa</button>
+        </td>
         <th class="p-2 bg-green-300 border-2 border-gray">電話番号</th>
         <td colspan="2" class="p-2 border-2 border-gray">
-          <span v-if="phoneNumber">09012345678</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.phoneNumber.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.phoneNumber }}</span>
         </td>
-        <td class="p-2"><button @click="phoneNumberBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.phoneNumber)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">ログインID</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="loginId">momokoeda</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.loginId.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.loginId }}</span>
         </td>
-        <td class="p-2"><button @click="loginIdBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.loginId)">aa</button>
+        </td>
         <th rowspan="6" class="p-2 bg-green-300 border-2 border-gray">銀行口座</th>
         <td class="p-2 border-2 border-gray">銀行名</td>
         <td class="p-2 border-2 border-gray">
-          <span v-if="bankName">埼玉銀行</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.bankName.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.bankName }}</span>
         </td>
-        <td class="p-2"><button @click="bankNameBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.bankName)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">ログインパスワード</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="loginPw">**************</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.loginPw }}</span>
         </td>
-        <td class="p-2"><button @click="loginPwBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.loginPw)">aa</button>
+        </td>
         <td class="p-2 border-2 border-gray">支店名</td>
         <td class="p-2 border-2 border-gray">
-          <span v-if="branchName">川口支店</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.branchName.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.branchName }}</span>
         </td>
-        <td class="p-2"><button @click="branchNameBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.branchName)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th rowspan="3" class="p-2 bg-green-300 border-2 border-gray">プロフィール画像</th>
@@ -79,29 +99,37 @@
           <img v-if="prfImgStrgDrctry" src="*" />
           <input type="file" v-else value="" />
         </td>
-        <td rowspan="3" class="p-2"><button @click="prfImgStrgDrctryBtn">aa</button></td>
+        <td rowspan="3" class="p-2">
+          <button @click="prfImgStrgDrctryBtn">aa</button>
+        </td>
         <td class="p-2 border-2 border-gray">支店番号</td>
         <td class="p-2 border-2 border-gray">
-          <span v-if="branchId">999</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.branchId.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.branchId }}</span>
         </td>
-        <td class="p-2"><button @click="branchIdBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.branchId)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <td class="p-2 border-2 border-gray">口座種別</td>
         <td class="p-2 border-2 border-gray">
-          <span v-if="accountType">普通預金</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.accountType.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.accountType }}</span>
         </td>
-        <td class="p-2"><button @click="accountTypeBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.accountType)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <td class="p-2 border-2 border-gray">口座番号</td>
         <td class="p-2 border-2 border-gray">
-          <span v-if="accountNumber">12345678</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.accountNumber.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.accountNumber }}</span>
         </td>
-        <td class="p-2"><button @click="accountNumberBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.accountNumber)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">性別</th>
@@ -112,26 +140,32 @@
         <td class="p-2"></td>
         <td class="p-2 border-2 border-gray">名義人(カナ)</td>
         <td class="p-2 border-2 border-gray">
-          <span v-if="accountName">エダモモコ</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.accountName.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.accountName }}</span>
         </td>
-        <td class="p-2"><button @click="accountNameBtn">aa</button></td>
+        <td class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.accountName)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">生年月日</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="birthday">1995/10/20</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.birthday.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.birthday }}</span>
         </td>
-        <td colspan="5" class="p-2"><button @click="birthdayBtn">aa</button></td>
+        <td colspan="5" class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.birthday)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">国籍</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="nationality">日本</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.nationality.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.nationality }}</span>
         </td>
-        <td colspan="5" class="p-2"><button @click="nationalityBtn">aa</button></td>
+        <td colspan="5" class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.nationality)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">配偶者</th>
@@ -144,34 +178,42 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">最寄り駅</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="nearestStation">川口</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.nearestStation.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.nearestStation }}</span>
         </td>
-        <td colspan="5" class="p-2"><button @click="nearestStationBtn">aa</button></td>
+        <td colspan="5" class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.nearestStation)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">最終学歴年月日</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="finalEducationDate">2019年3月</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.finalEducationDate.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.finalEducationDate }}</span>
         </td>
-        <td colspan="5" class="p-2"><button @click="finalEducationDateBtn">aa</button></td>
+        <td colspan="5" class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.finalEducationDate)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">最終学歴</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="finalEducationContent">津田塾大学◯◯学部</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.finalEducationContent.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.finalEducationContent }}</span>
         </td>
-        <td colspan="5" class="p-2"><button @click="finalEducationContentBtn">aa</button></td>
+        <td colspan="5" class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.finalEducationContent)">aa</button>
+        </td>
       </tr>
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">保有スキル</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="skills">Java</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.skills.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.skills }}</span>
         </td>
-        <td colspan="5" class="p-2"><button @click="skillsBtn">aa</button></td>
+        <td colspan="5" class="p-2">
+          <button @click="switchEditableFlag(inputAreaControl.skills)">aa</button>
+        </td>
       </tr>
     </table>
     <input type="button" class="block p-2 w-40 m-5 mx-auto rounded bg-blue-200" value="登録" />
@@ -179,7 +221,7 @@
 </template>
 
 <script lang='ts'>
-import { Component, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator';
 import { Keyst10100Module } from '~/utils/store-accessor';
 import MemberInfo from '~/classes/memberInfo';
 
@@ -205,90 +247,36 @@ export default class extends Vue {
     return JSON.parse(JSON.stringify(Keyst10100Module.MemberInfo));
   }
 
-  name = true;
-  postalCode = true;
-  nameKana = true;
-  address = true;
-  mail = true;
-  phoneNumber = true;
-  loginId = true;
-  bankName = true;
-  loginPw = true;
-  branchName = true;
-  prfImgStrgDrctry =true;
-  branchId = true;
-  accountType = true;
-  accountNumber = true;
-  accountName = true;
-  birthday = true;
-  nationality = true;
-  nearestStation = true;
-  finalEducationDate = true;
-  finalEducationContent = true;
-  skills = true;
+    /**
+   * 編集可否フラグを切り替える
+   * @param obj
+   */
+  switchEditableFlag(obj: any) {
+    this.$set(obj, 'editableFlag', !obj.editableFlag);
+  }
 
-  nameBtn() {
-    this.name = !this.name
-  }
-  postalCodeBtn() {
-    this.postalCode = !this.postalCode
-  }
-  nameKanaBtn () {
-    this.nameKana = !this.nameKana
-  }
-  addressBtn() {
-    this.address = !this.address
-  }
-  mailBtn() {
-    this.mail = !this.mail
-  }
-  phoneNumberBtn() {
-    this.phoneNumber = !this.phoneNumber
-  }
-  loginIdBtn() {
-    this.loginId = !this.loginId
-  }
-  bankNameBtn() {
-    this.bankName = !this.bankName
-  }
-  loginPwBtn() {
-    this.loginPw = !this.loginPw
-  }
-  branchNameBtn() {
-    this.branchName = !this.branchName
-  }
-  prfImgStrgDrctryBtn() {
-    this.prfImgStrgDrctry = !this.prfImgStrgDrctry
-  }
-  branchIdBtn() {
-    this.branchId = !this.branchId
-  }
-  accountTypeBtn() {
-    this.accountType = !this.accountType
-  }
-  accountNumberBtn() {
-    this.accountNumber = !this.accountNumber
-  }
-  accountNameBtn() {
-    this.accountName = !this.accountName
-  }
-  birthdayBtn() {
-    this.birthday = !this.birthday
-  }
-  nationalityBtn() {
-    this.nationality = !this.nationality
-  }
-  nearestStationBtn() {
-    this.nearestStation = !this.nearestStation
-  }
-  finalEducationDateBtn() {
-    this.finalEducationDate = !this.finalEducationDate
-  }
-  finalEducationContentBtn() {
-    this.finalEducationContent = !this.finalEducationContent
-  }
-  skillsBtn() {
-    this.skills = !this.skills
+  public inputAreaControl = {
+    userName:{editableFlag:false},
+    postalCode:{editableFlag:false},
+    userNameKana:{editableFlag:false},
+    address:{editableFlag:true},
+    email:{editableFlag:true},
+    phoneNumber:{editableFlag:true},
+    loginId:{editableFlag:true},
+    bankName:{editableFlag:true},
+    loginPw:{editableFlag:true},
+    branchName:{editableFlag:true},
+    prfImgStrgDrctr:{editableFlag:true},
+    branchId:{editableFlag:true},
+    accountType:{editableFlag:true},
+    accountNumber:{editableFlag:true},
+    accountName:{editableFlag:true},
+    birthday:{editableFlag:true},
+    nationality:{editableFlag:true},
+    nearestStation:{editableFlag:true},
+    finalEducationDate:{editableFlag:true},
+    finalEducationContent:{editableFlag:true},
+    skills:{editableFlag:true},
   }
 
 }
