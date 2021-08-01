@@ -5,7 +5,7 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="name">{{ _MemberInfo.userName }}</span>
+          <span v-if="name">{{ memberInfo.userName }}</span>
           <input type="text" v-else class="bg-yellow-200" value="" />
         </td>
         <td class="p-2"><button @click="nameBtn">aa</button></td>
@@ -201,13 +201,9 @@ export default class extends Vue {
   /**
    * メンバー情報
    */
-  get MemberInfo(): MemberInfo {
+  get memberInfo(): MemberInfo {
     return JSON.parse(JSON.stringify(Keyst10100Module.MemberInfo));
   }
-
-  /** 入力パラメータ メンバー情報 */
-  @PropSync('memberInfo',{ required: true, default: null })
-  _MemberInfo!: MemberInfo;
 
   name = true;
   postalCode = true;
