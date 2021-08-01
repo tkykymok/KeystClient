@@ -5,10 +5,10 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
         <td class="p-2 border-2 border-gray">
-          <span v-if="name">{{ _MemberInfo.userName }}</span>
-          <input type="text" v-else class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.userName.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.userName }}</span>
         </td>
-        <td class="p-2"><button @click="nameBtn">aa</button></td>
+        <td class="p-2"><button @click="switchEditableFlag(inputAreaControl.userName)">aa</button></td>
         <th class="p-2 bg-green-300 border-2 border-gray">郵便番号</th>
         <td colspan="2" class="p-2 border-2 border-gray">
           <span v-if="postalCode">332-0012</span>
@@ -197,102 +197,43 @@ import MemberInfo from '~/classes/memberInfo';
 
 })
 export default class extends Vue {
-  
   /**
    * メンバー情報
    */
-  get MemberInfo(): MemberInfo {
+  get memberInfo(): MemberInfo {
     return JSON.parse(JSON.stringify(Keyst10100Module.MemberInfo));
   }
 
-  /** 入力パラメータ メンバー情報 */
-  @PropSync('memberInfo',{ required: true, default: null })
-  _MemberInfo!: MemberInfo;
+  /**
+   * 編集可否フラグを切り替える
+   * @param obj
+   */
+  switchEditableFlag(obj: any) {
+    this.$set(obj, 'editableFlag', !obj.editableFlag);
+  }
 
-  name = true;
-  postalCode = true;
-  nameKana = true;
-  address = true;
-  mail = true;
-  phoneNumber = true;
-  loginId = true;
-  bankName = true;
-  loginPw = true;
-  branchName = true;
-  prfImgStrgDrctry =true;
-  branchId = true;
-  accountType = true;
-  accountNumber = true;
-  accountName = true;
-  birthday = true;
-  nationality = true;
-  nearestStation = true;
-  finalEducationDate = true;
-  finalEducationContent = true;
-  skills = true;
-
-  nameBtn() {
-    this.name = !this.name
-  }
-  postalCodeBtn() {
-    this.postalCode = !this.postalCode
-  }
-  nameKanaBtn () {
-    this.nameKana = !this.nameKana
-  }
-  addressBtn() {
-    this.address = !this.address
-  }
-  mailBtn() {
-    this.mail = !this.mail
-  }
-  phoneNumberBtn() {
-    this.phoneNumber = !this.phoneNumber
-  }
-  loginIdBtn() {
-    this.loginId = !this.loginId
-  }
-  bankNameBtn() {
-    this.bankName = !this.bankName
-  }
-  loginPwBtn() {
-    this.loginPw = !this.loginPw
-  }
-  branchNameBtn() {
-    this.branchName = !this.branchName
-  }
-  prfImgStrgDrctryBtn() {
-    this.prfImgStrgDrctry = !this.prfImgStrgDrctry
-  }
-  branchIdBtn() {
-    this.branchId = !this.branchId
-  }
-  accountTypeBtn() {
-    this.accountType = !this.accountType
-  }
-  accountNumberBtn() {
-    this.accountNumber = !this.accountNumber
-  }
-  accountNameBtn() {
-    this.accountName = !this.accountName
-  }
-  birthdayBtn() {
-    this.birthday = !this.birthday
-  }
-  nationalityBtn() {
-    this.nationality = !this.nationality
-  }
-  nearestStationBtn() {
-    this.nearestStation = !this.nearestStation
-  }
-  finalEducationDateBtn() {
-    this.finalEducationDate = !this.finalEducationDate
-  }
-  finalEducationContentBtn() {
-    this.finalEducationContent = !this.finalEducationContent
-  }
-  skillsBtn() {
-    this.skills = !this.skills
+  public inputAreaControl = {
+    userName:{editableFlag:true},
+    postalCode:{editableFlag:true},
+    userNameKana:{editableFlag:true},
+    address:{editableFlag:true},
+    email:{editableFlag:true},
+    phoneNumber:{editableFlag:true},
+    loginId:{editableFlag:true},
+    bankName:{editableFlag:true},
+    loginPw:{editableFlag:true},
+    branchName:{editableFlag:true},
+    prfImgStrgDrctr:{editableFlag:true},
+    branchId:{editableFlag:true},
+    accountType:{editableFlag:true},
+    accountNumber:{editableFlag:true},
+    accountName:{editableFlag:true},
+    birthday:{editableFlag:true},
+    nationality:{editableFlag:true},
+    nearestStation:{editableFlag:true},
+    finalEducationDate:{editableFlag:true},
+    finalEducationContent:{editableFlag:true},
+    skills:{editableFlag:true},
   }
 
 }
