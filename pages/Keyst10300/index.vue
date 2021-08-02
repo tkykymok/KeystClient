@@ -14,9 +14,7 @@
     </select>
 
 
-    <keyst10301
-      :resrveHeader.sync='ResrveHeader'
-    />
+    <keyst10301 />
     <keyst10302 />
 
     <modal name='modal-content' class='bg-gary-300' :width='910' :height='230'>
@@ -32,7 +30,9 @@ import keyst10301 from '~/components/Keyst10300/Keyst10301.vue';
 import keyst10302 from '~/components/Keyst10300/Keyst10302.vue';
 import keyst10303 from '~/components/Keyst10300/Keyst10303.vue';
 import { Keyst10300Module } from '~/utils/store-accessor';
-import ResrveHeader from '~/classes/reserveHeader';
+import ReserveInfo from '~/classes/reserveInfo';
+import ReserveInfoHeader from '~/classes/reserveInfoHeader';
+import ReserveInfoDetail from '~/classes/reserveInfoDetail';
 
 
 @Component({
@@ -46,14 +46,38 @@ import ResrveHeader from '~/classes/reserveHeader';
     try {
       await Keyst10300Module.initialize();
     } catch (error) {
-      // redirect('/login')
+      redirect('/login')
     }
   }
 })
 export default class extends Vue {
-  get resrveHeaderList(): ResrveHeader[] {
-    return Keyst10300Module.resrveHeaderList;
+  /**
+   * スキルシート情報一覧
+   */
+  get skillSheetInfoList(): ReserveInfo[] {
+    return Keyst10300Module.reserveInfoList;
   }
+
+  /**
+   * スキルシートヘッダー
+   */
+  // get reserveInfoHeader(): ReserveInfoHeader {
+  //   return JSON.parse(JSON.stringify(Keyst10300Module.reserveInfoHeader));
+  // }
+
+  /**
+   * スキルシート明細一覧
+   */
+  // get reserveInfoDetailList(): ReserveInfoDetail[] {
+  //   let reserveInfoDetailList: ReserveInfoDetail[] = [];
+  //   Keyst10300Module.reserveInfoDetailList.forEach(obj => {
+  //       let reserveInfoDetail = JSON.parse(JSON.stringify(obj));
+  //       reserveInfoDetailList.push(reserveInfoDetail);
+  //     }
+  //   );
+  //   return reserveInfoDetailList;
+  // }
+
 
 }
 </script>

@@ -1,8 +1,10 @@
 // 管理者1on1予約日時選択
 <template>
   <div class='w-1/2'>
+
+    <div>{{ _reserveInfo }}</div>
+
     <p class='py-3 font-bold text-gray-600'>面談可能日時</p>
-    <p>テスト：{{ _reserveHeader.reserveId }}</p>
     <div class='w-1/3'>
       <VueCtkDateTimePicker
         v-model='sample1'
@@ -54,12 +56,12 @@
 
 <script lang='ts'>
 import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
-import ReserveHeader from '~/classes/reserveHeader';
+import ReserveInfo from '~/classes/reserveInfo';
 @Component({})
 export default class Keyst10301 extends Vue{
   /** 入力パラメータ スキルシートヘッダー一覧 */
-  @PropSync('reserveHeader',{ required: true, default: null })
-  _reserveHeader!: ReserveHeader;
+  @PropSync('reserveInfo',{ required: true, default: null })
+  _reserveInfo!: ReserveInfo;
 
   sample1: any = '';
   sample2: any = '';

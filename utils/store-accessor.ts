@@ -17,9 +17,7 @@ function initialiseStores(store: Store<any>): void {
   AuthenticationModule = getModule(Authentication, store);
   Keyst10400Module = getModule(Keyst10400, store);
   MessagesModule = getModule(Messages, store);
-}
-function initialiseStores10300(store: Store<any>): void {
   Keyst10300Module = getModule(Keyst10300, store);
 }
 
-export { initialiseStores, Keyst10200Module, Keyst10300Module, AuthenticationModule, Keyst10400Module, MessagesModule };
+export { initialiseStores, Keyst10200Module, AuthenticationModule, Keyst10300Module, Keyst10400Module };
