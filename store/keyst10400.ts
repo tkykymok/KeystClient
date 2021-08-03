@@ -32,11 +32,10 @@ export default class Keyst10400 extends VuexModule implements IKeyst10400 {
   SET_USER_INFO_LIST(value: UserInfo4Keyst10400[]) {
     // ユーザー情報一覧を初期化する
     this._userInfoList.splice(0);
-    value.forEach(obj => {
-      this._userInfoList.push(Object.assign(new UserInfo4Keyst10400(), obj));
-    });
     // サーバーから取得したユーザー情報一覧全件を追加する
-    // this._userInfoList.push(value);
+    value.forEach(obj => {
+      this._userInfoList.push(obj);
+    });
   }
 
   // actionメソッド内のerrorをthrowしたい場合は「rawError: true」を記述する
@@ -44,13 +43,6 @@ export default class Keyst10400 extends VuexModule implements IKeyst10400 {
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10400/initialize');
-    console.log("---Keyst10400_Store---");
-    console.log(data);
-    console.log("---Keyst10400_Store---");
-    this.SET_USER_INFO_LIST(data)
-    let dataList: any[] = data;
-    // dataList.forEach(obj => {
-    //   this.SET_USER_INFO_LIST(obj.userInfo);
-    // });
+    this.SET_USER_INFO_LIST(data);
   }
 }
