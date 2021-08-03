@@ -50,7 +50,7 @@
 import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
-import UserInfo4Kyest10400 from '~/classes/userInfo4Kyest10400';
+import userInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 
 @Component({
   name: 'Keyst10402',
@@ -61,7 +61,13 @@ import UserInfo4Kyest10400 from '~/classes/userInfo4Kyest10400';
 })
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
-  _userInfoList!: UserInfo4Kyest10400[];
+  _userInfoList!: userInfo4Keyst10400[];
+
+  mounted() {
+    console.log("---Keyst10402---");
+    console.log(this._userInfoList);
+    console.log("---Keyst10402---");
+  }
 
   public show = false;
   public showImage = false;

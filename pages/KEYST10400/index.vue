@@ -3,7 +3,7 @@
     <div class="border border-black rounded-md text-center p-2 w-1/5">
       ユーザー一覧
     </div>
-    <keyst10401 />
+    <Keyst10401 />
     <Keyst10402 
       :userInfoList.sync='userInfoList'
     />
@@ -15,7 +15,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import Keyst10401 from '~/components/Keyst10400/Keyst10401.vue';
 import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
 import { Keyst10400Module } from '~/utils/store-accessor';
-import UserInfo4Kyest10400 from '~/classes/userInfo4Kyest10400';
+import userInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 
 @Component({
   name: 'Keyst10400',
@@ -29,8 +29,14 @@ import UserInfo4Kyest10400 from '~/classes/userInfo4Kyest10400';
 })
 export default class extends Vue {
   // メンバー情報一覧
-  get userInfoList(): UserInfo4Kyest10400[] {
+  get userInfoList(): userInfo4Keyst10400[] {
     return Keyst10400Module.userInfoList;
+  }
+
+  mounted() {
+    console.log("---Keyst10400---");
+    console.log(Keyst10400Module.userInfoList);
+    console.log("---Keyst10400---");
   }
 }
 </script>
