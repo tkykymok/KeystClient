@@ -23,7 +23,7 @@
           <button>▼</button>
         </th>
       </tr>
-      <tr v-for='userInfo in _userBasicInfoList' :key='userInfo.userId'
+      <tr v-for='userInfo in _userInfoList' :key='userInfo.userId'
       class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImage=true">
@@ -50,8 +50,7 @@
 import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
-import UserBasicInfo from '~/classes/userBasicInfo';
-import PrjInfo from '~/classes/prjInfo';
+import UserInfo4Kyest10400 from '~/classes/userInfo4Kyest10400';
 
 @Component({
   name: 'Keyst10402',
@@ -61,11 +60,8 @@ import PrjInfo from '~/classes/prjInfo';
   },
 })
 export default class Keyst10402 extends Vue {
-  @PropSync('userBasicInfoList', { required: true, default: () => ([]) })
-  _userBasicInfoList!: UserBasicInfo[];
-
-  @PropSync('prjInfoList', { required: true, default: () => ([]) })
-  _prjInfoList!: PrjInfo[];
+  @PropSync('userInfoList', { required: true, default: () => ([]) })
+  _userInfoList!: UserInfo4Kyest10400[];
 
   public show = false;
   public showImage = false;
