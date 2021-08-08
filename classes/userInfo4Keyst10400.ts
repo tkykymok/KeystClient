@@ -7,5 +7,5 @@ export default class UserInfo4Keyst10400 {
   team: string = '';
   prfImgStrgDrctry: string = '';
   skillList: Skill[] = [];
-  prjInfoList: PrjInfo = new PrjInfo();
+  prjInfo: PrjInfo = new PrjInfo();
 }
