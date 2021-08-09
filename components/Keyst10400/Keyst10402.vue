@@ -23,7 +23,7 @@
           <button>▼</button>
         </th>
       </tr>
-      <tr v-for='(userInfo, index) in _userInfoList' :key='userInfo.userId'
+      <tr v-for='userInfo in _userInfoList' :key='userInfo.userId'
         class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImage=true">
