@@ -4,28 +4,30 @@
       <h1 class="text-center text-2xl font-bold">案件情報</h1>
       <div class="flex justify-around pt-8">
         <p>稼働開始年月日</p>
-        <p>2021/04/01</p>
+        <p>{{ _prjInfo.prjStartDate }}</p>
       </div>
       <div class="flex justify-around pt-8">
         <p>案件名</p>
-        <p>案件A</p>
+        <p>{{ _prjInfo.prjName }}</p>
       </div>
       <div class="flex justify-around pt-8">
         <p>単価</p>
-        <p>330,000円</p>
+        <p>{{ _prjInfo.contractPrice }}円</p>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue } from 'nuxt-property-decorator';
+import PrjInfo from '~/classes/prjInfo';
 
 @Component({
   name: 'Keyst10403'
 })
 export default class extends Vue {
-
+  @PropSync('prjInfo', { required: true, default: null })
+  _prjInfo!: PrjInfo;
 }
 </script>
 
