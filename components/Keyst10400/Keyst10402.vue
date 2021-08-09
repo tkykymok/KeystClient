@@ -36,12 +36,13 @@
           <span v-for='skill in userInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span>
         </th>
         <th class="w-1/6 font-normal">
-          <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="show=true">案件</button>
+          <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="showModal(userInfo.userId)">案件</button>
           <a href="/keyst10200" class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2">スキルシート</a>
         </th>
         <Keyst10403
           :prjInfo.sync='userInfo.prjInfo'
-          @closeModal="show=false" v-if="show"
+          @closeModal="close" v-if="show"
+          :ref="'Keyst10403_' + userInfo.userId"
         />
         <Keyst10404
           @closeModalImage="showImage=false" v-if="showImage"
@@ -80,6 +81,19 @@ export default class Keyst10402 extends Vue {
   buttonD() {
     this.showButtonU = true;
     this.showButtonD = false;
+  }
+  get refs():any {
+    return this.$refs;
+  }
+  showModal(userId: number) {
+    let Keyst10403_id = "Keyst10403_" + userId;
+    this.refs.Keyst10403_id.open();
+  }
+  open() {
+    this.show = true;
+  }
+  close() {
+    this.show = false;
   }
 }
 </script>
