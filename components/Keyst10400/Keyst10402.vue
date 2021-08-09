@@ -39,15 +39,14 @@
           <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="showModal(userInfo.userId)">案件</button>
           <a href="/keyst10200" class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2">スキルシート</a>
         </th>
-        <Keyst10403
-          :prjInfo.sync='userInfo.prjInfo'
-          @closeModal="close" v-if="show"
-          :ref="'Keyst10403_' + userInfo.userId"
-        />
-        <Keyst10404
-          @closeModalImage="showImage=false" v-if="showImage"
-        />
       </tr>
+      <Keyst10403
+        :prjInfo.sync='selectedPrjInfo'
+        @closeModal='closeModal' v-if='selectedPrjInfo'
+      />
+      <Keyst10404
+        @closeModalImage='showImage=false' v-if='showImage'
+      />
     </table>
   </div>
 </template>
@@ -57,6 +56,7 @@ import { Component, PropSync, Vue } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
+import PrjInfo from '~/classes/prjInfo';
 
 @Component({
   name: 'Keyst10402',
@@ -68,6 +68,20 @@ import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
+
+  // 選択中の案件情報
+  public selectedPrjInfo: PrjInfo | null = null;
+  showModal(userId: number) {
+    const target = this._userInfoList.find(obj => obj.userId === userId);
+    if (target) {
+
+      this.selectedPrjInfo = target.prjInfo;
+    }
+  }
+
+  closeModal() {
+    this.selectedPrjInfo = null;
+  }
 
   public show = false;
   public showImage = false;
@@ -81,19 +95,6 @@ export default class Keyst10402 extends Vue {
   buttonD() {
     this.showButtonU = true;
     this.showButtonD = false;
-  }
-  get refs():any {
-    return this.$refs;
-  }
-  showModal(userId: number) {
-    let Keyst10403_id = "Keyst10403_" + userId;
-    this.refs.Keyst10403_id.open();
-  }
-  open() {
-    this.show = true;
-  }
-  close() {
-    this.show = false;
   }
 }
 </script>
