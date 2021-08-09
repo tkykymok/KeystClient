@@ -23,7 +23,7 @@
           <button>▼</button>
         </th>
       </tr>
-      <tr v-for='userInfo in _userInfoList' :key='userInfo.userId'
+      <tr v-for='(userInfo, index) in _userInfoList' :key='userInfo.userId'
         class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImage=true">
@@ -41,8 +41,8 @@
         </th>
         <Keyst10403
           :prjInfo.sync='userInfo.prjInfo'
-          @closeModal="close" v-if="show"
-          :ref="'Keyst10403_' + userInfo.userId"
+          :userId='userInfo.userId'
+          ref='keyst10403Refs'
         />
         <Keyst10404
           @closeModalImage="showImage=false" v-if="showImage"
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue, Ref } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
@@ -68,6 +68,14 @@ import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
+  @Ref() keyst10403Refs!: Keyst10403[];
+
+  showModal(userId: number) {
+    console.log('一覧', this.keyst10403Refs); // 確認用
+    const target: Keyst10403 | undefined = this.keyst10403Refs.find(obj => obj.userId === userId);
+    console.log(target); // 確認用
+    target?.open()
+  }
 
   public show = false;
   public showImage = false;
@@ -81,19 +89,6 @@ export default class Keyst10402 extends Vue {
   buttonD() {
     this.showButtonU = true;
     this.showButtonD = false;
-  }
-  get refs():any {
-    return this.$refs;
-  }
-  showModal(userId: number) {
-    let Keyst10403_id = "Keyst10403_" + userId;
-    this.refs.Keyst10403_id.open();
-  }
-  open() {
-    this.show = true;
-  }
-  close() {
-    this.show = false;
   }
 }
 </script>
