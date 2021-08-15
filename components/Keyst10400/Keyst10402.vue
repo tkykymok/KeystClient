@@ -26,8 +26,8 @@
       <tr v-for='userInfo in _userInfoList' :key='userInfo.userId'
         class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
-          <button @click="showImage=true">
-            <img src="/_nuxt/assets/img/user.png" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
+          <button @click="showImageModal(userInfo.userId)">
+            <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
           <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
         </th>
@@ -45,7 +45,9 @@
           ref='keyst10403Refs'
         />
         <Keyst10404
-          @closeModalImage="showImage=false" v-if="showImage"
+          :userInfo='userInfo'
+          :userId='userInfo.userId'
+          ref='keyst10404Refs'
         />
       </tr>
     </table>
@@ -69,18 +71,20 @@ export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
   @Ref() keyst10403Refs!: Keyst10403[];
+  @Ref() keyst10404Refs!: Keyst10404[];
 
   showModal(userId: number) {
-    console.log('一覧', this.keyst10403Refs); // 確認用
     const target: Keyst10403 | undefined = this.keyst10403Refs.find(obj => obj.userId === userId);
-    console.log(target); // 確認用
-    target?.open()
+    target?.open();
   }
 
-  public show = false;
-  public showImage = false;
-  public showButtonU = false;
-  public showButtonD = true;
+  showImageModal(userId: number) {
+    const target: Keyst10404 | undefined = this.keyst10404Refs.find(obj => obj.userId === userId);
+    target?.openImage();
+  }
+
+  public showButtonU: boolean = false;
+  public showButtonD: boolean = true;
 
   buttonU() {
     this.showButtonU = false;
