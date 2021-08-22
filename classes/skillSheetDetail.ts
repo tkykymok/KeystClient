@@ -6,10 +6,10 @@ export default class SkillSheetDetail {
   bizInCharge: string = '';
   comment: string = '';
   devScale: string[] = ['0','0','0'];
-  os: string = '';
-  db: string = '';
+  os: number | null = null;
+  db: number | null = null;
   fwMwTool: string[] = ['','',''];
-  pgLang: string[] = [];
+  pgLang: number[] = [];
   sowManagement: boolean = false;
   sowReqDefinition: boolean = false;
   sowBasicDesign: boolean = false;
