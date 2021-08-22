@@ -26,7 +26,7 @@
               placeholder='Password'
             >
           </div>
-          <div class='h-8'>
+          <div>
             <ul>
               <li class='px-2 text-red-600' v-for='(message, idx) of errorMessages' :key='idx'>
                 {{ message }}
