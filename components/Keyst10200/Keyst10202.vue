@@ -109,7 +109,7 @@
       <td class='p-3 text-gray-800 border border-b'>
         <div>
           <PrjName
-            :prjCode='skillSheetDetail.prjCode'
+            :prjCode.sync='skillSheetDetail.prjCode'
           />
         </div>
         <div class='pt-1'>
@@ -139,6 +139,7 @@
                 type='text'
                 :id='`team-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+                @blur='checkDevScaleInput(idx, 0)'
               >
               <span class='pt-2'>名</span>
             </div>
@@ -148,9 +149,10 @@
             <div class='flex justify-around'>
               <input
                 v-model='skillSheetDetail.devScale[1]'
-                type='text'
+                type='number'
                 :id='`dev-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+                @blur='checkDevScaleInput(idx, 1)'
               >
               <span class='pt-2'>名</span>
             </div>
@@ -160,9 +162,10 @@
             <div class='flex justify-around'>
               <input
                 v-model='skillSheetDetail.devScale[2]'
-                type='text'
+                type='number'
                 :id='`all-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+                @blur='checkDevScaleInput(idx, 2)'
               >
               <span class='pt-2'>名</span>
             </div>
@@ -171,12 +174,12 @@
       </td>
       <td class='p-3 text-gray-800 border border-b'>
         <div>
-          <Os :os='skillSheetDetail.os' />
+          <Os :os.sync='skillSheetDetail.os' />
         </div>
       </td>
       <td class='p-3 text-gray-800 border border-b'>
         <div>
-          <Db :db='skillSheetDetail.db' />
+          <Db :db.sync='skillSheetDetail.db' />
         </div>
       </td>
       <td class='p-3 text-gray-800 border border-b'>
@@ -186,6 +189,7 @@
             v-model='skillSheetDetail.fwMwTool[idx]'
             :key='idx'
             type='text'
+            maxlength='20'
             class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
           >
           <font-awesome-icon
@@ -291,6 +295,18 @@ export default class Keyst10202 extends Vue {
   addRow4FwMwTool(idx: number) {
     Keyst10200Module.SET_SKILL_SHEET_DETAIL(this._skillSheetDetailList);
     Keyst10200Module.ADD_ROW_4_FW_MW_TOOL(idx);
+  }
+
+  /**
+   * 開発規模の入力値をチェックし、空欄の場合"0"に置き換える
+   * @param index1
+   * @param index2
+   */
+  checkDevScaleInput(index1: number, index2: number) {
+    if (!this._skillSheetDetailList[index1].devScale[index2]) {
+      this._skillSheetDetailList[index1].devScale.splice(index2, 1, '0');
+      console.log(this._skillSheetDetailList[index1].devScale);
+    }
   }
 
 }

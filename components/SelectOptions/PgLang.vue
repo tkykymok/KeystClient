@@ -33,7 +33,7 @@ import SelectOptionBase, { selectOption } from '~/components/SelectOptions/Selec
 export default class PgLang extends SelectOptionBase {
   /** 入力パラメータ 使用言語リスト */
   @PropSync('pgLang', { required: false, default: () => ([]) })
-  _pgLang!: string[];
+  _pgLang!: number[];
 
   // 上段の選択リストから選択した値
   public selected: string = '';
@@ -71,7 +71,7 @@ export default class PgLang extends SelectOptionBase {
     // 選択済みリストを初期化する
     this.selectedLangList.splice(0);
     this._pgLang.forEach(value => {
-      let selectOption = this.selectOptionList.find(obj => obj.code === value);
+      let selectOption = this.selectOptionList.find(obj => obj.code == value.toString());
       if (selectOption) {
         this.selectedLangList.push(selectOption);
       }
@@ -83,9 +83,9 @@ export default class PgLang extends SelectOptionBase {
    * @param value
    */
   add(value: string) {
-    if (!this._pgLang.includes(value)) {
-      this._pgLang.push(value);
-      let selectOption = this.selectOptionList.find(obj => obj.code === value);
+    if (!this._pgLang.includes(Number.parseInt(value))) {
+      this._pgLang.push(Number.parseInt(value));
+      let selectOption = this.selectOptionList.find(obj => obj.code == value);
       if (selectOption) {
         this.selectedLangList.push(selectOption);
       }
@@ -98,10 +98,10 @@ export default class PgLang extends SelectOptionBase {
    * @param value
    */
   remove(value: any) {
-    const newArray = this._pgLang.filter(c => c !== value);
+    const newArray = this._pgLang.filter(c => c != value);
     this._pgLang.splice(0);
     this._pgLang.push(...newArray);
-    this.selectedLangList = this.selectedLangList.filter(obj => obj.code !== value);
+    this.selectedLangList = this.selectedLangList.filter(obj => obj.code != value);
   }
 }
 </script>

@@ -1,15 +1,15 @@
-export default class SkillSheetDetail {
+export default class Keyst10200UpdateQ1 {
   refNo: number | null = null;
   prjCode: string = '';
   prjStartDate: string = '';
   prjEndDate: string = '';
   bizInCharge: string = '';
   comment: string = '';
-  devScale: string[] = ['0','0','0'];
-  os: number | null = null;
-  db: number | null = null;
+  devScale: string[] = ['','',''];
+  os: string = '';
+  db: string = '';
   fwMwTool: string[] = ['','',''];
-  pgLang: number[] = [];
+  pgLang: string[] = [];
   sowManagement: boolean = false;
   sowReqDefinition: boolean = false;
   sowBasicDesign: boolean = false;

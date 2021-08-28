@@ -5,7 +5,7 @@ export default class SkillSheetHeader {
   userId: number | null = null;
   userName: string = '';
   userNameKana: string = '';
-  gender: string = '';
+  gender: number | null = null;
   age: number | null = null;
   birthday: string = '';
   nationality: string = '';
