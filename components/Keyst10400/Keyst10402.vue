@@ -2,25 +2,17 @@
   <div>
     <table class="w-full mt-16">
       <tr class="flex justify-between border-t-2 border-b-2">
-        <th class="w-1/6">
+        <th @click="sortBy('name'); sortNameUsers" :class="addClass('name')" class="w-1/6 cursor-pointer">
           名前
-          <button @click="buttonU" v-if="showButtonU">▲</button>
-          <button @click="buttonD" v-if="showButtonD">▼</button>
         </th>
-        <th class="w-1/6">
+        <th @click="sortBy('team'); sortTeamUsers" :class="addClass('team')" class="w-1/6 cursor-pointer">
           チーム
-          <button>▲</button>
-          <button>▼</button>
         </th>
         <th class="w-1/6">
           スキル
-          <button>▲</button>
-          <button>▼</button>
         </th>
         <th class="w-1/6">
           案件
-          <button>▲</button>
-          <button>▼</button>
         </th>
       </tr>
       <tr v-for='userInfo in _userInfoList' :key='userInfo.userId'
@@ -70,6 +62,7 @@ import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
+
   @Ref() keyst10403Refs!: Keyst10403[];
   @Ref() keyst10404Refs!: Keyst10404[];
 
@@ -83,18 +76,65 @@ export default class Keyst10402 extends Vue {
     target?.openImage();
   }
 
-  public showButtonU: boolean = false;
-  public showButtonD: boolean = true;
+  public sortKey: string = '';
+  public sortAsc: boolean = true;
 
-  buttonU() {
-    this.showButtonU = false;
-    this.showButtonD = true;
+  sortBy(key: string) {
+    if (this.sortKey === key) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortAsc = true;
+    }
+    this.sortKey = key;
   }
-  buttonD() {
-    this.showButtonU = true;
-    this.showButtonD = false;
+
+  addClass(key: string) {
+    if (this.sortKey === key && this.sortAsc) {
+      return 'asc';
+    }
+    if (this.sortKey === key && !this.sortAsc) {
+      return 'desc';
+    }
+  }
+
+  get sortNameUsers(): UserInfo4Keyst10400[] {
+    if (this.sortKey != '') {
+      var set = 1;
+      if (this.sortAsc) {
+        set = 1;
+      } else {
+        set = -1;
+      }
+      this.$store.commit('keyst10400/SORT_NAME_USER_INFO_LIST', set);
+      return this._userInfoList;
+    } else {
+      return this._userInfoList;
+    }
+  }
+
+  get sortTeamUsers(): UserInfo4Keyst10400[] {
+    if (this.sortKey != '') {
+      var set = 1;
+      if (this.sortAsc) {
+        set = 1;
+      } else {
+        set = -1;
+      }
+      this.$store.commit('keyst10400/SORT_TEAM_USER_INFO_LIST', set);
+      return this._userInfoList;
+    } else {
+      return this._userInfoList;
+    }
   }
 }
 </script>
 
-<style></style>
+<style>
+  .asc::after {
+    content: "▲";
+  }
+
+  .desc::after {
+    content: "▼";
+  }
+</style>
