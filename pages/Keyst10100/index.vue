@@ -5,7 +5,7 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">氏名</th>
         <td class="p-2 border-2 border-gray">
-          <input v-if="inputAreaControl.userName.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.userName.editableFlag" type="text" class="bg-yellow-200" value="" v-model="memberInfo.userName" />
           <span v-else>{{ memberInfo.userName }}</span>
         </td>
         <td class="p-2">
@@ -79,7 +79,7 @@
         <th class="p-2 bg-green-300 border-2 border-gray">ログインパスワード</th>
         <td class="p-2 border-2 border-gray">
           <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
-          <span v-else>{{ memberInfo.loginPw }}</span>
+          <span v-else>●●●●●●●●●</span>
         </td>
         <td class="p-2">
           <button @click="switchEditableFlag(inputAreaControl.loginPw)">aa</button>
@@ -96,11 +96,11 @@
       <tr class="">
         <th rowspan="3" class="p-2 bg-green-300 border-2 border-gray">プロフィール画像</th>
         <td rowspan="3" class="p-2 border-2 border-gray">
-          <img v-if="prfImgStrgDrctry" src="*" />
+          <img v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" src="*" />
           <input type="file" v-else value="" />
         </td>
         <td rowspan="3" class="p-2">
-          <button @click="prfImgStrgDrctryBtn">aa</button>
+          <button @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">aa</button>
         </td>
         <td class="p-2 border-2 border-gray">支店番号</td>
         <td class="p-2 border-2 border-gray">
@@ -266,7 +266,7 @@ export default class extends Vue {
     bankName:{editableFlag:false},
     loginPw:{editableFlag:false},
     branchName:{editableFlag:false},
-    prfImgStrgDrctr:{editableFlag:false},
+    prfImgStrgDrctry:{editableFlag:false},
     branchId:{editableFlag:false},
     accountType:{editableFlag:false},
     accountNumber:{editableFlag:false},
