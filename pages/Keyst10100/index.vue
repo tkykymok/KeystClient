@@ -208,8 +208,10 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">保有スキル</th>
         <td class="p-2 border-2 border-gray">
-          <input v-if="inputAreaControl.skills.editableFlag" type="text" class="bg-yellow-200" value="" />
-          <span v-else>{{ memberInfo.skills }}</span>
+          <!-- <input v-if="inputAreaControl.skills.editableFlag" type="text" class="bg-yellow-200" value="" /> -->
+          <span>{{ memberInfo.skillList }}</span>
+          <!-- <span v-else>{{ memberInfo.skillList }}</span> -->
+          <!-- <span v-for='skill in memberInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span> -->
         </td>
         <td colspan="5" class="p-2">
           <button @click="switchEditableFlag(inputAreaControl.skills)">aa</button>
