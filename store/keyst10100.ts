@@ -36,6 +36,7 @@ export default class Keyst10100 extends VuexModule implements IKeyst10100 {
   public async initialize() {
     const { data } = await $axios.get('/keyst10100/initialize');
     this.SET_USER_BASIC_INFO(data.userBasicInfo);
+    this.SET_USER_BASIC_INFO(data);
   }
 
 }
