@@ -7,11 +7,11 @@ export default class MemberInfo {
   email: string = '';
   loginId: string = '';
   loginPw: string = '';
-  gender: string = '';
+  gender: number | null = null;
   age: number | null = null;
   birthday: string = '';
   nationality: string = '';
-  partnerFlg: boolean = false;
+  partnerFlg: number | null = null;
   nearestStation: string = '';
   finalEducationDate: string = '';
   finalEducationContent: string = '';
