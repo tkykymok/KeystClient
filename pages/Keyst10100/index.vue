@@ -79,6 +79,8 @@
         <th class="p-2 bg-green-300 border-2 border-gray">ログインパスワード</th>
         <td class="p-2 border-2 border-gray">
           <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-if="inputAreaControl.loginPw.editableFlag">　確認用:</span>
+          <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
           <span v-else>●●●●●●●●●</span>
         </td>
         <td class="p-2">
