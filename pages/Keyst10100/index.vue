@@ -79,6 +79,7 @@
         <th class="p-2 bg-green-300 border-2 border-gray">ログインパスワード</th>
         <td class="p-2 border-2 border-gray">
           <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
           <span v-if="inputAreaControl.loginPw.editableFlag">　確認用:</span>
           <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
           <span v-else>●●●●●●●●●</span>
@@ -98,8 +99,10 @@
       <tr class="">
         <th rowspan="3" class="p-2 bg-green-300 border-2 border-gray">プロフィール画像</th>
         <td rowspan="3" class="p-2 border-2 border-gray">
-          <img v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" src="*" />
-          <input type="file" v-else value="" />
+          <!-- <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else>{{ memberInfo.prfImgStrgDrctry }}</span> -->
+          <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" type="file" value="" />
+          <img v-else src="" />
         </td>
         <td rowspan="3" class="p-2">
           <button @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">aa</button>
@@ -210,12 +213,11 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">保有スキル</th>
         <td class="p-2 border-2 border-gray">
-          <!-- <input v-if="inputAreaControl.skills.editableFlag" type="text" class="bg-yellow-200" value="" /> -->
-          <!-- <span v-else>{{ memberInfo.skillList }}</span> -->
-          <span v-for='skill in memberInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span>
+          <input v-if="inputAreaControl.skillList.editableFlag" type="text" class="bg-yellow-200" value="" />
+          <span v-else v-for='skill in memberInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span>
         </td>
         <td colspan="5" class="p-2">
-          <button @click="switchEditableFlag(inputAreaControl.skills)">aa</button>
+          <button @click="switchEditableFlag(inputAreaControl.skillList)">aa</button>
         </td>
       </tr>
     </table>
@@ -250,6 +252,10 @@ export default class extends Vue {
     return JSON.parse(JSON.stringify(Keyst10100Module.MemberInfo));
   }
 
+  get prfImgStrgDrctry(): String {
+    return Keyst10100Module.MemberInfo.prfImgStrgDrctry;
+  }
+
     /**
    * 編集可否フラグを切り替える
    * @param obj
@@ -279,10 +285,11 @@ export default class extends Vue {
     nearestStation:{editableFlag:false},
     finalEducationDate:{editableFlag:false},
     finalEducationContent:{editableFlag:false},
-    skills:{editableFlag:false},
+    skillList:{editableFlag:false},
   }
 
 }
+
 </script>
 
 <style></style>
