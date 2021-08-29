@@ -1,3 +1,5 @@
+import Skill from "./skill";
+
 export default class MemberInfo {
   userId: number | null = null;
   userName: string = '';
@@ -23,4 +25,5 @@ export default class MemberInfo {
   accountNumber: number | null = null;
   accountName: string = '';  
   prfImgStrgDrctry: string = '';
+  skillList: Skill[] = [];
 }
