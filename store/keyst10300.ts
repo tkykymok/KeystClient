@@ -10,6 +10,7 @@ import ReserveInfoHeader from '~/classes/reserveInfoHeader';
 import ReserveInfoDetail from '~/classes/reserveInfoDetail';
 
 
+
 export interface IKeyst10300 {
   reserveInfoList: ReserveInfo[],
   reserveInfoHeader: ReserveInfoHeader | null,
@@ -22,12 +23,16 @@ export interface IKeyst10300 {
   name: 'keyst10300'
 })
 export default class Keyst10300 extends VuexModule implements IKeyst10300 {
-  /** スキルシート情報一覧 */
+  /** 予約情報一覧 */
   private _reserveInfoList: ReserveInfo[] = [];
-  /** スキルシートヘッダー  */
+  /** 予約ヘッダー  */
   private _reserveInfoHeader: ReserveInfoHeader = new ReserveInfoHeader();
-  /** スキルシート明細 */
+  /** 予約詳細 */
   private _reserveInfoDetailList: ReserveInfoDetail[] = [];
+  /** 当月 */
+  private _thisMonth: String = '';
+  /** ユーザー基本情報 */
+  private _team: String = '';
 
   get reserveInfoList(): ReserveInfo[] {
     return this._reserveInfoList;
@@ -41,40 +46,78 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
     return this._reserveInfoDetailList;
   }
 
+  get thisMonth(): String {
+    return this._thisMonth;
+  }
+
+  get team(): String {
+    return this._team;
+  }
+
   @Mutation
   SET_RESERVE_INFO_LIST(value: ReserveInfo[]) {
-    // スキルシート情報一覧を初期化する。
+    // 予約情報一覧を初期化する。
     this._reserveInfoList.splice(0);
-    // サーバーから取得したスキルシート情報一覧全件を追加する。
+    // サーバーから取得した予約情報一覧全件を追加する。
     this._reserveInfoList.push(...value);
   }
 
-  @Mutation
-  SET_RESERVE_INFO_HEADER(value: ReserveInfoHeader) {
-    Object.assign(this._reserveInfoHeader, value);
-  }
+  // @Mutation
+  // SET_RESERVE_INFO_HEADER(value: ReserveInfoHeader) {
+  //   Object.assign(this._reserveInfoHeader, value);
+  // }
 
   @Mutation
-  SET_RESERVE_INFO_DETAIL(value: ReserveInfoDetail[]) {
-    // 予約ヘッダー情報一覧を初期化する。
+  SET_RESERVE_INFO_DETAIL_LIST(value: ReserveInfoDetail[]) {
+    // 予約詳細情報一覧を初期化する。
     this._reserveInfoDetailList.splice(0);
-    // サーバーから取得した予約ヘッダー一覧全件を追加する。
+    // サーバーから取得した予約詳細情報一覧全件を追加する。
     this._reserveInfoDetailList.push(...value);
+  }
+  @Mutation
+  SET_THIS_MONTH(value: String) {
+    // 当月をセットする
+    this._thisMonth = value;
+  }
+  @Mutation
+  SET_TEAM(value: String) {
+    // ユーザー基本情報をセットする
+    this._team = value;
   }
 
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10300/initialize');
     this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
+    this.SET_RESERVE_INFO_DETAIL_LIST(data.reserveDetailList);
+    this.SET_TEAM(data.team)
+    this.SET_THIS_MONTH(data.thisMonth);
   }
 
   @Action({ rawError: true })
-  public async displayReserveInfo(reserveId: number) {
-    const { data } = await $axios.get(
-      '/keyst10300/displayReserveInfo', {
-        params: { reserveId: reserveId }
-      });
-    this.SET_RESERVE_INFO_HEADER(data.reserveInfoHeader);
-    this.SET_RESERVE_INFO_DETAIL(data.ReserveInfoDetail);
+  public async viewComment(userId: number) {
+    const { data } = await $axios.get('/keyst10300/viewComment', {
+      params: { userId: userId }
+    });
+    this.SET_RESERVE_INFO_DETAIL_LIST(data.reserveDetailList);
   }
+
+  @Action({ rawError: true })
+  public async changeTeam(team: String) {
+    const { data } = await $axios.get('/keyst10300/changeTeam', {
+      params: { team: team }
+    });
+    this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
+  }
+
+
+  // @Action({ rawError: true })
+  // public async displayReserveInfo(reserveId: number) {
+  //   const { data } = await $axios.get(
+  //     '/keyst10300/displayReserveInfo', {
+  //       params: { reserveId: reserveId }
+  //     });
+  //   this.SET_RESERVE_INFO_HEADER(data.reserveInfoHeader);
+  //   this.SET_RESERVE_INFO_DETAIL_LIST(data.ReserveInfoDetail);
+  // }
 }

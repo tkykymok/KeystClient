@@ -14,11 +14,11 @@
         label='日付'
         auto-close
       />
-      <div>
-        入力値:{{ sample1 }}
-      </div>
+      <!-- <div>
+        入力値:{{ sample1 }} -->
+      <!-- </div> -->
     </div>
-    <div class='flex'>
+    <div class='flex mt-4'>
       <div class='w-1/5'>
         <VueCtkDateTimePicker
           v-model='sample2'
@@ -29,9 +29,9 @@
           minuteInterval='30'
           right
         />
-        <div>
+        <!-- <div>
           入力値:{{ sample2 }}
-        </div>
+        </div> -->
       </div>
       <p class='ml-4'>~</p>
       <div class='w-1/5 ml-4'>
@@ -44,16 +44,20 @@
           minuteInterval='30'
           right
         />
-        <div>
+        <!-- <div>
           入力値:{{ sample3 }}
-        </div>
+        </div> -->
       </div>
+    </div>
+    <div class='w-1/5 mt-4'>
+      <button class='p-1 text-sm font-bold text-gray-200 bg-blue-500 border rounded-lg cursor-pointer'>登録</button>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { Keyst10300Module } from '~/utils/store-accessor';
 
 @Component({})
 export default class Keyst10301 extends Vue{

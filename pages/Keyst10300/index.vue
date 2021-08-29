@@ -1,42 +1,59 @@
 // 管理側
 <template>
   <div class='p-3'>
-    <!-- 管理者のみ表示する -->
-    <select name="team" class='p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
-      <option value="A">Aチーム</option>
-      <option value="B">Bチーム</option>
-      <option value="C">Cチーム</option>
-    </select>
-
-    <select name="month" class='p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
-      <option value="5">5月</option>
-      <option value="6">6月</option>
-      <option value="7">7月</option>
-    </select>
-
-    <!-- 管理者のみ表示する -->
-    <keyst10301
+    <!-- 予約画面ヘッダー -->
+    <!-- 管理者=false, ユーザー=true -->
+    <keyst10304
+      :loginUserInfo='loginUserInfo'
       :reserveInfoList='reserveInfoList'
+      :thisMonth='thisMonth'
+      :team='team'
     />
+
+    <!-- 予約日時入力部分 -->
+    <!-- 管理者のみ表示する -->
+    <div v-if="loginUserInfo.adminFlg == false">
+      <keyst10301 />
+    </div>
+
+    <!-- 予約状況 -->
     <keyst10302
       :reserveInfoList='reserveInfoList'
+      :loginUserInfo='loginUserInfo'
     />
 
-    <modal name='modal-content' class='bg-gary-300' :width='910' :height='230'>
-      <keyst10303 />
+    <!-- コメント -->
+    <!-- ユーザーのみ表示する -->
+    <div v-if="loginUserInfo.adminFlg == true" class='mt-10'>
+      <keyst10303
+        :loginUserInfo='loginUserInfo'
+        :reserveInfoDetailList='reserveInfoDetailList'
+      />
+    </div>
+
+    <!-- コメントモーダル -->
+    <modal name='modal-content' class='bg-gary-300'
+      :width='910'
+      :height='400'
+      :scrollable='true'>
+      <keyst10303
+        :loginUserInfo='loginUserInfo'
+        :reserveInfoDetailList='reserveInfoDetailList'
+      />
     </modal>
 
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import LoginUserInfo from '~/classes/loginUserInfo';
 import keyst10301 from '~/components/Keyst10300/Keyst10301.vue';
 import keyst10302 from '~/components/Keyst10300/Keyst10302.vue';
 import keyst10303 from '~/components/Keyst10300/Keyst10303.vue';
-import { Keyst10300Module } from '~/utils/store-accessor';
+import keyst10304 from '~/components/Keyst10300/Keyst10304.vue';
+import { AuthenticationModule, Keyst10300Module } from '~/utils/store-accessor';
 import ReserveInfo from '~/classes/reserveInfo';
-import ReserveInfoHeader from '~/classes/reserveInfoHeader';
 import ReserveInfoDetail from '~/classes/reserveInfoDetail';
 
 
@@ -45,7 +62,8 @@ import ReserveInfoDetail from '~/classes/reserveInfoDetail';
   components: {
     keyst10301,
     keyst10302,
-    keyst10303
+    keyst10303,
+    keyst10304
   },
   async asyncData({redirect, store}) {
     try {
@@ -55,12 +73,40 @@ import ReserveInfoDetail from '~/classes/reserveInfoDetail';
     }
   }
 })
+
 export default class extends Vue {
+
+  /** ログイン情報 */
+  get loginUserInfo(): LoginUserInfo {
+    return AuthenticationModule.loginUserInfo;
+  }
+
   /**
-   * スキルシート情報一覧
+   * 予約情報一覧
    */
   get reserveInfoList(): ReserveInfo[] {
     return Keyst10300Module.reserveInfoList;
+  }
+
+  /**
+   * 当月
+   */
+  get thisMonth(): String {
+    return Keyst10300Module.thisMonth;
+  }
+
+  /**
+   * チーム
+   */
+  get team(): String {
+    return Keyst10300Module.team;
+  }
+
+  /**
+   * 予約詳細一覧
+   */
+  get reserveInfoDetailList(): ReserveInfoDetail[] {
+    return Keyst10300Module.reserveInfoDetailList;
   }
 
   /**
