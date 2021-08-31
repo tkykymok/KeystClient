@@ -102,7 +102,7 @@
           <!-- <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" type="text" class="bg-yellow-200" value="" />
           <span v-else>{{ memberInfo.prfImgStrgDrctry }}</span> -->
           <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" type="file" value="" />
-          <img v-else src="" />
+          <img :src="memberInfo.prfImgStrgDrctry" v-else>
         </td>
         <td rowspan="3" class="p-2">
           <button @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">aa</button>
