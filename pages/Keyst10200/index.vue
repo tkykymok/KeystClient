@@ -123,15 +123,18 @@ export default class extends Vue {
    * スキルシート新規保存
    */
   save() {
-    // スキルシートヘッダー部をリクエストFormに移送する。
-    let reqForm: Keyst10200SaveQ = _.assign(new Keyst10200SaveQ(), _.pick(this.skillSheetHeader, _.keys(new Keyst10200SaveQ())));
-    // スキルシート明細部をリクエストFormに移送する。
-    this.skillSheetDetailList.forEach(obj => {
-      let skillSheetDetail: Keyst10200SaveQ1 =
-        _.assign(new Keyst10200SaveQ1(), _.pick(obj, _.keys(new Keyst10200SaveQ1())));
-      reqForm.skillSheetDetail.push(skillSheetDetail);
-    });
-    Keyst10200Module.save(reqForm);
+    try {
+      // スキルシートヘッダー部をリクエストFormに移送する。
+      let reqForm: Keyst10200SaveQ = _.assign(new Keyst10200SaveQ(), _.pick(this.skillSheetHeader, _.keys(new Keyst10200SaveQ())));
+      // スキルシート明細部をリクエストFormに移送する。
+      this.skillSheetDetailList.forEach(obj => {
+        let skillSheetDetail: Keyst10200SaveQ1 =
+          _.assign(new Keyst10200SaveQ1(), _.pick(obj, _.keys(new Keyst10200SaveQ1())));
+        reqForm.skillSheetDetail.push(skillSheetDetail);
+      });
+      Keyst10200Module.save(reqForm);
+    } catch (error) {
+    }
   }
 
   /**
