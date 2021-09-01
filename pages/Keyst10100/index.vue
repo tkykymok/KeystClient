@@ -79,7 +79,6 @@
         <th class="p-2 bg-green-300 border-2 border-gray">ログインパスワード</th>
         <td class="p-2 border-2 border-gray">
           <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
-          <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
           <span v-if="inputAreaControl.loginPw.editableFlag">　確認用:</span>
           <input v-if="inputAreaControl.loginPw.editableFlag" type="text" class="bg-yellow-200" value="" />
           <span v-else>●●●●●●●●●</span>
@@ -139,8 +138,8 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">性別</th>
         <td class="p-2 border-2 border-gray">
-          <input type="radio" id="men" value="1"><label for="men">男</label>
-          <input type="radio" id="women" value="2"><label for="women">女</label>
+          <input type="radio" id="men" value="1" :checked="memberInfo.gender === 1"><label for="men">男</label>
+          <input type="radio" id="women" value="2" :checked="memberInfo.gender === 2"><label for="women">女</label>
         </td>
         <td class="p-2"></td>
         <td class="p-2 border-2 border-gray">名義人(カナ)</td>
@@ -175,8 +174,8 @@
       <tr class="">
         <th class="p-2 bg-green-300 border-2 border-gray">配偶者</th>
         <td class="p-2 border-2 border-gray">
-          <input type="radio" id="partnerOn" value="true"><label for="partnerOn">あり</label>
-          <input type="radio" id="partnerOff" value="false"><label for="partnerOff">なし</label>
+          <input type="radio" id="partnerOn" value="true" :checked="memberInfo.partnerFlg === true"><label for="partnerOn">あり</label>
+          <input type="radio" id="partnerOff" value="false" :checked="memberInfo.partnerFlg === false"><label for="partnerOff">なし</label>
         </td>
         <td colspan="5" class="p-2"></td>
       </tr>
