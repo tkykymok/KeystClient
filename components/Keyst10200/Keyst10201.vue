@@ -77,7 +77,7 @@
         />
       </td>
     </tr>
-    <tr>
+    <tr v-show='loginUserInfo.adminFlg'>
       <th class='p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12'>営業評価</th>
       <td class='p-3 text-gray-800 border border-b' colspan='9'>
         <textarea
@@ -95,13 +95,16 @@ import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import { convertDateToYearMonth, convertDateToYearMonthDay } from '~/utils/converter';
 import { Gender } from '~/constant/gender';
+import { AuthenticationModule } from '~/utils/store-accessor';
+import LoginUserInfo from '~/classes/loginUserInfo';
 
 @Component({})
 export default class Keyst10201 extends Vue {
   /** 入力パラメータ スキルシートヘッダー一覧 */
   @PropSync('skillSheetHeader',{ required: true, default: null })
   _skillSheetHeader!: SkillSheetHeader;
-
+  /** ログインユーザー情報 */
+  public loginUserInfo: LoginUserInfo = AuthenticationModule.loginUserInfo;
   public genderConstant = Gender;
 
   /**

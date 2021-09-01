@@ -99,8 +99,10 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    * 初期表示
    */
   @Action({ rawError: true })
-  public async initialize() {
-    const { data } = await $axios.get('/keyst10200/initialize');
+  public async initialize(userId: number | null) {
+    const { data } = await $axios.get('/keyst10200/initialize', {
+      params: { userId: userId }
+    });
     this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
     this.SET_USER_BASIC_INFO(data.userBasicInfo);
   }
@@ -128,8 +130,8 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     const { data } = await $axios.post(
       '/keyst10200/save', reqForm
     );
-
-    // await this.displaySkillSheet(data.skillSheetId);
+    await this.initialize(data.userId);
+    await this.displaySkillSheet(data.skillSheetId);
   }
 
   /**
@@ -141,7 +143,8 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     const { data } = await $axios.post(
       '/keyst10200/update', reqForm
     );
-
+    await this.initialize(data.userId);
+    await this.displaySkillSheet(data.skillSheetId);
   }
 
 }

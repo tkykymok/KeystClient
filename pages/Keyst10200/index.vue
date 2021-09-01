@@ -51,7 +51,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import Keyst10201 from '~/components/Keyst10200/Keyst10201.vue';
 import Keyst10202 from '~/components/Keyst10200/Keyst10202.vue';
 import Keyst10203 from '~/components/Keyst10200/Keyst10203.vue';
-import { Keyst10200Module } from '~/utils/store-accessor';
+import { AuthenticationModule, Keyst10200Module } from '~/utils/store-accessor';
 import SkillSheetInfo from '~/classes/skillSheetInfo';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
@@ -61,6 +61,7 @@ import Keyst10200SaveQ from '~/classes/form/keyst10200SaveQ';
 import Keyst10200SaveQ1 from '~/classes/form/keyst10200SaveQ1';
 import Keyst10200UpdateQ from '~/classes/form/keyst10200UpdateQ';
 import Keyst10200UpdateQ1 from '~/classes/form/keyst10200UpdateQ1';
+import { Context } from '@nuxt/types';
 
 @Component({
   name: 'Keyst10200',
@@ -69,11 +70,24 @@ import Keyst10200UpdateQ1 from '~/classes/form/keyst10200UpdateQ1';
     Keyst10202,
     Keyst10203
   },
-  async asyncData({ redirect, store }) {
+  async asyncData(context: Context) {
+    const queryParam4UserId: string | (string | null)[] = context.route.query.userId;
+    let userId: number | null = null;
+
+    // クエリストリングに値が設定されている場合
+    if (queryParam4UserId) {
+      if (AuthenticationModule.loginUserInfo.adminFlg) {
+        // 管理者の場合
+        userId = Number.parseInt(queryParam4UserId[0]!);
+      } else {
+        // クエリストリングを空にする。
+        context.app.router?.replace({ query: undefined });
+      }
+    }
     try {
-      await Keyst10200Module.initialize();
+      await Keyst10200Module.initialize(userId);
     } catch (error) {
-      redirect('/login');
+      context.redirect('/login');
     }
   }
 })
