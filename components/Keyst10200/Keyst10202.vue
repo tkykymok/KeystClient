@@ -136,7 +136,7 @@
             <div class='flex justify-around'>
               <input
                 v-model='skillSheetDetail.devScale[0]'
-                type='text'
+                type='number'
                 :id='`team-${idx}`'
                 class='w-full p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
                 @blur='checkDevScaleInput(idx, 0)'
@@ -305,7 +305,6 @@ export default class Keyst10202 extends Vue {
   checkDevScaleInput(index1: number, index2: number) {
     if (!this._skillSheetDetailList[index1].devScale[index2]) {
       this._skillSheetDetailList[index1].devScale.splice(index2, 1, '0');
-      console.log(this._skillSheetDetailList[index1].devScale);
     }
   }
 

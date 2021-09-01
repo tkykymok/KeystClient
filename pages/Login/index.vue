@@ -57,7 +57,7 @@
 <script lang='ts'>
 import { Component, Vue, Watch } from 'nuxt-property-decorator';
 import AuthenticationQ from '~/classes/form/authenticationQ';
-import { AuthenticationModule } from '~/utils/store-accessor';
+import { AuthenticationModule, MessagesModule } from '~/utils/store-accessor';
 
 @Component({
   layout: 'plain',
@@ -66,15 +66,9 @@ import { AuthenticationModule } from '~/utils/store-accessor';
 export default class extends Vue {
   private loginId: string = '';
   private loginPw: string = '';
-  public errorMessages: string[] = [];
 
-  get compositeKye() {
-    return this.loginId + this.loginPw;
-  }
-
-  @Watch('compositeKye', { immediate: false, deep: true })
-  watchCompositeKye() {
-    this.errorMessages.splice(0);
+  get errorMessages() {
+    return MessagesModule.messageList;
   }
 
   async login() {
@@ -85,7 +79,6 @@ export default class extends Vue {
       await AuthenticationModule.login(loginForm);
       await this.$router.push('/keyst10200');
     } catch (error) {
-      this.errorMessages = error.response.data.messageList;
     }
   }
 
