@@ -1,8 +1,5 @@
 <template>
   <div class='p-4'>
-    <div class="border border-black rounded-md text-center p-2 w-1/5">
-      ユーザー一覧
-    </div>
     <Keyst10401 
       :filtering='filtering'
       :userInfoList.sync='userInfoList'
