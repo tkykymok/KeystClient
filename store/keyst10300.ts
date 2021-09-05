@@ -62,11 +62,6 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
     this._reserveInfoList.push(...value);
   }
 
-  // @Mutation
-  // SET_RESERVE_INFO_HEADER(value: ReserveInfoHeader) {
-  //   Object.assign(this._reserveInfoHeader, value);
-  // }
-
   @Mutation
   SET_RESERVE_INFO_DETAIL_LIST(value: ReserveInfoDetail[]) {
     // 予約詳細情報一覧を初期化する。
@@ -110,14 +105,12 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
     this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
   }
 
+  @Action({ rawError: true })
+  public async changeMonth(month: String) {
+    const { data } = await $axios.get('/keyst10300/changeMonth', {
+      params: { month: month }
+    });
+    this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
+  }
 
-  // @Action({ rawError: true })
-  // public async displayReserveInfo(reserveId: number) {
-  //   const { data } = await $axios.get(
-  //     '/keyst10300/displayReserveInfo', {
-  //       params: { reserveId: reserveId }
-  //     });
-  //   this.SET_RESERVE_INFO_HEADER(data.reserveInfoHeader);
-  //   this.SET_RESERVE_INFO_DETAIL_LIST(data.ReserveInfoDetail);
-  // }
 }

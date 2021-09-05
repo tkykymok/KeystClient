@@ -11,36 +11,26 @@
     />
 
     <!-- 予約日時入力部分 -->
-    <!-- 管理者のみ表示する -->
-    <div v-if="loginUserInfo.adminFlg == false">
+    <!-- 管理者のみ,日時が登録されていない場合、ログイン中の管理者が登録済みの表示する -->
+    <div v-if="loginUserInfo.adminFlg == false && !reserveInfoList.length">
       <keyst10301 />
     </div>
 
     <!-- 予約状況 -->
     <keyst10302
-      :reserveInfoList='reserveInfoList'
       :loginUserInfo='loginUserInfo'
+      :reserveInfoList='reserveInfoList'
     />
 
     <!-- コメント -->
     <!-- ユーザーのみ表示する -->
     <div v-if="loginUserInfo.adminFlg == true" class='mt-10'>
+      <p class='py-3 font-bold text-gray-600'>コメント履歴</p>
       <keyst10303
         :loginUserInfo='loginUserInfo'
         :reserveInfoDetailList='reserveInfoDetailList'
       />
     </div>
-
-    <!-- コメントモーダル -->
-    <modal name='modal-content' class='bg-gary-300'
-      :width='910'
-      :height='400'
-      :scrollable='true'>
-      <keyst10303
-        :loginUserInfo='loginUserInfo'
-        :reserveInfoDetailList='reserveInfoDetailList'
-      />
-    </modal>
 
   </div>
 </template>
@@ -108,27 +98,6 @@ export default class extends Vue {
   get reserveInfoDetailList(): ReserveInfoDetail[] {
     return Keyst10300Module.reserveInfoDetailList;
   }
-
-  /**
-   * スキルシートヘッダー
-   */
-  // get reserveInfoHeader(): ReserveInfoHeader {
-  //   return JSON.parse(JSON.stringify(Keyst10300Module.reserveInfoHeader));
-  // }
-
-  /**
-   * スキルシート明細一覧
-   */
-  // get reserveInfoDetailList(): ReserveInfoDetail[] {
-  //   let reserveInfoDetailList: ReserveInfoDetail[] = [];
-  //   Keyst10300Module.reserveInfoDetailList.forEach(obj => {
-  //       let reserveInfoDetail = JSON.parse(JSON.stringify(obj));
-  //       reserveInfoDetailList.push(reserveInfoDetail);
-  //     }
-  //   );
-  //   return reserveInfoDetailList;
-  // }
-
 
 }
 </script>

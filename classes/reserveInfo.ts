@@ -6,5 +6,7 @@ export default class ReserveInfo {
   reserveDate: string = '';
   reserveTime: string = '';
   userId: number | null = null;
+  userComment: string = '';
+  managerComment: string = '';
   userName: string = '';
 }
