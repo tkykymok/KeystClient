@@ -53,7 +53,7 @@ export default class extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
   @Prop({ required: true })
-  filtering!: Filtering4Keyst10400
+  filtering!: Filtering4Keyst10400;
 
   public keyword: string = '';
   public selectedTeam: string = '';

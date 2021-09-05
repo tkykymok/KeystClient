@@ -2,16 +2,19 @@
   <div class="p-4">
     <div class="p-4 flex justify-center items-center">
       <div class="mr-5">
-        <span class="mr-1">登録</span><input type="radio" name="search">
+        <span class="mr-1">登録</span>
+        <input type="radio" name="search" value="register" v-model='radioValue' @change='PrjCodeDisplay'>
       </div>
       <div class="mr-10">
-        <span class="mr-1">更新・詳細</span><input type="radio" name="search">
+        <span class="mr-1">更新・詳細</span>
+        <input type="radio" name="search" value="update" v-model='radioValue' @change='PrjCodeDisplay'>
       </div>
       <PrjCode
+        v-if='PrjCodeFlg'
         :prjCode.sync='prjMaster.prjCode'
       />
       <button
-        @click='searchPrjCode(prjMaster.prjCode)'
+        @click='Decision(prjMaster.prjCode)'
         class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
         決定
       </button>
@@ -22,9 +25,13 @@
       </button>
     </div>
     <Keyst10501
+      v-if='registerFlg || updateFlg'
+      :registerFlg='this.registerFlg'
+      :updateFlg='this.updateFlg'
       :prjMaster.sync='prjMaster'
     />
     <Keyst10502
+      v-if='updateFlg'
       :prjMaster.sync='prjMaster'
       :prjUserAllocationList.sync='prjUserAllocationList'
     />
@@ -63,8 +70,34 @@ export default class extends Vue {
     return prjUserAllocationList;
   }
 
-  searchPrjCode(prjCode: string) {
+  public radioValue: string = '';
+  public PrjCodeFlg: boolean = false;
+  public registerFlg: boolean = false;
+  public updateFlg: boolean = false;
+
+  PrjCodeDisplay() {
+    if (this.radioValue === 'register') {
+      this.PrjCodeFlg = false;
+      this.registerFlg = false;
+      this.updateFlg = false;
+    }
+    if (this.radioValue === 'update') {
+      this.PrjCodeFlg = true;
+      this.registerFlg = false;
+      this.updateFlg = false;
+    }
+  }
+
+  Decision(prjCode: string) {
     Keyst10500Module.search(prjCode);
+    if (this.radioValue === 'register') {
+      this.registerFlg = true;
+      this.updateFlg = false;
+    }
+    if (this.radioValue === 'update') {
+      this.registerFlg = false;
+      this.updateFlg = true;
+    }
   }
 
   check() {
