@@ -7,6 +7,7 @@ import {
 import { $axios } from '~/utils/api';
 import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
+import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
 
 export interface IKeyst10500 {
   prjMaster: PrjMaster | null;
@@ -66,5 +67,15 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
       this.SET_PRJ_MASTER(data.prjMaster);
       this.SET_PRJ_USER_ALLOCATION_LIST(data.prjUserAllocation);
     }
+  }
+
+  /**
+   * 案件マスタ新規保存
+   * @param reqForm
+   */
+  @Action({ rawError: true })
+  public async save(reqForm: Keyst10500SaveQ) {
+    await $axios.post('/keyst10500/save', reqForm);
+    // 取得APIを書いていないので、画面的には変わらない
   }
 }
