@@ -28,8 +28,12 @@ export default class Keyst10203 extends Vue {
    * スキルシート表示イベント
    * @param skillSheetId
    */
-  displaySkillSheet(skillSheetId: number) {
-    Keyst10200Module.displaySkillSheet(skillSheetId);
+  async displaySkillSheet(skillSheetId: number) {
+    await Keyst10200Module.displaySkillSheet(skillSheetId).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
   }
 
 }

@@ -100,11 +100,14 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async initialize(userId: number | null) {
-    const { data } = await $axios.get('/keyst10200/initialize', {
-      params: { userId: userId }
-    });
-    this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
-    this.SET_USER_BASIC_INFO(data.userBasicInfo);
+    await $axios.get('/keyst10200/initialize', {
+        params: { userId: userId }
+      }
+    ).then(({ data }) => {
+        this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
+        this.SET_USER_BASIC_INFO(data.userBasicInfo);
+      }
+    );
   }
 
   /**
@@ -113,12 +116,15 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async displaySkillSheet(skillSheetId: number) {
-    const { data } = await $axios.get(
+    await $axios.get(
       '/keyst10200/displaySkillSheet', {
         params: { skillSheetId: skillSheetId }
-      });
-    this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
-    this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+      }
+    ).then(({ data }) => {
+        this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
+        this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+      }
+    );
   }
 
   /**
@@ -127,11 +133,12 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async save(reqForm: Keyst10200SaveQ) {
-    const { data } = await $axios.post(
+    await $axios.post(
       '/keyst10200/save', reqForm
-    );
-    await this.initialize(data.userId);
-    await this.displaySkillSheet(data.skillSheetId);
+    ).then(({ data }) => {
+      this.initialize(data.userId);
+      this.displaySkillSheet(data.skillSheetId);
+    });
   }
 
   /**
@@ -140,11 +147,12 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async update(reqForm: Keyst10200UpdateQ) {
-    const { data } = await $axios.post(
+    await $axios.put(
       '/keyst10200/update', reqForm
-    );
-    await this.initialize(data.userId);
-    await this.displaySkillSheet(data.skillSheetId);
+    ).then(({ data }) => {
+      this.initialize(data.userId);
+      this.displaySkillSheet(data.skillSheetId);
+    });
   }
 
 }
