@@ -89,12 +89,13 @@ export default class extends Vue {
   }
 
   Decision(prjCode: string) {
-    Keyst10500Module.search(prjCode);
     if (this.radioValue === 'register') {
+      Keyst10500Module.reset();
       this.registerFlg = true;
       this.updateFlg = false;
     }
     if (this.radioValue === 'update') {
+      Keyst10500Module.search(prjCode);
       this.registerFlg = false;
       this.updateFlg = true;
     }

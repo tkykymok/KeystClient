@@ -8,12 +8,13 @@
         <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">エンド顧客名</th>
         <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">備考</th>
       </tr>
-      <tr v-if='registerFlg'>
-        <td class="p-3 text-gray-800 border border-b text-center">
+      <tr>
+        <td v-if='registerFlg' class="p-3 text-gray-800 border border-b text-center">
           <input
             v-model='_prjMaster.prjCode'
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
+        <td v-if='updateFlg' class="p-3 text-gray-800 border border-b text-center">{{ _prjMaster.prjCode }}</td>
         <td class="p-3 text-gray-800 border border-b">
           <input
             v-model='_prjMaster.prjName'
@@ -21,7 +22,7 @@
         </td>
         <td class="p-3 text-gray-800 border border-b">
           <input
-            v-model='_prjMaster.custCode'
+            v-model='_prjMaster.custName'
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
         <td class="p-3 text-gray-800 border border-b">
@@ -35,21 +36,6 @@
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
       </tr>
-      <tr v-if='updateFlg'>
-        <td class="p-3 text-gray-800 border border-b text-center">{{ _prjMaster.prjCode }}</td>
-        <td class="p-3 text-gray-800 border border-b">
-          <input :value='_prjMaster.prjName' type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
-        </td>
-        <td class="p-3 text-gray-800 border border-b">
-          <input :value='_prjMaster.custCode' type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
-        </td>
-        <td class="p-3 text-gray-800 border border-b">
-          <input :value='_prjMaster.endCustName' type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
-        </td>
-        <td class="p-3 text-gray-800 border border-b">
-          <input :value='_prjMaster.remark' type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
-        </td>
-      </tr>
     </table>
     <button
       v-if='registerFlg'
@@ -59,6 +45,7 @@
     </button>
     <button
       v-if='updateFlg'
+      @click='update'
       class='px-4 py-2 my-4 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
       更新
     </button>
@@ -70,6 +57,7 @@ import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import PrjMaster from '~/classes/prjMaster';
 import _ from 'lodash';
 import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
+import Keyst10500UpdateQ from '~/classes/form/keyst10500UpdateQ';
 import { Keyst10500Module } from '~/store';
 
 @Component({
@@ -83,14 +71,32 @@ export default class extends Vue {
   @PropSync('prjMaster', { required: false, default: null })
   _prjMaster!: PrjMaster;
 
-  save() {
-    try {
-      // 案件マスタをリクエストFormに移送する。
-      // state(this._prjMaster)とForm(Keyst10500SaveQ)のプロパティが一致するものだけで、Form(Keyst10500SaveQ)を作成する。
-      let reqForm: Keyst10500SaveQ = _.assign(new Keyst10500SaveQ(), _.pick(this._prjMaster, _.keys(new Keyst10500SaveQ())));
-      Keyst10500Module.save(reqForm);
-    } catch (error) {
-    }
+  /**
+   * 案件マスタ新規保存
+   */
+  async save() {
+    // 案件マスタをリクエストFormに移送する。
+    // state(this._prjMaster)とForm(Keyst10500SaveQ)のプロパティが一致するものだけで、Form(Keyst10500SaveQ)を作成する。
+    let reqForm: Keyst10500SaveQ = _.assign(new Keyst10500SaveQ(), _.pick(this._prjMaster, _.keys(new Keyst10500SaveQ())));
+    await Keyst10500Module.savePrjMaster(reqForm).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
+  }
+
+  /**
+   * 案件マスタ更新
+   */
+  async update() {
+    // 案件マスタをリクエストFormに移送する。
+    // state(this._prjMaster)とForm(Keyst10500SaveQ)のプロパティが一致するものだけで、Form(Keyst10500SaveQ)を作成する。
+    let reqForm: Keyst10500UpdateQ = _.assign(new Keyst10500UpdateQ(), _.pick(this._prjMaster, _.keys(new Keyst10500UpdateQ())));
+    await Keyst10500Module.updatePrjMaster(reqForm).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
   }
 }
 </script>

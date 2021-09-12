@@ -8,6 +8,8 @@ import { $axios } from '~/utils/api';
 import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
+import Keyst10500UpdateQ from '~/classes/form/keyst10500UpdateQ';
+import PrjUserAllocationUpdateQ from '~/classes/form/prjUserAllocationUpdateQ';
 
 export interface IKeyst10500 {
   prjMaster: PrjMaster | null;
@@ -52,6 +54,22 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
     })
   }
 
+  @Mutation
+  RESET_PRJ_MASTER() {
+    Object.assign(this._prjMaster, new PrjMaster());
+  }
+
+  @Mutation
+  ADD_ROW_4_PRJ_USER_ALLOCATION() {
+    let newRow: PrjUserAllocation = new PrjUserAllocation();
+    this._prjUserAllocationList.push(newRow);
+  }
+
+  @Mutation
+  REMOVE_ROW_4_PRJ_USER_ALLOCATION(idx: number) {
+    this._prjUserAllocationList.splice(idx, 1);
+  }
+
   // actionメソッド内のerrorをthrowしたい場合は「rawError: true」を記述する
   /**
    * 案件割当明細検索
@@ -70,12 +88,40 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
+   * 案件マスタリセット
+   */
+  @Action({ rawError: true })
+  public async reset() {
+    this.RESET_PRJ_MASTER();
+  }
+
+  /**
    * 案件マスタ新規保存
    * @param reqForm
    */
   @Action({ rawError: true })
-  public async save(reqForm: Keyst10500SaveQ) {
-    await $axios.post('/keyst10500/save', reqForm);
+  public async savePrjMaster(reqForm: Keyst10500SaveQ) {
+    await $axios.post('/keyst10500/savePrjMaster', reqForm);
+    // 取得APIを書いていないので、画面的には変わらない
+  }
+
+  /**
+   * 案件マスタ更新
+   * @param reqForm
+   */
+  @Action({ rawError: true })
+  public async updatePrjMaster(reqForm: Keyst10500UpdateQ) {
+    await $axios.put('/keyst10500/updatePrjMaster', reqForm);
+    // 取得APIを書いていないので、画面的には変わらない
+  }
+
+  /**
+   * 案件割当明細更新
+   * @param reqFormList
+   */
+  @Action({ rawError: true })
+  public async updatePrjUserAllocation(reqFormList: PrjUserAllocationUpdateQ[]) {
+    await $axios.put('/keyst10500/updatePrjUserAllocation', reqFormList);
     // 取得APIを書いていないので、画面的には変わらない
   }
 }

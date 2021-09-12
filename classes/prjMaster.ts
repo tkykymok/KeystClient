@@ -2,6 +2,7 @@ export default class PrjMaster {
   prjCode: string = '';
   prjName: string = '';
   custCode: string = '';
+  custName: string = '';
   endCustName: string = '';
   remark: string = '';
   deleteFlg: number | null = null;
