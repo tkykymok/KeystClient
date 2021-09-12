@@ -62,7 +62,7 @@
         <ul class='md:flex-col md:min-w-full flex flex-col list-none'>
           <li class='items-center'>
             <NuxtLink
-              to='/admin/dashboard'
+              to='/keyst10400'
               class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
@@ -71,7 +71,7 @@
                 icon='tv'
                 class=' mr-2 text-sm'
               />
-              Dashboard
+              ダッシュボード
             </NuxtLink>
           </li>
 
