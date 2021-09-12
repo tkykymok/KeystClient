@@ -62,7 +62,7 @@
         <ul class='md:flex-col md:min-w-full flex flex-col list-none'>
           <li class='items-center'>
             <NuxtLink
-              to='/keyst10400'
+              to='/keyst10600'
               class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
