@@ -29,10 +29,6 @@
       :registerFlg='this.registerFlg'
       :updateFlg='this.updateFlg'
       :prjMaster.sync='prjMaster'
-    />
-    <Keyst10502
-      v-if='updateFlg'
-      :prjMaster.sync='prjMaster'
       :prjUserAllocationList.sync='prjUserAllocationList'
     />
   </div>
@@ -43,7 +39,6 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10501 from '~/components/Keyst10500/Keyst10501.vue';
-import Keyst10502 from '~/components/Keyst10500/Keyst10502.vue';
 import PrjCode from '~/components/SelectOptions/PrjCode.vue';
 import { Keyst10500Module } from '~/store';
 
@@ -51,16 +46,15 @@ import { Keyst10500Module } from '~/store';
   name: 'Keyst10500',
   components: {
     Keyst10501,
-    Keyst10502,
     PrjCode
   },
 })
 export default class extends Vue {
-  // 案件マスタ (initializeメソッドがなので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  // 案件マスタ (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
   get prjMaster(): PrjMaster {
     return JSON.parse(JSON.stringify(Keyst10500Module.prjMaster));
   }
-  // 案件割当明細一覧 (initializeメソッドがなので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  // 案件割当明細一覧 (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
   get prjUserAllocationList(): PrjUserAllocation[] {
     let prjUserAllocationList: PrjUserAllocation[] = [];
     Keyst10500Module.prjUserAllocationList.forEach(obj => {

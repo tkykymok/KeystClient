@@ -9,7 +9,6 @@ import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
 import Keyst10500UpdateQ from '~/classes/form/keyst10500UpdateQ';
-import PrjUserAllocationUpdateQ from '~/classes/form/prjUserAllocationUpdateQ';
 
 export interface IKeyst10500 {
   prjMaster: PrjMaster | null;
@@ -39,11 +38,21 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
     return this._prjUserAllocationList;
   }
 
+  /**
+   * 案件マスタを設定する。
+   * @param value
+   * @constructor
+   */
   @Mutation
   SET_PRJ_MASTER(value: PrjMaster) {
     Object.assign(this._prjMaster, value);
   }
 
+  /**
+   * 案件割当明細を設定する。
+   * @param value
+   * @constructor
+   */
   @Mutation
   SET_PRJ_USER_ALLOCATION_LIST(value: PrjUserAllocation[]) {
     // 案件割当明細一覧を初期化する
@@ -54,17 +63,30 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
     })
   }
 
+  /**
+   * 案件マスタを空にする。
+   * @constructor
+   */
   @Mutation
   RESET_PRJ_MASTER() {
     Object.assign(this._prjMaster, new PrjMaster());
   }
 
+  /**
+   * 行追加(案件割当明細)
+   * @constructor
+   */
   @Mutation
   ADD_ROW_4_PRJ_USER_ALLOCATION() {
     let newRow: PrjUserAllocation = new PrjUserAllocation();
     this._prjUserAllocationList.push(newRow);
   }
 
+  /**
+   * 行削除(案件割当明細)
+   * @param idx
+   * @constructor
+   */
   @Mutation
   REMOVE_ROW_4_PRJ_USER_ALLOCATION(idx: number) {
     this._prjUserAllocationList.splice(idx, 1);
@@ -100,28 +122,18 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
    * @param reqForm
    */
   @Action({ rawError: true })
-  public async savePrjMaster(reqForm: Keyst10500SaveQ) {
-    await $axios.post('/keyst10500/savePrjMaster', reqForm);
+  public async save(reqForm: Keyst10500SaveQ) {
+    await $axios.post('/keyst10500/save', reqForm);
     // 取得APIを書いていないので、画面的には変わらない
   }
 
   /**
-   * 案件マスタ更新
+   * 案件マスタ・案件割当明細更新
    * @param reqForm
    */
   @Action({ rawError: true })
-  public async updatePrjMaster(reqForm: Keyst10500UpdateQ) {
-    await $axios.put('/keyst10500/updatePrjMaster', reqForm);
-    // 取得APIを書いていないので、画面的には変わらない
-  }
-
-  /**
-   * 案件割当明細更新
-   * @param reqFormList
-   */
-  @Action({ rawError: true })
-  public async updatePrjUserAllocation(reqFormList: PrjUserAllocationUpdateQ[]) {
-    await $axios.put('/keyst10500/updatePrjUserAllocation', reqFormList);
+  public async update(reqForm: Keyst10500UpdateQ) {
+    await $axios.put('/keyst10500/update', reqForm);
     // 取得APIを書いていないので、画面的には変わらない
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="pt-12">
     <p class="pb-4">参画者一覧</p>
     <table class="w-full table-fixed shadow-md">
       <tr>
@@ -34,10 +34,14 @@
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
         <td class="p-3 text-gray-800 border border-b text-center">
-          {{ prjUserAllocation.prjStartDate }}
+          <input
+            v-model='prjUserAllocation.prjStartDate'
+            type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
         <td class="p-3 text-gray-800 border border-b text-center">
-          {{ prjUserAllocation.prjEndDate }}
+          <input
+            v-model='prjUserAllocation.prjEndDate'
+            type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
       </tr>
     </table>
@@ -51,12 +55,14 @@
 
 <script lang="ts">
 import { Component, PropSync, Vue } from 'nuxt-property-decorator';
-import UserName from '~/components/SelectOptions/UserName.vue';
-import PrjUserAllocation from '~/classes/prjUserAllocation';
 import PrjMaster from '~/classes/prjMaster';
+import PrjUserAllocation from '~/classes/prjUserAllocation';
+import UserName from '~/components/SelectOptions/UserName.vue';
 import _ from 'lodash';
-import PrjUserAllocationUpdateQ from '~/classes/form/prjUserAllocationUpdateQ';
 import { Keyst10500Module } from '~/store';
+import Keyst10500UpdateQ from '~/classes/form/keyst10500UpdateQ';
+import Keyst10500UpdateQ1 from '~/classes/form/keyst10500UpdateQ1';
+import Keyst10500UpdateQ2 from '~/classes/form/keyst10500UpdateQ2';
 
 @Component({
   name: 'Keyst10502',
@@ -86,17 +92,21 @@ export default class extends Vue {
   }
 
   /**
-   * 案件割当明細更新
+   * 案件マスタ・案件割当明細更新
    */
   async update() {
-    // 案件割当明細部をリクエストFormに移送する。
-    // state(this._prjUserAllocationList)とForm(PrjUserAllocationUpdateQ)のプロパティが一致するものだけで、Form(PrjUserAllocationUpdateQ)を作成する。
-    let reqFormList: PrjUserAllocationUpdateQ[] = [];
+    // 案件マスタをリクエストFormに移送する。
+    // state(this._prjMaster)とForm(Keyst10500UpdateQ1)のプロパティが一致するものだけで、Form(Keyst10500UpdateQ1)を作成する。
+    let reqForm: Keyst10500UpdateQ = new Keyst10500UpdateQ();
+    let prjMaster: Keyst10500UpdateQ1 = _.assign(new Keyst10500UpdateQ1(), _.pick(this._prjMaster, _.keys(new Keyst10500UpdateQ1())));
+    reqForm.prjMaster = prjMaster;
+    // 案件割当明細をリクエストFormに移送する。
+    // state(this._prjUserAllocationList)とForm(Keyst10500UpdateQ2)のプロパティが一致するものだけで、Form(Keyst10500UpdateQ2)を作成する。
     this._prjUserAllocationList.forEach(obj => {
-      reqFormList.push(_.assign(new PrjUserAllocationUpdateQ(), _.pick(obj, _.keys(new PrjUserAllocationUpdateQ()))));
-      // この行にbeforeUserIdを入れる処理を書かなければならない。
+      let prjUserAllocation: Keyst10500UpdateQ2 = _.assign(new Keyst10500UpdateQ2(), _.pick(obj, _.keys(new Keyst10500UpdateQ2())));
+      reqForm.prjUserAllocationList.push(prjUserAllocation);
     })
-    await Keyst10500Module.updatePrjUserAllocation(reqFormList).catch(error => {
+    await Keyst10500Module.update(reqForm).catch(error => {
       if (error.response.status === 401) {
         this.$router.push('/login');
       }
