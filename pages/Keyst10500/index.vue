@@ -41,6 +41,7 @@ import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10501 from '~/components/Keyst10500/Keyst10501.vue';
 import PrjCode from '~/components/SelectOptions/PrjCode.vue';
 import { Keyst10500Module } from '~/store';
+import { $axios } from '~/utils/api';
 
 @Component({
   name: 'Keyst10500',
@@ -98,6 +99,19 @@ export default class extends Vue {
   check() {
     console.log('PrjMaster', this.prjMaster);
     console.log('PrjUserAllocationList', this.prjUserAllocationList);
+    console.log('パラメータ', this.$route.query.prjCode);
+  }
+
+  async created() {
+    // パラメータ(prjCode)がある場合のみ、初期表示を行う。
+    if (this.$route.query.prjCode !== undefined) {
+      let prjcode = this.$route.query.prjCode.toString();
+      console.log('パラメータ', prjcode);
+      await Keyst10500Module.search(prjcode);
+      this.PrjCodeFlg = true;
+      this.registerFlg = false;
+      this.updateFlg = true;
+    }
   }
 }
 </script>

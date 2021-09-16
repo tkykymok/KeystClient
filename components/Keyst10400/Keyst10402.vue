@@ -12,10 +12,10 @@
           スキル
         </th>
         <th class="w-1/6">
-          案件
+          案件・スキルシート
         </th>
       </tr>
-      <tr v-for='userInfo in _userInfoList' :key='userInfo.userId'
+      <tr v-for='(userInfo, idx) in _userInfoList' :key='idx'
         class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImageModal(userInfo.userId)">
@@ -28,8 +28,12 @@
           <span v-for='skill in userInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span>
         </th>
         <th class="w-1/6 font-normal">
-          <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="showModal(userInfo.userId)">案件</button>
-          <a href="/keyst10200" class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2">スキルシート</a>
+          <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showModal(userInfo.userId)">案件</button>
+          <button
+            @click='$router.push({ path: "/keyst10200"})'
+            class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
+            スキルシート
+          </button>
         </th>
         <Keyst10403
           :prjInfo.sync='userInfo.prjInfo'
