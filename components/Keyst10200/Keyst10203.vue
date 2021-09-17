@@ -1,10 +1,11 @@
 <template>
   <div class='flex-auto'>
     <div class='mx-2 p-2 text-center text-gray-800 font-bold bg-teal-400 rounded-md shadow-md'>スキルシート一覧</div>
-    <div class='overflow-x-scroll' style='height: 500px'>
+    <div class='overflow-y-scroll' style='height: 600px'>
       <div
-        class='mx-2 p-2 mt-1 shadow-md cursor-pointer hover:bg-teal-100 rounded-md'
         v-for='skillSheet in skillSheetInfoList' :key='skillSheet.skillSheetId'
+        class='mx-2 p-2 mt-1 shadow-md cursor-pointer rounded-md'
+        :class="selectedSkillSheetId === skillSheet.skillSheetId? 'bg-teal-200':'hover:bg-teal-100'"
         @click='displaySkillSheet(skillSheet.skillSheetId)'
       >
         {{ skillSheet.skillSheetRegDatetime }}
@@ -24,6 +25,11 @@ export default class Keyst10203 extends Vue {
   @Prop({ required: true, default: () => ([]) })
   skillSheetInfoList!: SkillSheetInfo[];
 
+  // 選択中のスキルシートID
+  get selectedSkillSheetId(): number | null {
+    return Keyst10200Module.skillSheetHeader.skillSheetId;
+  }
+
   /**
    * スキルシート表示イベント
    * @param skillSheetId
@@ -34,6 +40,7 @@ export default class Keyst10203 extends Vue {
         this.$router.push('/login');
       }
     });
+    this.selectedSkillSheetId = skillSheetId;
   }
 
 }
