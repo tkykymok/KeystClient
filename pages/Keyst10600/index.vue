@@ -179,7 +179,7 @@ export default class extends Vue {
   // カレンダーから選択した日付が画面に反映されない事象を解決するための対応
   public postStartDate: string = '';
   public postEndDate: string = '';
-  
+
   @Watch('notificationInfo', { immediate: true, deep: true })
   watchNotificationInfo() {
     this.postStartDate = this.notificationInfo.postStartDate;
@@ -210,7 +210,7 @@ export default class extends Vue {
    */
   get notificationInfo(): NotificationInfo {
     if (this.selectedNotificationId) {
-      return this.notificationInfoList.find(obj => obj.notificationId === this.selectedNotificationId);
+      return this.notificationInfoList.find(obj => obj.notificationId === this.selectedNotificationId)!;
     } else {
       return new NotificationInfo();
     }
@@ -224,8 +224,9 @@ export default class extends Vue {
     // お知らせ情報をリクエストFormに移送する。
     let reqForm: Keyst10600SaveQ = _.assign(new Keyst10600SaveQ(), _.pick(this.notificationInfo, _.keys(new Keyst10600SaveQ())));
     await Keyst10600Module.save(reqForm)
-      .then(
-        this.createNewNotification()
+      .then(() => {
+          this.createNewNotification();
+        }
       )
       .catch(error => {
         if (error.response.status === 401) {

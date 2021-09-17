@@ -40,7 +40,6 @@ export default class Keyst10203 extends Vue {
         this.$router.push('/login');
       }
     });
-    this.selectedSkillSheetId = skillSheetId;
   }
 
 }
