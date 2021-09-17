@@ -86,7 +86,7 @@ import Keyst10200DeleteQ from '~/classes/form/keyst10200DeleteQ';
       }
     }
     await Keyst10200Module.initialize(userId).catch(error => {
-      if (error.response.status === 401) {
+      if (error.response.status === 401 || error.response.status === 403) {
         context.redirect('/login');
       }
     });
