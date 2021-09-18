@@ -140,12 +140,14 @@
       </button>
       <button
         class='px-4 py-2 ml-2 bg-green-500 text-white rounded-md hover:bg-green-400 active:outline-none focus:outline-none'
-        v-show='true'
+        v-show='selectedNotificationId'
+        @click='update'
       >更新
       </button>
       <button
         class='px-4 py-2 ml-2 bg-red-500 text-white rounded-md hover:bg-red-400 active:outline-none focus:outline-none'
-        v-show='true'
+        v-show='selectedNotificationId'
+        @click='deleteNotification'
       >削除
       </button>
     </div>
@@ -160,6 +162,8 @@ import NotificationInfo from '~/classes/notificationInfo';
 import { convertDateToYearMonthDay } from '~/utils/converter';
 import _ from 'lodash';
 import Keyst10600SaveQ from '~/classes/form/keyst10600SaveQ';
+import Keyst10600UpdateQ from '~/classes/form/keyst10600UpdateQ';
+import Keyst10600DeleteQ from '~/classes/form/keyst10600DeleteQ';
 
 @Component({
   name: 'Keyst10600',
@@ -235,6 +239,44 @@ export default class extends Vue {
       });
   }
 
+  /**
+   * お知らせ更新
+   */
+  async update() {
+    // お知らせ情報をリクエストFormに移送する。
+    let reqForm: Keyst10600UpdateQ = _.assign(new Keyst10600UpdateQ(), _.pick(this.notificationInfo, _.keys(new Keyst10600UpdateQ())));
+    await Keyst10600Module.update(reqForm)
+      .then(() => {
+          this.createNewNotification();
+        }
+      )
+      .catch(error => {
+        if (error.response.status === 401) {
+          this.$router.push('/login');
+        }
+      });
+  }
+
+  /**
+   * お知らせ削除
+   */
+  async deleteNotification() {
+    // スキルシートヘッダー部をリクエストFormに移送する。
+    let reqForm: Keyst10600DeleteQ = new Keyst10600DeleteQ();
+    this.$set(reqForm, 'notificationId', this.notificationInfo.notificationId); // スキルシートID
+    this.$set(reqForm, 'versionExKey', this.notificationInfo.versionExKey); // 排他制御カラム
+
+    await Keyst10600Module.deleteNotification(reqForm)
+      .then(() => {
+          this.createNewNotification();
+        }
+      )
+      .catch(error => {
+        if (error.response.status === 401) {
+          this.$router.push('/login');
+        }
+      });
+  }
 
   /**
    * お知らせ選択
