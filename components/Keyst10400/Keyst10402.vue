@@ -25,7 +25,7 @@
         </th>
         <th class="w-1/6 font-normal">{{ userInfo.team }}</th>
         <th class="w-1/6 font-normal">
-          <span v-for='skill in userInfo.skillList' :key="skill.skillCode">{{ skill.skillName }} </span>
+          <span v-for='(skill, idx) in userInfo.skillList' :key='idx'>{{ skill.skillName }} </span>
         </th>
         <th class="w-1/6 font-normal">
           <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showModal(userInfo.userId)">案件</button>

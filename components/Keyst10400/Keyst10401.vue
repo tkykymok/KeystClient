@@ -5,12 +5,12 @@
       <div class="flex justify-around">
         <div class="w-1/4 p-4">
           <p class="font-bold">キーワード</p>
-          <input v-model='keyword' @change="filteredUsers()"
+          <input v-model='keyword' @input="filteredCheckKeyword()"
             type="search" name="search" placeholder="キーワードを入力" class="border border-black rounded-md p-1 mt-1 w-full">
         </div>
         <div class="w-1/4 p-4">
           <p class="font-bold">チーム</p>
-          <select v-model='selectedTeam' @change="selectedTeamUsers()"
+          <select v-model='selectedTeam' @change="filteredCheckSelectedTeam()"
             name="team" class="border border-black rounded-md p-1 mt-1 w-full">
             <option value=''>チーム一覧</option>
             <option v-for='(team, idx) of filtering.teamList' :key='idx' :value='team'>
@@ -20,7 +20,7 @@
         </div>
         <div class="w-1/4 p-4">
           <p class="font-bold">スキル</p>
-          <select v-model='selectedSkill' @change="selectedSkillUsers()"
+          <select v-model='selectedSkill' @change="filteredCheckSelectedSkill()"
             name="skill" class="border border-black rounded-md p-1 mt-1 w-full">
             <option value=''>スキル一覧</option>
             <option v-for='(skillName, idx) of filtering.skillNameList' :key='idx' :value='skillName'>
@@ -59,43 +59,134 @@ export default class extends Vue {
   public selectedTeam: string = '';
   public selectedSkill: string = '';
 
-  async filteredUsers():  Promise<UserInfo4Keyst10400[]> {
+  async filteredCheckKeyword(): Promise<UserInfo4Keyst10400[]> {
     if (this.selectedTeam === '' && this.selectedSkill === '') {
       await Keyst10400Module.initialize();
+      this.filteredUsers();
+      console.log('チームなし、スキルなし');
+      return this._userInfoList;
     }
+    if (this.selectedTeam !== '' && this.selectedSkill === '') {
+      await Keyst10400Module.initialize();
+      this.selectedTeamUsers();
+      this.filteredUsers();
+      console.log('チームあり、スキルなし');
+      return this._userInfoList;
+    }
+    if (this.selectedTeam === '' && this.selectedSkill !== '') {
+      await Keyst10400Module.initialize();
+      this.selectedSkillUsers();
+      this.filteredUsers();
+      console.log('チームなし、スキルあり');
+      return this._userInfoList;
+    } 
+    if (this.selectedTeam !== '' && this.selectedSkill !== '') {
+      await Keyst10400Module.initialize();
+      this.selectedTeamUsers();
+      this.selectedSkillUsers();
+      this.filteredUsers();
+      console.log('チームあり、スキルあり');
+      return this._userInfoList;
+    }
+    return this._userInfoList;
+  }
+
+  async filteredCheckSelectedTeam(): Promise<UserInfo4Keyst10400[]> {
+    if (this.keyword === '' && this.selectedSkill === '') {
+      await Keyst10400Module.initialize();
+      this.selectedTeamUsers();
+      console.log('キーワードなし、スキルなし');
+      return this._userInfoList;
+    }
+    if (this.keyword !== '' && this.selectedSkill === '') {
+      await Keyst10400Module.initialize();
+      this.filteredUsers();
+      this.selectedTeamUsers();
+      console.log('キーワードあり、スキルなし');
+      return this._userInfoList;
+    }
+    if (this.keyword === '' && this.selectedSkill !== '') {
+      await Keyst10400Module.initialize();
+      this.selectedSkillUsers();
+      this.selectedTeamUsers();
+      console.log('キーワードなし、スキルあり');
+      return this._userInfoList;
+    } 
+    if (this.keyword !== '' && this.selectedSkill !== '') {
+      await Keyst10400Module.initialize();
+      this.filteredUsers();
+      this.selectedSkillUsers();
+      this.selectedTeamUsers();
+      console.log('キーワードあり、スキルあり');
+      return this._userInfoList;
+    }
+    return this._userInfoList;
+  }
+
+  async filteredCheckSelectedSkill(): Promise<UserInfo4Keyst10400[]> {
+    if (this.keyword === '' && this.selectedTeam === '') {
+      await Keyst10400Module.initialize();
+      this.selectedSkillUsers();
+      console.log('キーワードなし、チームなし');
+      return this._userInfoList;
+    }
+    if (this.keyword !== '' && this.selectedTeam === '') {
+      await Keyst10400Module.initialize();
+      this.filteredUsers();
+      this.selectedSkillUsers();
+      console.log('キーワードあり、チームなし');
+      return this._userInfoList;
+    }
+    if (this.keyword === '' && this.selectedTeam !== '') {
+      await Keyst10400Module.initialize();
+      console.log(this._userInfoList);
+      this.selectedTeamUsers();
+      console.log(this._userInfoList);
+      this.selectedSkillUsers();
+      console.log(this._userInfoList);
+      // console.log('キーワードなし、チームあり', this.selectedTeam);
+      return this._userInfoList;
+    } 
+    if (this.keyword !== '' && this.selectedTeam !== '') {
+      await Keyst10400Module.initialize();
+      this.filteredUsers();
+      this.selectedTeamUsers();
+      this.selectedSkillUsers();
+      console.log('キーワードあり、チームあり');
+      return this._userInfoList;
+    }
+    return this._userInfoList;
+  }
+
+  filteredUsers() {
     var users: UserInfo4Keyst10400[] = [];
     for (var user of this._userInfoList) {
       for (var skill of user.skillList) {
         if (skill.skillName.indexOf(this.keyword) !== -1 ||
           user.userName.indexOf(this.keyword) !== -1 ||
+          user.userNameKana.indexOf(this.keyword) !== -1 ||
           user.team.indexOf(this.keyword) !== -1) {
           users.push(user);
           break;
         }
       }
     }
-    this.$store.commit('keyst10400/SET_USER_INFO_LIST', users);
-    return this._userInfoList;
+    Keyst10400Module.SET_USER_INFO_LIST(users);
+    return this._userInfoList
   }
 
-  async selectedTeamUsers(): Promise<UserInfo4Keyst10400[]> {
-    if (this.keyword === '' && this.selectedSkill === '') {
-      await Keyst10400Module.initialize();
-    }
+  selectedTeamUsers() {
     var users: UserInfo4Keyst10400[] = [];
     for (var user of this._userInfoList) {
       if (user.team.indexOf(this.selectedTeam) !== -1) {
         users.push(user);
       }
     }
-    this.$store.commit('keyst10400/SET_USER_INFO_LIST', users);
-    return this._userInfoList;
+    Keyst10400Module.SET_USER_INFO_LIST(users);
+    return this._userInfoList
   }
 
-  async selectedSkillUsers(): Promise<UserInfo4Keyst10400[]> {
-    if (this.keyword === '' && this.selectedTeam === '') {
-      await Keyst10400Module.initialize();
-    }
+  selectedSkillUsers() {
     var users: UserInfo4Keyst10400[] = [];
     for (var user of this._userInfoList) {
       for (var skill of user.skillList) {
@@ -105,8 +196,8 @@ export default class extends Vue {
         }
       }
     }
-    this.$store.commit('keyst10400/SET_USER_INFO_LIST', users);
-    return this._userInfoList;
+    Keyst10400Module.SET_USER_INFO_LIST(users);
+    return this._userInfoList
   }
 }
 </script>
