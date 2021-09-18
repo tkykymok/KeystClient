@@ -13,6 +13,6 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator';
   layout: 'error'
 })
 export default class extends Vue {
-  @Prop({required: true }) error;
+  @Prop({required: true }) error: any;
 };
 </script>

@@ -62,7 +62,7 @@
         <ul class='md:flex-col md:min-w-full flex flex-col list-none'>
           <li class='items-center'>
             <NuxtLink
-              to='/keyst10600'
+              to='/dashboard'
               class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
@@ -132,13 +132,13 @@
           <li class='items-center'>
             <NuxtLink
               class='text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
-              to='/auth/login'
+              to='/keyst10600'
             >
               <font-awesome-icon
-                icon='fingerprint'
+                icon='info-circle'
                 class='mr-2 text-sm'
               />
-              Login
+              お知らせ
             </NuxtLink>
           </li>
 
