@@ -20,13 +20,12 @@
             v-model='_prjMaster.prjName'
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
-        <td v-if='registerFlg' class="p-3 text-gray-800 border border-b text-center">
-          <input
-            v-model='_prjMaster.custName'
-            type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
-        </td>
-        <td v-if='updateFlg' class="p-3 text-gray-800 border border-b text-center">{{ _prjMaster.custName }}</td>
         <td class="p-3 text-gray-800 border border-b text-center">
+          <CustName
+            :custCode.sync='_prjMaster.custCode'
+          />
+        </td>
+        <td class="p-3 text-gray-800 border border-b">
           <input
             v-model='_prjMaster.endCustName'
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
@@ -46,8 +45,8 @@
     </button>
     <Keyst10502
       v-if='updateFlg'
-      :prjMaster.sync='prjMaster'
-      :prjUserAllocationList.sync='prjUserAllocationList'
+      :prjMaster.sync='_prjMaster'
+      :prjUserAllocationList.sync='_prjUserAllocationList'
     />
   </div>
 </template>
@@ -56,6 +55,7 @@
 import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
+import CustName from '~/components/SelectOptions/CustName.vue';
 import Keyst10502 from '~/components/Keyst10500/Keyst10502.vue';
 import _ from 'lodash';
 import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
@@ -64,7 +64,8 @@ import { Keyst10500Module } from '~/store';
 @Component({
   name: 'Keyst10501',
   components: {
-    Keyst10502
+    Keyst10502,
+    CustName
   }
 })
 export default class extends Vue {

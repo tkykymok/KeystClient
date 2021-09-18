@@ -7,7 +7,7 @@
       </div>
       <div class="mr-10">
         <span class="mr-1">更新・詳細</span>
-        <input type="radio" name="search" value="update" v-model='radioValue' @change='PrjCodeDisplay'>
+        <input type="radio" name="search" value="update" v-model='radioValue' ref="target" @change='PrjCodeDisplay'>
       </div>
       <PrjCode
         v-if='PrjCodeFlg'
@@ -42,6 +42,7 @@ import Keyst10501 from '~/components/Keyst10500/Keyst10501.vue';
 import PrjCode from '~/components/SelectOptions/PrjCode.vue';
 import { Keyst10500Module } from '~/store';
 import { $axios } from '~/utils/api';
+import { Context } from '@nuxt/types';
 
 @Component({
   name: 'Keyst10500',
@@ -49,6 +50,13 @@ import { $axios } from '~/utils/api';
     Keyst10501,
     PrjCode
   },
+  async asyncData(context: Context) {
+    const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
+    if (queryParam4PrjCode) {
+      let prjCode = queryParam4PrjCode.toString();
+      await Keyst10500Module.search(prjCode);
+    }
+  }
 })
 export default class extends Vue {
   // 案件マスタ (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
@@ -102,15 +110,13 @@ export default class extends Vue {
     console.log('パラメータ', this.$route.query.prjCode);
   }
 
-  async created() {
-    // パラメータ(prjCode)がある場合のみ、初期表示を行う。
-    if (this.$route.query.prjCode !== undefined) {
-      let prjcode = this.$route.query.prjCode.toString();
-      console.log('パラメータ', prjcode);
-      await Keyst10500Module.search(prjcode);
+  mounted() {
+    if (this.$route.query.prjCode) {
       this.PrjCodeFlg = true;
       this.registerFlg = false;
       this.updateFlg = true;
+      let element: any = this.$refs.target;
+      element.checked = true;
     }
   }
 }

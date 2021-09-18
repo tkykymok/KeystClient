@@ -80,6 +80,7 @@ export default class extends Vue {
    * 案件割当明細部行追加イベント
    */
   addRow4PrjUserAllocation() {
+    Keyst10500Module.SET_PRJ_USER_ALLOCATION_LIST(this._prjUserAllocationList);
     Keyst10500Module.ADD_ROW_4_PRJ_USER_ALLOCATION();
   }
 
@@ -88,6 +89,7 @@ export default class extends Vue {
    * @param idx
    */
   removeRow4PrjUserAllocation(idx: number) {
+    Keyst10500Module.SET_PRJ_USER_ALLOCATION_LIST(this._prjUserAllocationList);
     Keyst10500Module.REMOVE_ROW_4_PRJ_USER_ALLOCATION(idx);
   }
 
