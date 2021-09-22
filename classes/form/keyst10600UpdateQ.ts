@@ -1,4 +1,5 @@
-export default class Keyst10600SaveQ {
+export default class Keyst10600UpdateQ {
+  notificationId: number | null = null;
   title: string = '';
   content: string = '';
   postStartDate: string = '';

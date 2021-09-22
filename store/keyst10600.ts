@@ -1,18 +1,9 @@
-import {
-  VuexModule,
-  Module,
-  Action,
-  Mutation
-} from 'vuex-module-decorators';
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { $axios } from '~/utils/api';
-import SkillSheetInfo from '~/classes/skillSheetInfo';
-import SkillSheetHeader from '~/classes/skillSheetHeader';
-import SkillSheetDetail from '~/classes/skillSheetDetail';
-import Keyst10200SaveQ from '~/classes/form/keyst10200SaveQ';
-import Keyst10200UpdateQ from '~/classes/form/keyst10200UpdateQ';
-import Keyst10200DeleteQ from '~/classes/form/keyst10200DeleteQ';
 import NotificationInfo from '~/classes/notificationInfo';
 import Keyst10600SaveQ from '~/classes/form/keyst10600SaveQ';
+import Keyst10600UpdateQ from '~/classes/form/keyst10600UpdateQ';
+import Keyst10600DeleteQ from '~/classes/form/keyst10600DeleteQ';
 
 export interface IKeyst10600 {
   notificationInfoList: NotificationInfo[],
@@ -64,10 +55,33 @@ export default class Keyst10600 extends VuexModule implements IKeyst10600 {
   public async save(reqForm: Keyst10600SaveQ) {
     await $axios.post(
       '/keyst10600/save', reqForm
-    ).then(({ data }) => {
+    ).then(() => {
       this.initialize();
     });
   }
 
+  /**
+   * お知らせ更新
+   */
+  @Action({ rawError: true })
+  public async update(reqForm: Keyst10600UpdateQ) {
+    await $axios.put(
+      '/keyst10600/update', reqForm
+    ).then(() => {
+      this.initialize();
+    });
+  }
+
+  /**
+   * お知らせ削除
+   */
+  @Action({ rawError: true })
+  public async deleteNotification(reqForm: Keyst10600DeleteQ) {
+    await $axios.put(
+      '/keyst10600/delete', reqForm
+    ).then(() => {
+      this.initialize();
+    });
+  }
 
 }
