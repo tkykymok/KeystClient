@@ -55,6 +55,7 @@ import { Component, PropSync, Vue, Ref } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
+import { Keyst10400Module } from '~/store';
 
 @Component({
   name: 'Keyst10402',
@@ -109,7 +110,7 @@ export default class Keyst10402 extends Vue {
       } else {
         set = -1;
       }
-      this.$store.commit('keyst10400/SORT_NAME_USER_INFO_LIST', set);
+      Keyst10400Module.SORT_NAME_USER_INFO_LIST(set);
       return this._userInfoList;
     } else {
       return this._userInfoList;
@@ -124,7 +125,7 @@ export default class Keyst10402 extends Vue {
       } else {
         set = -1;
       }
-      this.$store.commit('keyst10400/SORT_TEAM_USER_INFO_LIST', set);
+      Keyst10400Module.SORT_TEAM_USER_INFO_LIST(set);
       return this._userInfoList;
     } else {
       return this._userInfoList;
