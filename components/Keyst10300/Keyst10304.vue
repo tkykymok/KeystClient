@@ -4,7 +4,7 @@
     <div v-if="loginUserInfo.adminFlg === false" class='flex'>
       <!-- <select v-model="selectedMonth" @change="changeMonth(selectedMonth)" class='p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
         <option v-for="implYearMonth of implYearMonthList" :value="implYearMonth" :key="implYearMonth">
-          {{ value }}
+          {{ implYearMonth }}
         </option>
       </select> -->
 
@@ -15,7 +15,7 @@
       </select>
 
       <div v-if="reserveInfoList.length && reserveInfoList[0].managerId === loginUserInfo.userId" name="team" class='p-1 ml-4 border-2 border-gray-300 rounded-md'>{{ reserveInfoList[0].team }}チーム</div>
-      <select v-else name="team" @change="changeTeam(selectedTeam)" v-model="selectedTeam" class='p-1 ml-4 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
+      <select v-else name="team" @change="changeTeam(selectedTeam, selectedMonth)" v-model="selectedTeam" class='p-1 ml-4 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
         <option value="A">Aチーム</option>
         <option value="B">Bチーム</option>
         <option value="C">Cチーム</option>
@@ -46,7 +46,7 @@ selectedTeam!: string;
 data() {
    return {
      //初期値
-     selectedMonth: { code: '2021'+this.thisMonth, label: '2021年'+this.thisMonth+'月' },
+    //  selectedMonth: { code: '2021'+this.thisMonth, label: '2021年'+this.thisMonth+'月' },
      //選択肢
      monthList: [
        {code: '202101', label: '2021年1月'},
@@ -82,8 +82,10 @@ data() {
   @Prop({ required: true, default: null })
   team!: String;
 
-  changeTeam(selectedTeam: String) {
-    Keyst10300Module.changeTeam(selectedTeam);
+  changeTeam(
+    selectedTeam: String,
+    selectedMonth: String) {
+    Keyst10300Module.changeTeam(selectedTeam, selectedMonth);
   }
 
   changeMonth(selectedMonth: String) {

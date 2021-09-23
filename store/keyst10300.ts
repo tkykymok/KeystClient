@@ -36,7 +36,7 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
   private _thisMonth: String = '';
   /** 実施月リスト */
   private _implYearMonthList: String[] = [];
-  /** ユーザー基本情報 */
+  /** チーム */
   private _team: String = '';
 
   get reserveInfoList(): ReserveInfo[] {
@@ -90,7 +90,7 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
   }
   @Mutation
   SET_TEAM(value: String) {
-    // ユーザー基本情報をセットする
+    // チームをセットする
     this._team = value;
   }
 
@@ -109,11 +109,16 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
   /**
    *チーム変更時に該当チームの予約状況を取得
    * @param team
+   * @param month
    */
   @Action({ rawError: true })
-  public async changeTeam(team: String) {
+  public async changeTeam(
+    team: String,
+    month: String) {
+      alert(team);
+      alert(month);
     const { data } = await $axios.get('/keyst10300/changeTeam', {
-      params: { team: team }
+      params: { team: team, month: month }
     });
     this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
   }
