@@ -2,6 +2,12 @@
   <div>
     <!-- 管理者のみ表示する -->
     <div v-if="loginUserInfo.adminFlg === false" class='flex'>
+      <!-- <select v-model="selectedMonth" @change="changeMonth(selectedMonth)" class='p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
+        <option v-for="implYearMonth of implYearMonthList" :value="implYearMonth" :key="implYearMonth">
+          {{ value }}
+        </option>
+      </select> -->
+
       <select v-model="selectedMonth" @change="changeMonth(selectedMonth)" class='p-1 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
         <option v-for="month in monthList" :value="month.code" :key="month">
           {{ month.label }}
@@ -26,13 +32,16 @@
 </template>
 
 <script lang='ts'>
-import { Component, Prop, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import { Keyst10300Module } from '~/utils/store-accessor';
 import LoginUserInfo from '~/classes/loginUserInfo';
 import ReserveInfo from '~/classes/reserveInfo';
 
 @Component({})
 export default class Keyst10304 extends Vue{
+
+@PropSync('team', { required: true, default: null })
+selectedTeam!: string;
 
 data() {
    return {
@@ -66,6 +75,9 @@ data() {
 
   @Prop({ required: true, default: null })
   thisMonth!: String;
+
+  @Prop({ required: true, default: () => ([]) })
+  implYearMonthList!: String[];
 
   @Prop({ required: true, default: null })
   team!: String;

@@ -7,13 +7,16 @@
       :loginUserInfo='loginUserInfo'
       :reserveInfoList='reserveInfoList'
       :thisMonth='thisMonth'
-      :team='team'
+      :implYearMonthList='implYearMonthList'
+      :team.sync='selectedTeam'
     />
 
     <!-- 予約日時入力部分 -->
     <!-- 管理者のみ,日時が登録されていない場合、ログイン中の管理者が登録済みの表示する -->
     <div v-if="loginUserInfo.adminFlg == false && !reserveInfoList.length">
-      <keyst10301 />
+      <keyst10301
+        :team.sync='selectedTeam'
+      />
     </div>
 
     <!-- 予約状況 -->
@@ -66,6 +69,8 @@ import ReserveInfoDetail from '~/classes/reserveInfoDetail';
 
 export default class extends Vue {
 
+  public selectedTeam: string = '';
+
   /** ログイン情報 */
   get loginUserInfo(): LoginUserInfo {
     return AuthenticationModule.loginUserInfo;
@@ -75,7 +80,13 @@ export default class extends Vue {
    * 予約情報一覧
    */
   get reserveInfoList(): ReserveInfo[] {
-    return Keyst10300Module.reserveInfoList;
+    let reserveInfoList: ReserveInfo[] = [];
+    Keyst10300Module.reserveInfoList.forEach(obj => {
+        let reserveInfo = JSON.parse(JSON.stringify(obj));
+        reserveInfoList.push(reserveInfo);
+      }
+    );
+    return reserveInfoList;
   }
 
   /**
@@ -86,17 +97,30 @@ export default class extends Vue {
   }
 
   /**
+   * 実施月リスト
+   */
+  get impleYearMonthList(): String[] {
+    return Keyst10300Module.implYearMonthList;
+  }
+
+  /**
    * チーム
    */
   get team(): String {
     return Keyst10300Module.team;
   }
 
-  /**
-   * 予約詳細一覧
+    /**
+   * 予約情報一覧
    */
   get reserveInfoDetailList(): ReserveInfoDetail[] {
-    return Keyst10300Module.reserveInfoDetailList;
+    let reserveInfoDetailList: ReserveInfoDetail[] = [];
+    Keyst10300Module.reserveInfoDetailList.forEach(obj => {
+        let ReserveInfoDetail = JSON.parse(JSON.stringify(obj));
+        reserveInfoDetailList.push(ReserveInfoDetail);
+      }
+    );
+    return reserveInfoDetailList;
   }
 
 }
