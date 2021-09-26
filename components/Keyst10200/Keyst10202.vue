@@ -76,6 +76,7 @@
                 label='稼働開始日'
                 :max-date='prjEndDate[idx]'
                 @input='$set(skillSheetDetail, "prjStartDate", $event)'
+                locale="en"
               />
             </client-only>
           </div>
@@ -100,6 +101,7 @@
                 label='稼働終了日'
                 :min-date='prjStartDate[idx]'
                 @input='$set(skillSheetDetail, "prjEndDate", $event)'
+                locale="en"
               />
             </client-only>
           </div>

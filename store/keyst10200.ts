@@ -10,6 +10,7 @@ import SkillSheetHeader from '~/classes/skillSheetHeader';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
 import Keyst10200SaveQ from '~/classes/form/keyst10200SaveQ';
 import Keyst10200UpdateQ from '~/classes/form/keyst10200UpdateQ';
+import Keyst10200DeleteQ from '~/classes/form/keyst10200DeleteQ';
 
 export interface IKeyst10200 {
   skillSheetInfoList: SkillSheetInfo[],
@@ -42,6 +43,11 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     return this._skillSheetDetailList;
   }
 
+  /**
+   * スキルシート情報一覧を設定する。
+   * @param value
+   * @constructor
+   */
   @Mutation
   SET_SKILL_SHEET_INFO_LIST(value: SkillSheetInfo[]) {
     // スキルシート情報一覧を初期化する。
@@ -50,16 +56,31 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     this._skillSheetInfoList.push(...value);
   }
 
+  /**
+   * スキルシートヘッダーを設定する。
+   * @param value
+   * @constructor
+   */
   @Mutation
   SET_SKILL_SHEET_HEADER(value: SkillSheetHeader) {
     Object.assign(this._skillSheetHeader, value);
   }
 
+  /**
+   * ユーザー基本情報をスキルシートヘッダーに設定する。
+   * @param value
+   * @constructor
+   */
   @Mutation
   SET_USER_BASIC_INFO(value: SkillSheetHeader) {
     Object.assign(this._skillSheetHeader, value);
   }
 
+  /**
+   * スキルシート明細を設定する。
+   * @param value
+   * @constructor
+   */
   @Mutation
   SET_SKILL_SHEET_DETAIL(value: SkillSheetDetail[]) {
     // スキルシート明細一覧を初期化する。
@@ -68,22 +89,40 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     this._skillSheetDetailList.push(...value);
   }
 
+  /**
+   * 行追加(スキルシート明細)
+   * @constructor
+   */
   @Mutation
   ADD_ROW_4_SKILL_SHEET_DETAIL() {
     let newRow: SkillSheetDetail = new SkillSheetDetail();
     this._skillSheetDetailList.push(newRow);
   }
 
+  /**
+   * 行削除(スキルシート明細)
+   * @param idx
+   * @constructor
+   */
   @Mutation
   REMOVE_ROW_4_SKILL_SHEET_DETAIL(idx: number) {
     this._skillSheetDetailList.splice(idx, 1);
   }
 
+  /**
+   * 行追加(FW, MW, ツール)
+   * @param idx
+   * @constructor
+   */
   @Mutation
   ADD_ROW_4_FW_MW_TOOL(idx: number) {
     this._skillSheetDetailList[idx].fwMwTool.push('');
   }
 
+  /**
+   * スキルシート新規作成
+   * @constructor
+   */
   @Mutation
   CREATE_NEW_SKILL_SHEET() {
     // スキルシート明細一覧を初期化する。
@@ -100,11 +139,14 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async initialize(userId: number | null) {
-    const { data } = await $axios.get('/keyst10200/initialize', {
-      params: { userId: userId }
-    });
-    this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
-    this.SET_USER_BASIC_INFO(data.userBasicInfo);
+    await $axios.get('/keyst10200/initialize', {
+        params: { userId: userId }
+      }
+    ).then(({ data }) => {
+        this.SET_SKILL_SHEET_INFO_LIST(data.skillSheetInfoList);
+        this.SET_USER_BASIC_INFO(data.userBasicInfo);
+      }
+    );
   }
 
   /**
@@ -113,12 +155,15 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async displaySkillSheet(skillSheetId: number) {
-    const { data } = await $axios.get(
+    await $axios.get(
       '/keyst10200/displaySkillSheet', {
         params: { skillSheetId: skillSheetId }
-      });
-    this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
-    this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+      }
+    ).then(({ data }) => {
+        this.SET_SKILL_SHEET_HEADER(data.skillSheetHeader);
+        this.SET_SKILL_SHEET_DETAIL(data.skillSheetDetail);
+      }
+    );
   }
 
   /**
@@ -127,11 +172,12 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async save(reqForm: Keyst10200SaveQ) {
-    const { data } = await $axios.post(
+    await $axios.post(
       '/keyst10200/save', reqForm
-    );
-    await this.initialize(data.userId);
-    await this.displaySkillSheet(data.skillSheetId);
+    ).then(({ data }) => {
+      this.initialize(data.userId);
+      this.displaySkillSheet(data.skillSheetId);
+    });
   }
 
   /**
@@ -140,11 +186,26 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
    */
   @Action({ rawError: true })
   public async update(reqForm: Keyst10200UpdateQ) {
-    const { data } = await $axios.post(
+    await $axios.put(
       '/keyst10200/update', reqForm
-    );
-    await this.initialize(data.userId);
-    await this.displaySkillSheet(data.skillSheetId);
+    ).then(({ data }) => {
+      this.initialize(data.userId);
+      this.displaySkillSheet(data.skillSheetId);
+    });
+  }
+
+  /**
+   * スキルシート削除
+   * @param reqForm
+   */
+  @Action({ rawError: true })
+  public async deleteSkillSheet(reqForm: Keyst10200DeleteQ) {
+    await $axios.put(
+      '/keyst10200/delete', reqForm
+    ).then(({ data }) => {
+      this.initialize(data.userId);
+      this.CREATE_NEW_SKILL_SHEET();
+    });
   }
 
 }

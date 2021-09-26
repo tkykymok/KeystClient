@@ -65,6 +65,7 @@
         <textarea
           v-model='_skillSheetHeader.strongArea'
           class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+          style='height: 100px'
         />
       </td>
     </tr>
@@ -74,6 +75,7 @@
         <textarea
           v-model='_skillSheetHeader.pr'
           class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+          style='height: 100px'
         />
       </td>
     </tr>
@@ -83,6 +85,7 @@
         <textarea
           v-model='_skillSheetHeader.evaluationOfSales'
           class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+          style='height: 100px'
         />
       </td>
     </tr>
