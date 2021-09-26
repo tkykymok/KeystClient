@@ -12,6 +12,7 @@
         format='YYYY-MM-DD'
         formatted='YYYY-MM-DD'
         label='日付'
+        :min-date='today'
         auto-close
     />
     </div>
@@ -41,7 +42,7 @@
       </div>
     </div>
     <div class='w-1/5 mt-4'>
-      <button class='p-1 text-sm font-bold text-gray-200 bg-blue-500 border rounded-lg cursor-pointer' @click='saveDate'>登録</button>
+      <button class='px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none' @click='save'>登録</button>
     </div>
   </div>
 </template>
@@ -50,27 +51,35 @@
 import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
 import { Keyst10300Module } from '~/utils/store-accessor';
 import Keyst10300SaveQ from '~/classes/form/keyst10300SaveQ';
+import { getToday } from '~/utils/converter';
 
 @Component({})
 export default class Keyst10301 extends Vue{
 
-  @PropSync('team', { required: true, default: null })
-  selectedTeam!: string;
+  get selectedTeam() {
+    return Keyst10300Module.team;
+  }
 
-  reserveDate: any = '';
-  fromTime: any = '';
-  toTime: any = '';
+  public reserveDate: string = '';
+  public fromTime: string = '16:00:00';
+  public toTime: string = '21:00:00';
+
+  /** 今日の日付 */
+  get today () {
+    return  getToday();
+  }
 
   /**
    * 面談可能日時登録（管理者）
    */
-  saveDate() {
+  save() {
     try {
       let reqForm: Keyst10300SaveQ = new Keyst10300SaveQ();
+      reqForm.reserveId = Keyst10300Module.reserveId;
+      reqForm.team = this.selectedTeam;
       reqForm.reserveDate = this.reserveDate;
       reqForm.fromTime = this.fromTime;
       reqForm.toTime = this.toTime;
-      reqForm.team = this.selectedTeam;
       Keyst10300Module.save(reqForm);
     } catch (error) {
     }

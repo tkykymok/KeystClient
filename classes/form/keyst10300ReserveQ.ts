@@ -1,7 +1,8 @@
-export default class Keyst10300SaveQ1 {
+export default class Keyst10300ReserveQ {
   reserveId: number | null = null;
   reserveDate: string = '';
   reserveTime: string = '';
-  feeling: string = '';
+  feeling: number | null = null;
   remark: string ='';
+  versionExKey: number | null = null;
 }

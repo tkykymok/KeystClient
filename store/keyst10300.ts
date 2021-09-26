@@ -1,23 +1,20 @@
-import {
-  VuexModule,
-  Module,
-  Action,
-  Mutation
-} from 'vuex-module-decorators';
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 import { $axios } from '~/utils/api';
 import ReserveInfo from '~/classes/reserveInfo';
-import ReserveInfoHeader from '~/classes/reserveInfoHeader';
-import ReserveInfoDetail from '~/classes/reserveInfoDetail';
 import Keyst10300SaveQ from '~/classes/form/keyst10300SaveQ';
-import Keyst10300SaveQ1 from '~/classes/form/keyst10300SaveQ1';
+import Keyst10300ReserveQ from '~/classes/form/keyst10300ReserveQ';
 import Keyst10300UpdateQ from '~/classes/form/keyst10300UpdateQ';
-
+import CommentHistory from '~/classes/commentHistory';
+import Keyst10300DeleteQ from '~/classes/form/keyst10300DeleteQ';
+import Keyst10300CancelQ from '~/classes/form/keyst10300CancelQ';
 
 
 export interface IKeyst10300 {
+  reserveId: number | null,
+  thisMonth: string,
+  team: string,
   reserveInfoList: ReserveInfo[],
-  reserveInfoHeader: ReserveInfoHeader | null,
-  reserveInfoDetailList: ReserveInfoDetail[] | null,
+  commentHistoryList: CommentHistory[]
 }
 
 @Module({
@@ -26,41 +23,58 @@ export interface IKeyst10300 {
   name: 'keyst10300'
 })
 export default class Keyst10300 extends VuexModule implements IKeyst10300 {
+  /** 予約ID */
+  private _reserveId: number | null = null;
+  /** 選択月 */
+  private _thisMonth: string = '';
+  /** チーム */
+  private _team: string = '';
   /** 予約情報一覧 */
   private _reserveInfoList: ReserveInfo[] = [];
-  /** 予約ヘッダー  */
-  private _reserveInfoHeader: ReserveInfoHeader = new ReserveInfoHeader();
-  /** 予約詳細 */
-  private _reserveInfoDetailList: ReserveInfoDetail[] = [];
-  /** 当月 */
-  private _thisMonth: String = '';
-  /** 実施月リスト */
-  private _implYearMonthList: String[] = [];
-  /** チーム */
-  private _team: String = '';
+  /** コメント履歴一覧 */
+  private _commentHistoryList: CommentHistory[] = [];
+
+
+  get reserveId(): number | null {
+    return this._reserveId;
+  }
 
   get reserveInfoList(): ReserveInfo[] {
     return this._reserveInfoList;
   }
 
-  get reserveInfoHeader(): ReserveInfoHeader {
-    return this._reserveInfoHeader;
-  }
-
-  get reserveInfoDetailList(): ReserveInfoDetail[] {
-    return this._reserveInfoDetailList;
-  }
-
-  get thisMonth(): String {
+  get thisMonth(): string {
     return this._thisMonth;
   }
 
-  get implYearMonthList(): String[] {
-    return this._implYearMonthList;
+  get team(): string {
+    return this._team;
   }
 
-  get team(): String {
-    return this._team;
+  get commentHistoryList(): CommentHistory[] {
+    return this._commentHistoryList;
+  }
+
+  @Mutation
+  SET_RESERVE_ID(value: number | null) {
+    // 当月をセットする
+    this._reserveId = value;
+  }
+
+  @Mutation
+  SET_THIS_MONTH(value: string) {
+    // 当月をセットする
+    this._thisMonth = value;
+  }
+
+  @Mutation
+  SET_TEAM(value: string) {
+    if (value) {
+      // チームをセットする
+      this._team = value;
+    } else {
+      this._team = '';
+    }
   }
 
   @Mutation
@@ -72,116 +86,99 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
   }
 
   @Mutation
-  SET_RESERVE_INFO_DETAIL_LIST(value: ReserveInfoDetail[]) {
-    // 予約詳細情報一覧を初期化する。
-    this._reserveInfoDetailList.splice(0);
-    // サーバーから取得した予約詳細情報一覧全件を追加する。
-    this._reserveInfoDetailList.push(...value);
-  }
-  @Mutation
-  SET_THIS_MONTH(value: String) {
-    // 当月をセットする
-    this._thisMonth = value;
-  }
-  @Mutation
-  SET_IMPL_YEAR_MONTH_LIST(value: string[]) {
-    this._implYearMonthList.splice(0);
-    this._implYearMonthList.push(...value);
-  }
-  @Mutation
-  SET_TEAM(value: String) {
-    // チームをセットする
-    this._team = value;
+  SET_COMMENT_HISTORY_LIST(value: CommentHistory[]) {
+    if (value && value.length) {
+      // コメント履歴一覧を初期化する。
+      this._commentHistoryList.splice(0);
+      // サーバーから取得した予約情報一覧全件を追加する。
+      this._commentHistoryList.push(...value);
+    } else {
+      this._commentHistoryList.splice(0);
+    }
   }
 
   @Action({ rawError: true })
   public async initialize() {
     const { data } = await $axios.get('/keyst10300/initialize');
-    this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
-    this.SET_RESERVE_INFO_DETAIL_LIST(data.reserveDetailList);
-    this.SET_TEAM(data.team)
+    this.SET_RESERVE_ID(data.reserveId)
+    this.SET_TEAM(data.team);
     this.SET_THIS_MONTH(data.thisMonth);
-    if(data.implYearMonthList != null) {
-      this.SET_IMPL_YEAR_MONTH_LIST(data.implYearMonthList);
-    }
-  }
-
-  /**
-   *チーム変更時に該当チームの予約状況を取得
-   * @param team
-   * @param month
-   */
-  @Action({ rawError: true })
-  public async changeTeam(
-    team: String,
-    month: String) {
-      alert(team);
-      alert(month);
-    const { data } = await $axios.get('/keyst10300/changeTeam', {
-      params: { team: team, month: month }
-    });
     this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
+    this.SET_COMMENT_HISTORY_LIST(data.commentHistoryList);
   }
 
   /**
    * 実施月変更時に該当月の予約状況を取得
-   * @param month
+   * @param yearMonth
    */
   @Action({ rawError: true })
-  public async changeMonth(month: String) {
-    const { data } = await $axios.get('/keyst10300/changeMonth', {
-      params: { month: month }
+  public async changeMonth(yearMonth: string) {
+    const { data } = await $axios.get('/keyst10300/initialize', {
+      params: { yearMonth: yearMonth }
     });
+    this.SET_RESERVE_ID(data.reserveId)
+    this.SET_TEAM(data.team);
     this.SET_RESERVE_INFO_LIST(data.reserveInfoList);
-    this.SET_TEAM(data.teams);
   }
 
   /**
    * 面談時間登録
    * @param reqForm
    */
-     @Action({ rawError: true })
-     public async save(reqForm: Keyst10300SaveQ) {
-       const { data } = await $axios.post(
-         '/keyst10300/save', reqForm
-       );
-       await this.initialize();
-     }
+  @Action({ rawError: true })
+  public async save(reqForm: Keyst10300SaveQ) {
+    const { data } = await $axios.post(
+      '/keyst10300/save', reqForm
+    );
+    await this.initialize();
+  }
 
-   /**
+  /**
    * 面談予約
    * @param reqForm
    */
-     @Action({ rawError: true })
-     public async reserve(reqForm: Keyst10300SaveQ1) {
-       const { data } = await $axios.post(
-         '/keyst10300/reserve', reqForm
-       );
-       await this.initialize();
-     }
+  @Action({ rawError: true })
+  public async reserve(reqForm: Keyst10300ReserveQ) {
+    const { data } = await $axios.put(
+      '/keyst10300/reserve', reqForm
+    );
+    await this.initialize();
+  }
 
-   /**
+  /**
    * コメント登録
    * @param reqForm
    */
-     @Action({ rawError: true })
-     public async saveComment(reqForm: Keyst10300UpdateQ) {
-       const { data } = await $axios.post(
-         '/keyst10300/saveComment', reqForm
-       );
-       await this.initialize();
-     }
+  @Action({ rawError: true })
+  public async saveComment(reqForm: Keyst10300UpdateQ) {
+    const { data } = await $axios.post(
+      '/keyst10300/saveComment', reqForm
+    );
+    await this.initialize();
+  }
 
   /**
-   * 予約削除
+   * 行削除(管理者)
    * @param reqForm
    */
-     @Action({ rawError: true })
-     public async delReserve(reqForm: Keyst10300UpdateQ) {
-       const { data } = await $axios.post(
-         '/keyst10300/delReserve', reqForm
-       );
-       await this.initialize();
-     }
+  @Action({ rawError: true })
+  public async deleteLine(reqForm: Keyst10300DeleteQ) {
+    const { data } = await $axios.post(
+      '/keyst10300/deleteLine', reqForm
+    );
+    await this.initialize();
+  }
+
+  /**
+   * 予約取消(一般ユーザー)
+   * @param reqForm
+   */
+  @Action({ rawError: true })
+  public async cancelReserve(reqForm: Keyst10300CancelQ) {
+    const { data } = await $axios.post(
+      '/keyst10300/cancelReserve', reqForm
+    );
+    await this.initialize();
+  }
 
 }

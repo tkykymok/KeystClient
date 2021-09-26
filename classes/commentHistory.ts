@@ -1,11 +1,10 @@
-export default class ReserveInfoDetail {
+export default class CommentHistory {
   reserveId: number | null = null;
+  implYearMonth: string = '';
   reserveDate: string = '';
   reserveTime: string = '';
-  userId: number | null = null;
-  feeling: string = '';
+  managerName: string = '';
   userComment: string = '';
   managerComment: string = '';
-  remark: string = '';
   versionExKey: number | null = null;
 }

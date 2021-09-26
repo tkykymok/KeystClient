@@ -1,9 +1,6 @@
-export default class Keyst10300UpdateQ {
+export default class Keyst10300CancelQ {
   reserveId: number | null = null;
-  implYearMonth: string = '';
   reserveDate: string = '';
   reserveTime: string = '';
-  userComment: string = '';
-  managerComment: string = '';
   versionExKey: number | null = null;
 }

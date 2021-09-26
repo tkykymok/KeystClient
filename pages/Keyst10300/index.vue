@@ -1,53 +1,45 @@
 // 管理側
 <template>
-  <div class='p-3'>
+  <div class='mb-4'>
     <!-- 予約画面ヘッダー -->
     <!-- 管理者=false, ユーザー=true -->
     <keyst10304
-      :loginUserInfo='loginUserInfo'
       :reserveInfoList='reserveInfoList'
-      :thisMonth='thisMonth'
-      :implYearMonthList='implYearMonthList'
-      :team.sync='selectedTeam'
     />
 
     <!-- 予約日時入力部分 -->
-    <!-- 管理者のみ,日時が登録されていない場合、ログイン中の管理者が登録済みの表示する -->
-    <div v-if="loginUserInfo.adminFlg == false && !reserveInfoList.length">
+    <!-- 管理者のみ表示する -->
+    <div v-if='loginUserInfo.adminFlg'>
       <keyst10301
-        :team.sync='selectedTeam'
       />
     </div>
 
     <!-- 予約状況 -->
+    <p class='py-3 font-bold text-gray-600'>予約状況</p>
     <keyst10302
-      :loginUserInfo='loginUserInfo'
       :reserveInfoList='reserveInfoList'
     />
 
-    <!-- コメント -->
-    <!-- ユーザーのみ表示する -->
-    <div v-if="loginUserInfo.adminFlg == true" class='mt-10'>
+    <!-- コメント履歴 一般ユーザーのみ表示する-->
+    <!--  -->
+    <div v-if='!loginUserInfo.adminFlg' class='mt-10'>
       <p class='py-3 font-bold text-gray-600'>コメント履歴</p>
       <keyst10303
-        :loginUserInfo='loginUserInfo'
-        :reserveInfoDetailList='reserveInfoDetailList'
+        :commentHistoryList.sync='commentHistoryList'
       />
     </div>
-
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import LoginUserInfo from '~/classes/loginUserInfo';
+import { Component, Vue } from 'nuxt-property-decorator';
 import keyst10301 from '~/components/Keyst10300/Keyst10301.vue';
 import keyst10302 from '~/components/Keyst10300/Keyst10302.vue';
 import keyst10303 from '~/components/Keyst10300/Keyst10303.vue';
 import keyst10304 from '~/components/Keyst10300/Keyst10304.vue';
 import { AuthenticationModule, Keyst10300Module } from '~/utils/store-accessor';
 import ReserveInfo from '~/classes/reserveInfo';
-import ReserveInfoDetail from '~/classes/reserveInfoDetail';
+import CommentHistory from '~/classes/commentHistory';
 
 
 @Component({
@@ -58,21 +50,18 @@ import ReserveInfoDetail from '~/classes/reserveInfoDetail';
     keyst10303,
     keyst10304
   },
-  async asyncData({redirect, store}) {
+  async asyncData({ redirect, store }) {
     try {
       await Keyst10300Module.initialize();
     } catch (error) {
-      redirect('/login')
+      redirect('/login');
     }
   }
 })
 
 export default class extends Vue {
-
-  public selectedTeam: string = '';
-
-  /** ログイン情報 */
-  get loginUserInfo(): LoginUserInfo {
+  /** ログインユーザー情報 */
+  get loginUserInfo() {
     return AuthenticationModule.loginUserInfo;
   }
 
@@ -90,37 +79,16 @@ export default class extends Vue {
   }
 
   /**
-   * 当月
+   * コメント履歴一覧
    */
-  get thisMonth(): String {
-    return Keyst10300Module.thisMonth;
-  }
-
-  /**
-   * 実施月リスト
-   */
-  get impleYearMonthList(): String[] {
-    return Keyst10300Module.implYearMonthList;
-  }
-
-  /**
-   * チーム
-   */
-  get team(): String {
-    return Keyst10300Module.team;
-  }
-
-    /**
-   * 予約情報一覧
-   */
-  get reserveInfoDetailList(): ReserveInfoDetail[] {
-    let reserveInfoDetailList: ReserveInfoDetail[] = [];
-    Keyst10300Module.reserveInfoDetailList.forEach(obj => {
-        let ReserveInfoDetail = JSON.parse(JSON.stringify(obj));
-        reserveInfoDetailList.push(ReserveInfoDetail);
+  get commentHistoryList(): CommentHistory[] {
+    let commentHistoryList: CommentHistory[] = [];
+    Keyst10300Module.commentHistoryList.forEach(obj => {
+        let commentHistory = JSON.parse(JSON.stringify(obj));
+      commentHistoryList.push(commentHistory);
       }
     );
-    return reserveInfoDetailList;
+    return commentHistoryList;
   }
 
 }
