@@ -2,54 +2,59 @@
   <div>
     <table class="w-full mt-16">
       <tr class="flex justify-between border-t-2 border-b-2">
-        <th class="w-1/6">
+        <th @click="sortBy('name'); sortNameUsers" :class="addClass('name')" class="w-1/6 cursor-pointer">
           名前
-          <button @click="buttonU" v-if="showButtonU">▲</button>
-          <button @click="buttonD" v-if="showButtonD">▼</button>
         </th>
-        <th class="w-1/6">
+        <th @click="sortBy('team'); sortTeamUsers" :class="addClass('team')" class="w-1/6 cursor-pointer">
           チーム
-          <button>▲</button>
-          <button>▼</button>
         </th>
         <th class="w-1/6">
           スキル
-          <button>▲</button>
-          <button>▼</button>
         </th>
         <th class="w-1/6">
-          案件
-          <button>▲</button>
-          <button>▼</button>
+          案件・スキルシート
         </th>
       </tr>
-      <tr v-for='memberInfo in _memberInfoList' :key='memberInfo.userId' 
-      class="p-2 flex justify-between items-center border-b-2">
+      <tr v-for='(userInfo, idx) in _userInfoList' :key='idx'
+        class="p-2 flex justify-between items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
-          <button @click="showImage=true">
-            <img src="/_nuxt/assets/img/user.png" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
+          <button @click="showImageModal(userInfo.userId)">
+            <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
-          <p class="ml-4 font-normal">{{ memberInfo.userName }}</p>
+          <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
         </th>
-        <th class="w-1/6 font-normal">チームA</th>
-        <th class="w-1/6 font-normal">Java, AWS</th>
+        <th class="w-1/6 font-normal">{{ userInfo.team }}</th>
         <th class="w-1/6 font-normal">
-          <button class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2" @click="show=true">案件</button>
-          <a href="/keyst10200" class="bg-gray-300 border border-gray-300 rounded-md px-2 py-2">スキルシート</a>
+          <span v-for='(skill, idx) in userInfo.skillList' :key='idx'>{{ skill.skillName }} </span>
         </th>
+        <th class="w-1/6 font-normal">
+          <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showModal(userInfo.userId)">案件</button>
+          <button
+            @click='$router.push({ path: "/keyst10200"})'
+            class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
+            スキルシート
+          </button>
+        </th>
+        <Keyst10403
+          :prjInfo.sync='userInfo.prjInfo'
+          :userId='userInfo.userId'
+          ref='keyst10403Refs'
+        />
+        <Keyst10404
+          :userInfo='userInfo'
+          :userId='userInfo.userId'
+          ref='keyst10404Refs'
+        />
       </tr>
     </table>
-    <Keyst10403 @closeModal="show=false" v-if="show" />
-    <Keyst10404 @closeModalImage="showImage=false" v-if="showImage" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue, Ref } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
-import MemberInfoList from '~/classes/memberInfoList';
-import PrjInfoList from '~/classes/prjInfoList';
+import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 
 @Component({
   name: 'Keyst10402',
@@ -59,26 +64,81 @@ import PrjInfoList from '~/classes/prjInfoList';
   },
 })
 export default class Keyst10402 extends Vue {
-  @PropSync('memberInfoList', { required: true, default: null })
-  _memberInfoList!: MemberInfoList[];
+  @PropSync('userInfoList', { required: true, default: () => ([]) })
+  _userInfoList!: UserInfo4Keyst10400[];
 
-  @PropSync('prjInfoList', {  required: true, default: null})
-  _prjInfoList!: PrjInfoList[];
+  @Ref() keyst10403Refs!: Keyst10403[];
+  @Ref() keyst10404Refs!: Keyst10404[];
 
-  public show = false;
-  public showImage = false;
-  public showButtonU = false;
-  public showButtonD = true;
-
-  buttonU() {
-    this.showButtonU = false;
-    this.showButtonD = true;
+  showModal(userId: number) {
+    const target: Keyst10403 | undefined = this.keyst10403Refs.find(obj => obj.userId === userId);
+    target?.open();
   }
-  buttonD() {
-    this.showButtonU = true;
-    this.showButtonD = false;
+
+  showImageModal(userId: number) {
+    const target: Keyst10404 | undefined = this.keyst10404Refs.find(obj => obj.userId === userId);
+    target?.openImage();
+  }
+
+  public sortKey: string = '';
+  public sortAsc: boolean = true;
+
+  sortBy(key: string) {
+    if (this.sortKey === key) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortAsc = true;
+    }
+    this.sortKey = key;
+  }
+
+  addClass(key: string) {
+    if (this.sortKey === key && this.sortAsc) {
+      return 'asc';
+    }
+    if (this.sortKey === key && !this.sortAsc) {
+      return 'desc';
+    }
+  }
+
+  get sortNameUsers(): UserInfo4Keyst10400[] {
+    if (this.sortKey != '') {
+      var set = 1;
+      if (this.sortAsc) {
+        set = 1;
+      } else {
+        set = -1;
+      }
+      this.$store.commit('keyst10400/SORT_NAME_USER_INFO_LIST', set);
+      return this._userInfoList;
+    } else {
+      return this._userInfoList;
+    }
+  }
+
+  get sortTeamUsers(): UserInfo4Keyst10400[] {
+    if (this.sortKey != '') {
+      var set = 1;
+      if (this.sortAsc) {
+        set = 1;
+      } else {
+        set = -1;
+      }
+      this.$store.commit('keyst10400/SORT_TEAM_USER_INFO_LIST', set);
+      return this._userInfoList;
+    } else {
+      return this._userInfoList;
+    }
   }
 }
 </script>
 
-<style></style>
+<style>
+  .asc::after {
+    content: "▲";
+  }
+
+  .desc::after {
+    content: "▼";
+  }
+</style>

@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class='pt-4 flex justify-end  w-4/5'>
+      <button
+        class='px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'
+        @click='createNewSkillSheet'
+      >新規作成
+      </button>
+    </div>
     <div class='pt-4 flex z-0'>
       <!-- スキルシートヘッダー部 -->
       <Keyst10201
@@ -19,9 +26,21 @@
     </div>
     <div class='py-4'>
       <button
-        class='px-4 py-2 bg-blue-400 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'
+        class='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'
         @click='save'
-      >保存
+      >新規保存
+      </button>
+      <button
+        class='px-4 py-2 ml-2 bg-green-500 text-white rounded-md hover:bg-green-400 active:outline-none focus:outline-none'
+        v-show='skillSheetHeader.skillSheetId'
+        @click='update'
+      >更新
+      </button>
+      <button
+        class='px-4 py-2 ml-2 bg-red-500 text-white rounded-md hover:bg-red-400 active:outline-none focus:outline-none'
+        v-show='skillSheetHeader.skillSheetId'
+        @click='deleteSkillSheet'
+      >削除
       </button>
     </div>
   </div>
@@ -32,7 +51,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import Keyst10201 from '~/components/Keyst10200/Keyst10201.vue';
 import Keyst10202 from '~/components/Keyst10200/Keyst10202.vue';
 import Keyst10203 from '~/components/Keyst10200/Keyst10203.vue';
-import { Keyst10200Module } from '~/utils/store-accessor';
+import { AuthenticationModule, Keyst10200Module } from '~/utils/store-accessor';
 import SkillSheetInfo from '~/classes/skillSheetInfo';
 import SkillSheetHeader from '~/classes/skillSheetHeader';
 import SkillSheetDetail from '~/classes/skillSheetDetail';
@@ -40,6 +59,10 @@ import SkillSheetDetail from '~/classes/skillSheetDetail';
 import _ from 'lodash';
 import Keyst10200SaveQ from '~/classes/form/keyst10200SaveQ';
 import Keyst10200SaveQ1 from '~/classes/form/keyst10200SaveQ1';
+import Keyst10200UpdateQ from '~/classes/form/keyst10200UpdateQ';
+import Keyst10200UpdateQ1 from '~/classes/form/keyst10200UpdateQ1';
+import { Context } from '@nuxt/types';
+import Keyst10200DeleteQ from '~/classes/form/keyst10200DeleteQ';
 
 @Component({
   name: 'Keyst10200',
@@ -48,12 +71,25 @@ import Keyst10200SaveQ1 from '~/classes/form/keyst10200SaveQ1';
     Keyst10202,
     Keyst10203
   },
-  async asyncData({redirect, store}) {
-    try {
-      await Keyst10200Module.initialize();
-    } catch (error) {
-      redirect('/login')
+  async asyncData(context: Context) {
+    const queryParam4UserId: string | (string | null)[] = context.route.query.userId;
+    let userId: number | null = null;
+
+    // クエリストリングに値が設定されている場合
+    if (queryParam4UserId) {
+      if (AuthenticationModule.loginUserInfo.adminFlg) {
+        // 管理者の場合
+        userId = Number.parseInt(queryParam4UserId[0]!);
+      } else {
+        // クエリストリングを空にする。
+        context.app.router?.replace({ query: undefined });
+      }
     }
+    await Keyst10200Module.initialize(userId).catch(error => {
+      if (error.response.status === 401 || error.response.status === 403) {
+        context.redirect('/login');
+      }
+    });
   }
 })
 export default class extends Vue {
@@ -84,7 +120,10 @@ export default class extends Vue {
     return skillSheetDetailList;
   }
 
-  save() {
+  /**
+   * スキルシート新規保存
+   */
+  async save() {
     // スキルシートヘッダー部をリクエストFormに移送する。
     let reqForm: Keyst10200SaveQ = _.assign(new Keyst10200SaveQ(), _.pick(this.skillSheetHeader, _.keys(new Keyst10200SaveQ())));
     // スキルシート明細部をリクエストFormに移送する。
@@ -93,15 +132,54 @@ export default class extends Vue {
         _.assign(new Keyst10200SaveQ1(), _.pick(obj, _.keys(new Keyst10200SaveQ1())));
       reqForm.skillSheetDetail.push(skillSheetDetail);
     });
-    Keyst10200Module.save(reqForm);
+    await Keyst10200Module.save(reqForm).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
   }
 
-
-  test() {
-    console.log(this.skillSheetHeader);
-    console.log(this.skillSheetDetailList[0]);
+  /**
+   * スキルシート更新
+   */
+  async update() {
+    // スキルシートヘッダー部をリクエストFormに移送する。
+    let reqForm: Keyst10200UpdateQ = _.assign(new Keyst10200UpdateQ(), _.pick(this.skillSheetHeader, _.keys(new Keyst10200UpdateQ())));
+    // スキルシート明細部をリクエストFormに移送する。
+    this.skillSheetDetailList.forEach(obj => {
+      let skillSheetDetail: Keyst10200UpdateQ1 =
+        _.assign(new Keyst10200UpdateQ1(), _.pick(obj, _.keys(new Keyst10200UpdateQ1())));
+      reqForm.skillSheetDetail.push(skillSheetDetail);
+    });
+    await Keyst10200Module.update(reqForm).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
   }
 
+  /**
+   * スキルシート削除
+   */
+  async deleteSkillSheet() {
+    // スキルシートヘッダー部をリクエストFormに移送する。
+    let reqForm: Keyst10200DeleteQ = new Keyst10200DeleteQ();
+    this.$set(reqForm, 'skillSheetId', this.skillSheetHeader.skillSheetId) // スキルシートID
+    this.$set(reqForm, 'versionExKey', this.skillSheetHeader.versionExKey) // 排他制御カラム
+
+    await Keyst10200Module.deleteSkillSheet(reqForm).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
+  }
+
+  /**
+   * スキルシート新規作成
+   */
+  createNewSkillSheet() {
+    Keyst10200Module.CREATE_NEW_SKILL_SHEET();
+  }
 
 }
 </script>

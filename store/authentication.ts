@@ -8,6 +8,7 @@ import { $axios } from '~/utils/api';
 import LoginUserInfo from '~/classes/loginUserInfo';
 import AuthenticationQ from '~/classes/form/authenticationQ';
 import SignUpQ from '~/classes/form/signUpQ';
+import { MessagesModule } from '~/utils/store-accessor';
 
 export interface IAuthentication {
   jwt: string,
@@ -51,17 +52,19 @@ export default class Authentication extends VuexModule implements IAuthenticatio
   @Action({ rawError: true })
   public async login(loginForm: AuthenticationQ) {
     this.DESTROY_JWT_LOGIN_USER_INFO();
-    const { data } = await $axios.post(
+    await $axios.post(
       '/session/authenticate', loginForm
-    );
-    this.SET_JWT(data.jwt);
-    this.SET_LOGIN_USER_INFO(data.loginUserInfo);
+    ).then(({ data }) => {
+      this.SET_JWT(data.jwt);
+      this.SET_LOGIN_USER_INFO(data.loginUserInfo);
+      MessagesModule.CLEAR_MESSAGE_LIST();
+    });
   }
 
   @Action({ rawError: true })
   public async signUp(signUpForm: SignUpQ) {
     this.DESTROY_JWT_LOGIN_USER_INFO();
-    const { data } = await $axios.post(
+    await $axios.post(
       '/session/signUp', signUpForm
     );
   }
