@@ -6,6 +6,7 @@ import {
 } from 'vuex-module-decorators';
 import { $axios } from '~/utils/api';
 import MemberInfo from '~/classes/memberInfo';
+import Keyst10100SaveQ from '~/classes/form/keyst10100SaveQ';
 
 export interface IKeyst10100 {
   MemberInfo: MemberInfo
@@ -38,5 +39,20 @@ export default class Keyst10100 extends VuexModule implements IKeyst10100 {
     this.SET_USER_BASIC_INFO(data.userBasicInfo);
     this.SET_USER_BASIC_INFO(data);
   }
+
+  /**
+   * プロフィール登録
+   * @param reqForm
+   */
+     @Action({ rawError: true })
+     public async save(reqForm: Keyst10100SaveQ) {
+       await $axios.post(
+         '/keyst10100/save', reqForm
+       ).then(({ data }) => {
+         this.initialize();
+       });
+     }
+   
+   
 
 }

@@ -68,8 +68,6 @@
       <tr class="">
         <th rowspan="3" class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">プロフィール画像</th>
         <td rowspan="3" class="p-3 text-gray-800 border border-b" @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">
-          <!-- <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" type="text" class="bg-yellow-200" value="" />
-          <span v-else>{{ memberInfo.prfImgStrgDrctry }}</span> -->
           <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag" type="file" value="" />
           <img :src="memberInfo.prfImgStrgDrctry" v-else>
         </td>
@@ -122,8 +120,8 @@
       <tr class="">
         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">配偶者</th>
         <td class="p-3 text-gray-800 border border-b">
-          <input type="radio" id="partnerOn" name="partnerFlg" value="true" :checked="memberInfo.partnerFlg === true"><label for="partnerOn">あり</label>
-          <input type="radio" id="partnerOff" name="partnerFlg" value="false" :checked="memberInfo.partnerFlg === false"><label for="partnerOff">なし</label>
+          <input type="radio" id="partnerOn" name="partnerFlg" value="1" :checked="memberInfo.partnerFlg === 1"><label for="partnerOn">あり</label>
+          <input type="radio" id="partnerOff" name="partnerFlg" value="0" :checked="memberInfo.partnerFlg === 0"><label for="partnerOff">なし</label>
         </td>
         <td colspan="5" class="p-2"></td>
       </tr>
@@ -163,7 +161,11 @@
         </td>
       </tr>
     </table>
-    <input type="button" class="block p-2 w-40 m-5 mx-auto bg-blue-400 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none" value="登録" />
+    <button
+      class='block p-2 w-40 m-5 mx-auto bg-blue-400 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'
+       @click='save'
+    >登録
+    </button>
   </div>
 </template>
 
@@ -172,6 +174,11 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import { Keyst10100Module } from '~/utils/store-accessor';
 import MemberInfo from '~/classes/memberInfo';
 import { convertDateToYearMonth, convertDateToYearMonthDay } from '~/utils/converter';
+
+import _ from 'lodash';
+import Keyst10100SaveQ from '~/classes/form/keyst10100SaveQ';
+import Keyst10100SaveQ1 from '~/classes/form/keyst10100SaveQ1';
+
 
 @Component({
   name: 'Keyst10100',
@@ -198,6 +205,20 @@ export default class extends Vue {
   get prfImgStrgDrctry(): String {
     return Keyst10100Module.MemberInfo.prfImgStrgDrctry;
   }
+
+  /**
+   * プロフィール登録
+   */
+  async save() {
+    // プロフィールをリクエストFormに移送する。
+    let reqForm: Keyst10100SaveQ = _.assign(new Keyst10100SaveQ(), _.pick(this.memberInfo, _.keys(new Keyst10100SaveQ())));
+    await Keyst10100Module.save(reqForm).catch(error => {
+      if (error.response.status === 401) {
+        this.$router.push('/login');
+      }
+    });
+  }
+
 
   /**
    * 編集可否フラグを切り替える
