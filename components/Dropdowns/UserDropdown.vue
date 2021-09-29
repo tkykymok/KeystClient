@@ -1,56 +1,48 @@
 <template>
   <div>
     <a
-        class='text-blueGray-500 block'
-        href='#pablo'
-        ref='btnDropdownRef'
-        v-on:click='toggleDropdown($event)'
+      class='text-blueGray-500 block'
+      ref='btnDropdownRef'
     >
-      <div class='items-center flex'>
+      <div
+        class='items-center flex cursor-pointer'
+        @mouseover='showDropdown($event)'
+        @mouseleave='hideDropdown($event)'
+      >
         <span
-            class='w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full'
+          class='w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full'
         >
           <img
-              alt='...'
-              class='w-full rounded-full align-middle border-none shadow-lg'
-              :src='image'
+            alt='...'
+            class='w-full rounded-full align-middle border-none shadow-lg'
+            :src='image'
           />
         </span>
       </div>
     </a>
     <div
-        ref='popoverDropdownRef'
-        class='bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48'
-        v-bind:class='{
+      ref='popoverDropdownRef'
+      class='bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48'
+      :class='{
         hidden: !dropdownPopoverShow,
         block: dropdownPopoverShow,
       }'
+      @mouseover='showDropdown($event)'
+      @mouseleave='hideDropdown($event)'
     >
-      <a
-          href='javascript:void(0);'
-          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
+      <NuxtLink
+        to='/keyst10100'
+        class='text-xs uppercase py-1 px-4 font-bold block text-gray-700 hover:text-gray-500'
       >
-        Action
-      </a>
-      <a
-          href='javascript:void(0);'
-          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
-      >
-        Another action
-      </a>
-      <a
-          href='javascript:void(0);'
-          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
-      >
-        Something else here
-      </a>
+        プロフィール
+      </NuxtLink>
       <div class='h-0 my-2 border border-solid border-blueGray-100' />
-      <a
-          href='javascript:void(0);'
-          class='text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700'
+      <span
+        class='text-xs uppercase py-1 px-4 font-bold block text-gray-700 hover:text-gray-500 cursor-pointer'
+        @click='logout'
       >
-        Seprated link
-      </a>
+        ログアウト
+      </span>
     </div>
   </div>
 </template>
@@ -58,24 +50,29 @@
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
 import { createPopper } from '@popperjs/core';
+import { AuthenticationModule } from '~/utils/store-accessor';
 
 @Component({})
 export default class UserDropdown extends Vue {
-  dropdownPopoverShow: boolean = false;
-  image: NodeRequireFunction = require('@/assets/img/user.png')
+  public dropdownPopoverShow: boolean = false;
+  public image: NodeRequireFunction = require('@/assets/img/user.png');
 
-  toggleDropdown(event: any) {
-    event.preventDefault();
-    if (this.dropdownPopoverShow) {
-      this.dropdownPopoverShow = false;
-    } else {
-      this.dropdownPopoverShow = true;
-      const reference: any = this.$refs.btnDropdownRef;
-      const popper: any = this.$refs.popoverDropdownRef;
-      createPopper(reference, popper, {
-        placement: 'bottom-start'
-      });
-    }
+  logout() {
+    AuthenticationModule.DESTROY_JWT_LOGIN_USER_INFO();
+    this.$router.push('/login');
+  }
+
+  showDropdown() {
+    this.dropdownPopoverShow = true;
+    const reference: any = this.$refs.btnDropdownRef;
+    const popper: any = this.$refs.popoverDropdownRef;
+    createPopper(reference, popper, {
+      placement: 'bottom-start'
+    });
+  }
+
+  hideDropdown() {
+    this.dropdownPopoverShow = false;
   }
 }
 </script>
