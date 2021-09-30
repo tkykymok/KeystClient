@@ -15,7 +15,6 @@
     </div>
 
     <!-- 予約状況 -->
-    <p class='py-3 font-bold text-gray-600'>予約状況</p>
     <keyst10302
       :reserveInfoList='reserveInfoList'
     />

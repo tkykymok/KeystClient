@@ -4,6 +4,9 @@
     :class="loginUserInfo.adminFlg? 'w-full': 'w-2/5 overflow-y-scroll scroll'"
     :style="loginUserInfo.adminFlg? 'height :auto': 'height: 400px'"
   >
+    <p
+      v-if='reserveInfoList.length'
+      class='py-3 font-bold text-gray-600'>予約状況</p>
     <table
       v-if='reserveInfoList.length'
       class='shadow-md w-full table-fixed' style='height: auto'
