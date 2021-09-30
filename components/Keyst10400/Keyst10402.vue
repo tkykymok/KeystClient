@@ -36,7 +36,7 @@
           </button>
         </th>
         <Keyst10403
-          :prjInfo.sync='userInfo.prjInfo'
+          :prjInfoList.sync='userInfo.prjInfoList'
           :userId='userInfo.userId'
           ref='keyst10403Refs'
         />
