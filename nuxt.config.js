@@ -20,8 +20,9 @@ export default {
   plugins: [
     { src: '~/plugins/vuejs-datepicker.ts', mode: 'client'},
     { src: '~/plugins/axios-accessor', mode: 'client'},
-    { src: '~/plugins/vue-ctk-date-time-picker.ts', mode: 'client' },
-    { src: '~/plugins/vuex-cookies.ts', mode: 'client' }
+    { src: '@/plugins/vue-ctk-date-time-picker.ts', mode: 'client' },
+    { src: '~/plugins/vuex-cookies.ts', mode: 'client' },
+    { src: '~/plugins/vue-js-modal.ts', mode: 'client', ssr: true },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

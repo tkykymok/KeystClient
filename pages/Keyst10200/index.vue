@@ -1,11 +1,32 @@
 <template>
   <div>
-    <div class='pt-4 flex justify-end  w-4/5'>
-      <button
-        class='px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'
-        @click='createNewSkillSheet'
-      >新規作成
-      </button>
+    <div class='pt-4 flex w-full'>
+      <div class='w-4/5'>
+        <button
+          class='px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'
+          @click='save'
+        >新規保存
+        </button>
+        <button
+          class='px-4 py-2 ml-2 bg-green-500 text-white rounded-md hover:bg-green-400 active:outline-none focus:outline-none'
+          v-show='skillSheetHeader.skillSheetId'
+          @click='update'
+        >更新
+        </button>
+        <button
+          class='px-4 py-2 ml-2 bg-red-500 text-white rounded-md hover:bg-red-400 active:outline-none focus:outline-none'
+          v-show='skillSheetHeader.skillSheetId'
+          @click='deleteSkillSheet'
+        >削除
+        </button>
+      </div>
+      <div class='w-1/5 px-2'>
+        <button
+          class='px-4 py-2 w-full bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'
+          @click='createNewSkillSheet'
+        >新規作成
+        </button>
+      </div>
     </div>
     <div class='pt-4 flex z-0'>
       <!-- スキルシートヘッダー部 -->
@@ -162,16 +183,18 @@ export default class extends Vue {
    * スキルシート削除
    */
   async deleteSkillSheet() {
-    // スキルシートヘッダー部をリクエストFormに移送する。
-    let reqForm: Keyst10200DeleteQ = new Keyst10200DeleteQ();
-    this.$set(reqForm, 'skillSheetId', this.skillSheetHeader.skillSheetId) // スキルシートID
-    this.$set(reqForm, 'versionExKey', this.skillSheetHeader.versionExKey) // 排他制御カラム
+    if (confirm('削除しますか？')) {
+      // スキルシートヘッダー部をリクエストFormに移送する。
+      let reqForm: Keyst10200DeleteQ = new Keyst10200DeleteQ();
+      this.$set(reqForm, 'skillSheetId', this.skillSheetHeader.skillSheetId); // スキルシートID
+      this.$set(reqForm, 'versionExKey', this.skillSheetHeader.versionExKey); // 排他制御カラム
 
-    await Keyst10200Module.deleteSkillSheet(reqForm).catch(error => {
-      if (error.response.status === 401) {
-        this.$router.push('/login');
-      }
-    });
+      await Keyst10200Module.deleteSkillSheet(reqForm).catch(error => {
+        if (error.response.status === 401) {
+          this.$router.push('/login');
+        }
+      });
+    }
   }
 
   /**
