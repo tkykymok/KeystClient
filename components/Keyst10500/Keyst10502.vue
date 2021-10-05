@@ -34,14 +34,40 @@
             type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
         </td>
         <td class="p-3 text-gray-800 border border-b text-center">
-          <input
-            v-model='prjUserAllocation.prjStartDate'
-            type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
+          <VueCtkDateTimePicker
+            :id='`prjStartDate-${idx}`'
+            v-model='prjStartDate[idx]'
+            only-date
+            no-button
+            auto-close
+            noHeader
+            position='top'
+            :shortcut="'thisMonth'"
+            format='YYYY-MM-DD'
+            formatted='YYYY-MM-DD'
+            label='稼働開始日'
+            :max-date='prjStartDate[idx]'
+            @input='$set(prjUserAllocation, "prjStartDate", $event)'
+            locale="en"
+          />
         </td>
         <td class="p-3 text-gray-800 border border-b text-center">
-          <input
-            v-model='prjUserAllocation.prjEndDate'
-            type="text" contenteditable="true" class="w-full p-1 border-2 border-gray-300 rounded-md active:outline-none focus:outline-none focus:shadow-outline text-center">
+          <VueCtkDateTimePicker
+            :id='`prjEndDate-${idx}`'
+            v-model='prjEndDate[idx]'
+            only-date
+            no-button
+            auto-close
+            noHeader
+            position='top'
+            :shortcut="'thisMonth'"
+            format='YYYY-MM-DD'
+            formatted='YYYY-MM-DD'
+            label='稼働終了日'
+            :min-date='prjStartDate[idx]'
+            @input='$set(prjUserAllocation, "prjEndDate", $event)'
+            locale="en"
+          />
         </td>
       </tr>
     </table>
@@ -54,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue, Watch } from 'nuxt-property-decorator';
 import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import UserName from '~/components/SelectOptions/UserName.vue';
@@ -75,6 +101,27 @@ export default class extends Vue {
   _prjMaster!: PrjMaster;
   @PropSync('prjUserAllocationList', { required: true, default: () => ([]) })
   _prjUserAllocationList!: PrjUserAllocation[];
+
+  // 稼働開始日・終了日を一時的に保存する配列
+  // カレンダーから選択した日付が画面に反映されない事象を解決するための対応
+  public prjStartDate: string[] = [];
+  public prjEndDate: string[] = [];
+
+  /**
+   * 案件割当明細一覧の長さを監視する関数
+   */
+  @Watch('_prjUserAllocationList.length', { immediate: true, deep: true })
+  watchPrjUserAllocationListLength() {
+    // 配列を初期化する
+    this.prjStartDate.splice(0);
+    this.prjEndDate.splice(0);
+    // 案件割当明細一覧全件に対して以下の処理をする。
+    this._prjUserAllocationList.forEach(obj => {
+      // 案件割当明細の数分、稼働開始日・終了日の配列に追加する。
+      this.prjStartDate.push(obj.prjStartDate);
+      this.prjEndDate.push(obj.prjEndDate);
+    });
+  }
 
   /**
    * 案件割当明細部行追加イベント
