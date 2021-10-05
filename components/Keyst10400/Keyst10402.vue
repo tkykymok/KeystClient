@@ -1,7 +1,7 @@
 <template>
   <div>
     <table class="w-full mt-16">
-      <tr class="flex justify-between border-t-2 border-b-2">
+      <tr class="flex justify-around border-t-2 border-b-2">
         <th @click="sortBy('name'); sortNameUsers" :class="addClass('name')" class="w-1/6 cursor-pointer">
           名前
         </th>
@@ -11,12 +11,13 @@
         <th class="w-1/6">
           スキル
         </th>
-        <th class="w-1/6">
+        <th v-if='loginUserInfo.adminFlg'
+          class="w-1/6">
           案件・スキルシート
         </th>
       </tr>
       <tr v-for='(userInfo, idx) in _userInfoList' :key='idx'
-        class="p-2 flex justify-between items-center border-b-2">
+        class="p-2 flex justify-around items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImageModal(userInfo.userId)">
             <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
@@ -27,10 +28,11 @@
         <th class="w-1/6 font-normal">
           <span v-for='(skill, idx) in userInfo.skillList' :key='idx'>{{ skill.skillName }} </span>
         </th>
-        <th class="w-1/6 font-normal">
+        <th v-if='loginUserInfo.adminFlg'
+          class="w-1/6 font-normal">
           <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showModal(userInfo.userId)">案件</button>
           <button
-            @click='$router.push({ path: "/keyst10200"})'
+            @click='$router.push({ path: `/keyst10200?userId=${userInfo.userId}`})'
             class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
             スキルシート
           </button>
@@ -56,6 +58,9 @@ import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 import { Keyst10400Module } from '~/store';
+import { Gender } from '~/constant/gender';
+import { AuthenticationModule } from '~/utils/store-accessor';
+import LoginUserInfo from '~/classes/loginUserInfo';
 
 @Component({
   name: 'Keyst10402',
@@ -67,6 +72,10 @@ import { Keyst10400Module } from '~/store';
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
+
+  /** ログインユーザー情報 */
+  public loginUserInfo: LoginUserInfo = AuthenticationModule.loginUserInfo;
+  public genderConstant = Gender;
 
   @Ref() keyst10403Refs!: Keyst10403[];
   @Ref() keyst10404Refs!: Keyst10404[];
