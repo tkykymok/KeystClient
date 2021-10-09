@@ -2,8 +2,8 @@
   <div class="p-4">
     <table class="w-full table-fixed shadow-md">
       <tr>
-        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">顧客コード</th>
-        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">顧客名</th>
+        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">顧客コード<span class="text-red-500">*</span></th>
+        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">顧客名<span class="text-red-500">*</span></th>
         <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-2/12 m-2">顧客担当者名</th>
       </tr>
       <tr>

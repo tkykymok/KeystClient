@@ -10,9 +10,9 @@
             @click='addRow4PrjUserAllocation'
           />
         </th>
-        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">ユーザー名</th>
-        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">契約単価</th>
-        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">稼働開始日</th>
+        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">ユーザー名<span class="text-red-500">*</span></th>
+        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">契約単価<span class="text-red-500">*</span></th>
+        <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">稼働開始日<span class="text-red-500">*</span></th>
         <th class="p-3 font-bold bg-gray-200 text-gray-600 border border-gray-300 w-40 m-2">稼働終了日</th>
       </tr>
       <tr v-for='(prjUserAllocation, idx) in _prjUserAllocationList' :key="idx">
