@@ -22,7 +22,10 @@
           <button @click="showImageModal(userInfo.userId)">
             <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
-          <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
+          <div>
+            <p class="ml-4 font-normal text-xs">{{ userInfo.userNameKana }}</p>
+            <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
+          </div>
         </th>
         <th class="w-1/6 font-normal">{{ userInfo.team }}</th>
         <th class="w-1/6 font-normal">
