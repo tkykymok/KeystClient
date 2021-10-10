@@ -27,5 +27,4 @@ export default class Keyst10100SaveQ {
   prfImgStrgDrctry: string = '';
   versionExKey: number | null = null;
   skillList: Keyst10100SaveQ1[] = [];
-  versionExKey: number | null = null;
 }
