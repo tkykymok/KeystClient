@@ -103,7 +103,18 @@
       <tr class="">
         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">生年月日</th>
         <td class="p-3 text-gray-800 border border-b">
-          <input v-if="inputAreaControl.birthday.editableFlag || memberInfo.birthday == null" type="text" class="bg-yellow-200" value="" v-model="memberInfo.birthday" @blur="switchEditableFlag(inputAreaControl.birthday)" />
+          <VueCtkDateTimePicker
+            @blur="switchEditableFlag(inputAreaControl.birthday)"
+            v-if="inputAreaControl.birthday.editableFlag || memberInfo.birthday == null"
+            v-model="memberInfo.birthday"
+            only-date
+            no-header
+            no-button
+            format='YYYY-MM-DD'
+            formatted='YYYY-MM-DD'
+            label='生年月日'
+            auto-close
+          />
           <span v-else @click="switchEditableFlag(inputAreaControl.birthday)">{{ convertDateToYearMonthDay(memberInfo.birthday) }}</span>
         </td>
       </tr>
@@ -132,7 +143,18 @@
       <tr class="">
         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">最終学歴年月日</th>
         <td class="p-3 text-gray-800 border border-b">
-          <input v-if="inputAreaControl.finalEducationDate.editableFlag || memberInfo.finalEducationDate == null" type="text" class="bg-yellow-200" value="" v-model="memberInfo.finalEducationDate" @blur="switchEditableFlag(inputAreaControl.finalEducationDate)" />
+          <VueCtkDateTimePicker
+            @blur="switchEditableFlag(inputAreaControl.finalEducationDate)"
+            v-if="inputAreaControl.finalEducationDate.editableFlag || memberInfo.finalEducationDate == null"
+            v-model="memberInfo.finalEducationDate"
+            only-date
+            no-header
+            no-button
+            format='YYYY-MM-DD'
+            formatted='YYYY-MM-DD'
+            label='最終学歴年月日'
+            auto-close
+          />
           <span v-else @click="switchEditableFlag(inputAreaControl.finalEducationDate)">{{ convertDateToYearMonthDay(memberInfo.finalEducationDate) }}</span>
         </td>
       </tr>
