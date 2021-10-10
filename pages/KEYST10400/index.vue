@@ -25,7 +25,9 @@ import Filtering4Keyst10400 from '~/classes/filtering4Keyst10400';
   }
 })
 export default class extends Vue {
-  // メンバー情報一覧
+  /**
+   * ユーザー情報リスト
+   */
   get userInfoList(): UserInfo4Keyst10400[] {
     let userInfoList: UserInfo4Keyst10400[] = [];
     Keyst10400Module.userInfoList.forEach(obj => {
@@ -34,7 +36,9 @@ export default class extends Vue {
     })
     return userInfoList;
   }
-  // フィルタリング
+  /**
+   * フィルタリング
+   */
   get filtering(): Filtering4Keyst10400 {
     return Keyst10400Module.filtering;
   }

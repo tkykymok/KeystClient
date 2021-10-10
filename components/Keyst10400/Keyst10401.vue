@@ -60,7 +60,7 @@ export default class extends Vue {
   public selectedSkill: string = '';
 
   /**
-   * キーワードでユーザー情報一覧を絞り込む
+   * キーワードでユーザー情報リスト絞り込む
    */
   async tempKeywordSearchUsers() {
     var users: UserInfo4Keyst10400[] = [];
@@ -73,7 +73,7 @@ export default class extends Vue {
   }
 
   /**
-   * チームでユーザー情報一覧を絞り込む
+   * チームでユーザー情報リストを絞り込む
    */
   async tempTeamSearchUsers() {
     var users: UserInfo4Keyst10400[] = [];
@@ -88,7 +88,7 @@ export default class extends Vue {
   }
 
   /**
-   * スキルでユーザー情報一覧を絞り込む
+   * スキルでユーザー情報リストを絞り込む
    */
   async tempSkillSearchUsers() {
     var users: UserInfo4Keyst10400[] = [];

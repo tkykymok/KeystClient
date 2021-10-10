@@ -23,13 +23,11 @@ export interface IKeyst10500 {
   name: 'keyst10500'
 })
 export default class Keyst10500 extends VuexModule implements IKeyst10500 {
-  // Stateを作成
-  // 案件マスタ
+  /** 案件マスタ */
   private _prjMaster: PrjMaster = new PrjMaster();
-  // 案件割当明細一覧
+  /** 案件割当明細リスト */
   private _prjUserAllocationList: PrjUserAllocation[] = [];
 
-  // 上記のStateにアクセスするgetterを作成
   get prjMaster(): PrjMaster {
     return this._prjMaster;
   }
@@ -39,7 +37,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件マスタを設定する。
+   * 案件マスタを設定する
    * @param value
    * @constructor
    */
@@ -49,7 +47,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件割当明細を設定する。
+   * 案件割当明細リストを設定する
    * @param value
    * @constructor
    */
@@ -64,7 +62,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件マスタを空にする。
+   * 案件マスタを空にする
    * @constructor
    */
   @Mutation
@@ -73,7 +71,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 行追加(案件割当明細)
+   * 行追加(案件割当明細リスト)
    * @constructor
    */
   @Mutation
@@ -83,7 +81,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 行削除(案件割当明細)
+   * 行削除(案件割当明細リスト)
    * @param idx
    * @constructor
    */
@@ -92,7 +90,6 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
     this._prjUserAllocationList.splice(idx, 1);
   }
 
-  // actionメソッド内のerrorをthrowしたい場合は「rawError: true」を記述する
   /**
    * 案件割当明細検索
    * @param prjCode
@@ -110,30 +107,20 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件マスタリセット
-   */
-  @Action({ rawError: true })
-  public async reset() {
-    this.RESET_PRJ_MASTER();
-  }
-
-  /**
    * 案件マスタ新規保存
    * @param reqForm
    */
   @Action({ rawError: true })
   public async save(reqForm: Keyst10500SaveQ) {
     await $axios.post('/keyst10500/save', reqForm);
-    // 取得APIを書いていないので、画面的には変わらない
   }
 
   /**
-   * 案件マスタ・案件割当明細更新
+   * 案件マスタ・案件割当明細リスト更新
    * @param reqForm
    */
   @Action({ rawError: true })
   public async update(reqForm: Keyst10500UpdateQ) {
     await $axios.put('/keyst10500/update', reqForm);
-    // 取得APIを書いていないので、画面的には変わらない
   }
 }

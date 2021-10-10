@@ -1,5 +1,5 @@
 <template>
-  <div v-if='show' class="w-full h-full p-6 flex justify-center items-center z-10 fixed top-0 left-0 bg-black bg-opacity-50" @click="close">
+  <div v-if='showPrj' class="w-full h-full p-6 flex justify-center items-center z-10 fixed top-0 left-0 bg-black bg-opacity-50" @click="closePrjModal">
     <div class="w-auto px-10 py-10 bg-white">
       <p
         v-if='assignPrjFlg'
@@ -51,9 +51,12 @@ export default class extends Vue {
   @Prop({ required: true })
   userId!: number;
 
-  public show: boolean = false;
+  public showPrj: boolean = false;
   public assignPrjFlg: boolean = false;
 
+  /**
+   * 案件情報リストを参画中の案件だけに絞り込む
+   */
   get assignPrjInfoList(): PrjInfo[] {
     let assignPrjInfoList: PrjInfo[] = [];
     this._prjInfoList.forEach(obj => {
@@ -62,16 +65,21 @@ export default class extends Vue {
         this.assignPrjFlg = true;
       }
     })
-    console.log(this.assignPrjFlg);
     return assignPrjInfoList;
   }
 
-  open() {
-    this.show = true;
+  /**
+   * 案件情報モーダルを表示する(Keyst10402で使用)
+   */
+  openPrjModal() {
+    this.showPrj = true;
   }
 
-  close() {
-    this.show = false;
+  /**
+   * 案件情報モーダル非表示イベント
+   */
+  closePrjModal() {
+    this.showPrj = false;
   }
 }
 </script>

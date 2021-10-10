@@ -18,11 +18,6 @@
         class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
         決定
       </button>
-      <button
-        @click='check'
-        class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
-        check
-      </button>
     </div>
     <Keyst10701
       v-if='registerFlg || updateFlg'
@@ -48,7 +43,9 @@ import { Keyst10700Module } from '~/store';
   }
 })
 export default class extends Vue {
-  // 顧客マスタ (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  /**
+   * 顧客マスタ
+   */
   get custMaster(): CustMaster {
     return JSON.parse(JSON.stringify(Keyst10700Module.custMaster));
   }
@@ -58,6 +55,9 @@ export default class extends Vue {
   public registerFlg: boolean = false;
   public updateFlg: boolean = false;
 
+  /**
+   * custCodeFlg、registerFlg、updateFlgの真偽値を変更する
+   */
   CustCodeDisplay() {
     if (this.radioValue === 'register') {
       this.custCodeFlg = false;
@@ -71,9 +71,12 @@ export default class extends Vue {
     }
   }
 
+  /**
+   * 顧客マスタ検索イベント
+   */
   Decision(custCode: string) {
     if (this.radioValue === 'register') {
-      Keyst10700Module.reset();
+      Keyst10700Module.RESET_CUST_MASTER();
       this.registerFlg = true;
       this.updateFlg = false;
     }
@@ -82,10 +85,6 @@ export default class extends Vue {
       this.registerFlg = false;
       this.updateFlg = true;
     }
-  }
-
-  check() {
-    console.log('CustMaster', this.custMaster);
   }
 }
 </script>

@@ -33,7 +33,7 @@
         </th>
         <th v-if='loginUserInfo.adminFlg'
           class="w-1/6 font-normal">
-          <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showModal(userInfo.userId)">案件</button>
+          <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showPrjModal(userInfo.userId)">案件</button>
           <button
             @click='$router.push({ path: `/keyst10200?userId=${userInfo.userId}`})'
             class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
@@ -75,27 +75,38 @@ import LoginUserInfo from '~/classes/loginUserInfo';
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
+  @Ref() keyst10403Refs!: Keyst10403[];
+  @Ref() keyst10404Refs!: Keyst10404[];
 
   /** ログインユーザー情報 */
   public loginUserInfo: LoginUserInfo = AuthenticationModule.loginUserInfo;
   public genderConstant = Gender;
 
-  @Ref() keyst10403Refs!: Keyst10403[];
-  @Ref() keyst10404Refs!: Keyst10404[];
-
-  showModal(userId: number) {
+  /**
+   * 案件情報モーダル表示イベント
+   * @param userId
+   */
+  showPrjModal(userId: number) {
     const target: Keyst10403 | undefined = this.keyst10403Refs.find(obj => obj.userId === userId);
-    target?.open();
+    target?.openPrjModal();
   }
 
+  /**
+   * プロフィール画像モーダル表示イベント
+   * @param userId
+   */
   showImageModal(userId: number) {
     const target: Keyst10404 | undefined = this.keyst10404Refs.find(obj => obj.userId === userId);
-    target?.openImage();
+    target?.openImageModal();
   }
 
   public sortKey: string = '';
   public sortAsc: boolean = true;
 
+  /**
+   * sortKeyに値(name or team)をセットし、sortAscの真偽値を変更する
+   * @param key
+   */
   sortBy(key: string) {
     if (this.sortKey === key) {
       this.sortAsc = !this.sortAsc;
@@ -105,6 +116,10 @@ export default class Keyst10402 extends Vue {
     this.sortKey = key;
   }
 
+  /**
+   * 昇順(▲)降順(▼)アイコン表示イベント
+   * @param key
+   */
   addClass(key: string) {
     if (this.sortKey === key && this.sortAsc) {
       return 'asc';
@@ -114,6 +129,9 @@ export default class Keyst10402 extends Vue {
     }
   }
 
+  /**
+   * ユーザー情報一覧を名前順で並び替えイベント
+   */
   get sortNameUsers(): UserInfo4Keyst10400[] {
     if (this.sortKey != '') {
       var set = 1;
@@ -129,6 +147,9 @@ export default class Keyst10402 extends Vue {
     }
   }
 
+  /**
+   * ユーザー情報一覧をチーム順で並び替えイベント
+   */
   get sortTeamUsers(): UserInfo4Keyst10400[] {
     if (this.sortKey != '') {
       var set = 1;

@@ -21,17 +21,15 @@ export interface IKeyst10700 {
   name: 'keyst10700'
 })
 export default class Keyst10700 extends VuexModule implements IKeyst10700 {
-  // Stateを作成
-  // 顧客マスタ
+  /** 顧客マスタ */ 
   private _custMaster: CustMaster = new CustMaster();
 
-  // 上記のStateにアクセスするgetterを作成
   get custMaster(): CustMaster {
     return this._custMaster;
   }
 
   /**
-   * 顧客マスタを設定する。
+   * 顧客マスタを設定する
    * @param value
    * @constructor
    */
@@ -41,7 +39,7 @@ export default class Keyst10700 extends VuexModule implements IKeyst10700 {
   }
 
   /**
-   * 顧客マスタを空にする。
+   * 顧客マスタを空にする
    * @constructor
    */
   @Mutation
@@ -49,7 +47,6 @@ export default class Keyst10700 extends VuexModule implements IKeyst10700 {
     Object.assign(this._custMaster, new CustMaster());
   }
 
-  // actionメソッド内のerrorをthrowしたい場合は「rawError: true」を記述する
   /**
    * 顧客マスタ検索
    * @param custCode
@@ -63,14 +60,6 @@ export default class Keyst10700 extends VuexModule implements IKeyst10700 {
       });
       this.SET_CUST_MASTER(data);
     }
-  }
-
-  /**
-    * 顧客マスタリセット
-    */
-  @Action({ rawError: true })
-  public async reset() {
-    this.RESET_CUST_MASTER();
   }
 
   /**

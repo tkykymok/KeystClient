@@ -10,18 +10,13 @@
         <input type="radio" name="search" value="update" v-model='radioValue' ref="target" @change='PrjCodeDisplay'>
       </div>
       <PrjCode
-        v-if='PrjCodeFlg'
+        v-if='prjCodeFlg'
         :prjCode.sync='prjMaster.prjCode'
       />
       <button
         @click='Decision(prjMaster.prjCode)'
         class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
         決定
-      </button>
-      <button
-        @click='check'
-        class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
-        check
       </button>
     </div>
     <Keyst10501
@@ -52,6 +47,7 @@ import { Context } from '@nuxt/types';
   },
   async asyncData(context: Context) {
     const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
+    // クエリストリングに値が設定されている場合
     if (queryParam4PrjCode) {
       let prjCode = queryParam4PrjCode.toString();
       await Keyst10500Module.search(prjCode);
@@ -59,11 +55,16 @@ import { Context } from '@nuxt/types';
   }
 })
 export default class extends Vue {
-  // 案件マスタ (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  /**
+   * 案件マスタ
+   */
   get prjMaster(): PrjMaster {
     return JSON.parse(JSON.stringify(Keyst10500Module.prjMaster));
   }
-  // 案件割当明細一覧 (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  
+  /**
+   * 案件割当明細リスト
+   */
   get prjUserAllocationList(): PrjUserAllocation[] {
     let prjUserAllocationList: PrjUserAllocation[] = [];
     Keyst10500Module.prjUserAllocationList.forEach(obj => {
@@ -74,26 +75,32 @@ export default class extends Vue {
   }
 
   public radioValue: string = '';
-  public PrjCodeFlg: boolean = false;
+  public prjCodeFlg: boolean = false;
   public registerFlg: boolean = false;
   public updateFlg: boolean = false;
 
+  /**
+   * prjCodeFlg、registerFlg、updateFlgの真偽値を変更する
+   */
   PrjCodeDisplay() {
     if (this.radioValue === 'register') {
-      this.PrjCodeFlg = false;
+      this.prjCodeFlg = false;
       this.registerFlg = false;
       this.updateFlg = false;
     }
     if (this.radioValue === 'update') {
-      this.PrjCodeFlg = true;
+      this.prjCodeFlg = true;
       this.registerFlg = false;
       this.updateFlg = false;
     }
   }
 
+  /**
+   * 案件マスタ・案件割当明細リスト検索イベント
+   */
   Decision(prjCode: string) {
     if (this.radioValue === 'register') {
-      Keyst10500Module.reset();
+      Keyst10500Module.RESET_PRJ_MASTER();
       this.registerFlg = true;
       this.updateFlg = false;
     }
@@ -104,15 +111,10 @@ export default class extends Vue {
     }
   }
 
-  check() {
-    console.log('PrjMaster', this.prjMaster);
-    console.log('PrjUserAllocationList', this.prjUserAllocationList);
-    console.log('パラメータ', this.$route.query.prjCode);
-  }
-
   mounted() {
+    // クエリストリングに値が設定されている場合
     if (this.$route.query.prjCode) {
-      this.PrjCodeFlg = true;
+      this.prjCodeFlg = true;
       this.registerFlg = false;
       this.updateFlg = true;
       let element: any = this.$refs.target;
