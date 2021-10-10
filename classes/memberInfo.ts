@@ -26,4 +26,5 @@ export default class MemberInfo {
   accountName: string = '';  
   prfImgStrgDrctry: string = '';
   skillList: Skill[] = [];
+  versionExKey: number | null = null;
 }

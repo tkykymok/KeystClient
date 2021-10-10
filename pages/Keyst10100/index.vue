@@ -65,8 +65,9 @@
       <tr class="">
         <th rowspan="3" class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">プロフィール画像</th>
         <td rowspan="3" class="p-3 text-gray-800 border border-b">
-          <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag || memberInfo.prfImgStrgDrctry == null" type="file" value="" @blur="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)" />
+          <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag || memberInfo.prfImgStrgDrctry == null" type="file" value="" />
           <img :src="memberInfo.prfImgStrgDrctry" v-else @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">
+          <input type="text" class="__hidden" />
         </td>
         <td class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">支店番号</td>
         <td class="p-3 text-gray-800 border border-b">

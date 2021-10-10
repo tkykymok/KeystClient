@@ -26,4 +26,5 @@ export default class Keyst10100SaveQ {
   accountName: string = '';  
   prfImgStrgDrctry: string = '';
   skillList: Keyst10100SaveQ1[] = [];
+  versionExKey: number | null = null;
 }
