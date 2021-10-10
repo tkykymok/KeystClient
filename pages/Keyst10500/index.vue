@@ -36,8 +36,8 @@ import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10501 from '~/components/Keyst10500/Keyst10501.vue';
 import PrjCode from '~/components/SelectOptions/PrjCode.vue';
 import { Keyst10500Module } from '~/store';
-import { $axios } from '~/utils/api';
 import { Context } from '@nuxt/types';
+import { AuthenticationModule } from '~/utils/store-accessor';
 
 @Component({
   name: 'Keyst10500',
@@ -47,10 +47,21 @@ import { Context } from '@nuxt/types';
   },
   async asyncData(context: Context) {
     const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
-    // クエリストリングに値が設定されている場合
-    if (queryParam4PrjCode) {
-      let prjCode = queryParam4PrjCode.toString();
-      await Keyst10500Module.search(prjCode);
+
+    // 管理者の場合
+    if (AuthenticationModule.loginUserInfo.adminFlg) {
+      let prjCode: string = '';
+      // クエリストリングに値が設定されている場合
+      if (queryParam4PrjCode) {
+        prjCode = queryParam4PrjCode.toString();
+      }
+      await Keyst10500Module.search(prjCode).catch(error => {
+        if (error.response.status === 401 || error.response.status === 403) {
+          context.redirect('/login');
+        }
+      });
+    } else {
+      context.redirect('/login');
     }
   }
 })

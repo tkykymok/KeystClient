@@ -34,12 +34,20 @@ import CustMaster from '~/classes/custMaster';
 import CustCode from '~/components/SelectOptions/CustCode.vue';
 import Keyst10701 from '~/components/Keyst10700/Keyst10701.vue';
 import { Keyst10700Module } from '~/store';
+import { Context } from '@nuxt/types';
+import { AuthenticationModule } from '~/utils/store-accessor';
 
 @Component({
   name: 'Keyst10700',
   components: {
     CustCode,
     Keyst10701
+  },
+  async asyncData(context: Context) {
+    // 管理者ではない場合
+    if (!AuthenticationModule.loginUserInfo.adminFlg) {
+      context.redirect('/login');
+    }
   }
 })
 export default class extends Vue {
