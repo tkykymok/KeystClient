@@ -23,7 +23,7 @@ export default class MemberInfo {
   branchId: number | null = null;
   accountType: string = '';
   accountNumber: number | null = null;
-  accountName: string = '';  
+  accountName: string = '';
   prfImgStrgDrctry: string = '';
   skillList: Skill[] = [];
   versionExKey: number | null = null;

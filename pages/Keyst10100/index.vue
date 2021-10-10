@@ -92,8 +92,8 @@
       <tr class="">
         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">性別</th>
         <td class="p-3 text-gray-800 border border-b">
-          <input type="radio" id="men" name="gender" value="1" :checked="memberInfo.gender === 1"><label for="men">男</label>
-          <input type="radio" id="women" name="gender" value="2" :checked="memberInfo.gender === 2"><label for="women">女</label>
+          <input v-model='memberInfo.gender' type="radio" id="men" name="gender" value="1" :checked="memberInfo.gender === 1"><label for="men">男</label>
+          <input v-model='memberInfo.gender' type="radio" id="women" name="gender" value="2" :checked="memberInfo.gender === 2"><label for="women">女</label>
         </td>
         <td class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">名義人(カナ)</td>
         <td class="p-3 text-gray-800 border border-b">
@@ -129,8 +129,8 @@
       <tr class="">
         <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">配偶者</th>
         <td class="p-3 text-gray-800 border border-b">
-          <input type="radio" id="partnerOn" name="partnerFlg" value="1" :checked="memberInfo.partnerFlg === true"><label for="partnerOn">あり</label>
-          <input type="radio" id="partnerOff" name="partnerFlg" value="0" :checked="memberInfo.partnerFlg === false"><label for="partnerOff">なし</label>
+          <input v-model='memberInfo.partnerFlg' type="radio" id="partnerOn" name="partnerFlg" :value='true' :checked='memberInfo.partnerFlg'><label for="partnerOn">あり</label>
+          <input v-model='memberInfo.partnerFlg' type="radio" id="partnerOff" name="partnerFlg" :value='false' :checked='memberInfo.partnerFlg'><label for="partnerOff">なし</label>
         </td>
         <td colspan="5" class="p-2"></td>
       </tr>
@@ -214,7 +214,7 @@ import Keyst10100SaveQ1 from '~/classes/form/keyst10100SaveQ1';
 
 })
 export default class extends Vue {
-  
+
   /**
    * メンバー情報
    */
