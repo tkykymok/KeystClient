@@ -46,10 +46,9 @@ import { AuthenticationModule } from '~/utils/store-accessor';
     PrjCode
   },
   async asyncData(context: Context) {
-    const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
-
     // 管理者の場合
     if (AuthenticationModule.loginUserInfo.adminFlg) {
+      const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
       let prjCode: string = '';
       // クエリストリングに値が設定されている場合
       if (queryParam4PrjCode) {
