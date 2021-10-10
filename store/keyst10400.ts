@@ -41,9 +41,9 @@ export default class Keyst10400 extends VuexModule implements IKeyst10400 {
    */
   @Mutation
   SET_USER_INFO_LIST(value: UserInfo4Keyst10400[]) {
-    // ユーザー情報一覧を初期化する
+    // ユーザー情報リストを初期化する
     this._userInfoList.splice(0);
-    // サーバーから取得したユーザー情報一覧全件を追加する
+    // サーバーから取得したユーザー情報リスト全件を追加する
     value.forEach(obj => {
       this._userInfoList.push(obj);
     });

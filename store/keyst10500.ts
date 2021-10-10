@@ -53,9 +53,9 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
    */
   @Mutation
   SET_PRJ_USER_ALLOCATION_LIST(value: PrjUserAllocation[]) {
-    // 案件割当明細一覧を初期化する
+    // 案件割当明細リストを初期化する
     this._prjUserAllocationList.splice(0);
-    // サーバーから取得した案件割当明細一覧全件を追加する
+    // サーバーから取得した案件割当明細リスト全件を追加する
     value.forEach(obj => {
       this._prjUserAllocationList.push(obj);
     })

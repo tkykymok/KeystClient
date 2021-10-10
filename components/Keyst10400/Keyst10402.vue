@@ -130,7 +130,7 @@ export default class Keyst10402 extends Vue {
   }
 
   /**
-   * ユーザー情報一覧を名前順で並び替えイベント
+   * ユーザー情報リストを名前順で並び替えイベント
    */
   get sortNameUsers(): UserInfo4Keyst10400[] {
     if (this.sortKey != '') {
@@ -148,7 +148,7 @@ export default class Keyst10402 extends Vue {
   }
 
   /**
-   * ユーザー情報一覧をチーム順で並び替えイベント
+   * ユーザー情報リストをチーム順で並び替えイベント
    */
   get sortTeamUsers(): UserInfo4Keyst10400[] {
     if (this.sortKey != '') {
