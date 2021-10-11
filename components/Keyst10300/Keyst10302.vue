@@ -113,8 +113,16 @@
       </tbody>
     </table>
 
-    <modal name='modal-content'>
+    <div v-if='!reserveInfoList.length' class='block h-full bg-gray-300 text-center pt-40 mt-10'>
+      担当者が日時を登録するまでお待ち下さい。
+    </div>
+
+    <modal
+      name='modal-content'
+      :height='330'
+      >
       <div class='p-8'>
+        <p class='text-center'>ワタシノキモチ</p>
         <div class='flex justify-center'>
           <input
             type='radio'
@@ -126,7 +134,7 @@
           >
           <label for='sun' class='cursor-pointer checked:bg-gray-900'>
             <img src='/_nuxt/assets/img/sun.png' alt=''
-                 :class="selectedReserveInfo.feeling === 1?'bg-yellow-200' : ''"
+                 :class="selectedReserveInfo.feeling === 1?'bg-blue-200' : ''"
             >
           </label>
           <input
@@ -139,7 +147,7 @@
           >
           <label for='cloud' class='cursor-pointer checked:bg-gray-900'>
             <img src='/_nuxt/assets/img/cloud.png' alt='' class='w-30 h-30 ml-8'
-                 :class="selectedReserveInfo.feeling === 2?'bg-yellow-200' : ''"
+                 :class="selectedReserveInfo.feeling === 2?'bg-blue-200' : ''"
             >
           </label>
           <input
@@ -152,7 +160,7 @@
           >
           <label for='rain' class='cursor-pointer checked:bg-gray-900'>
             <img src='/_nuxt/assets/img/rain.png' alt='' class='w-30 h-30 ml-8'
-                 :class="selectedReserveInfo.feeling === 3?'bg-yellow-200' : ''"
+                 :class="selectedReserveInfo.feeling === 3?'bg-blue-200' : ''"
             >
           </label>
         </div>
@@ -160,6 +168,7 @@
           <textarea
             v-model='selectedReserveInfo.remark'
             class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+            placeholder="電話面談、WEB面談等の希望があれば記入してください。"
           />
           <button
             class='px-4 py-2 ml-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'
