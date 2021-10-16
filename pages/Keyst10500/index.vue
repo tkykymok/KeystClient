@@ -67,6 +67,7 @@ import { AuthenticationModule } from '~/utils/store-accessor';
 export default class extends Vue {
   /**
    * 案件マスタ
+   * @return Keyst10500Module.prjMaster
    */
   get prjMaster(): PrjMaster {
     return JSON.parse(JSON.stringify(Keyst10500Module.prjMaster));
@@ -74,6 +75,7 @@ export default class extends Vue {
   
   /**
    * 案件割当明細リスト
+   * @return Keyst10500Module.prjUserAllocationList
    */
   get prjUserAllocationList(): PrjUserAllocation[] {
     let prjUserAllocationList: PrjUserAllocation[] = [];

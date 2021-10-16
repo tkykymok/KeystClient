@@ -53,6 +53,7 @@ import { AuthenticationModule } from '~/utils/store-accessor';
 export default class extends Vue {
   /**
    * 顧客マスタ
+   * @return Keyst10700Module.custMaster
    */
   get custMaster(): CustMaster {
     return JSON.parse(JSON.stringify(Keyst10700Module.custMaster));
@@ -81,6 +82,7 @@ export default class extends Vue {
 
   /**
    * 顧客マスタ検索イベント
+   * @param custCode
    */
   Decision(custCode: string) {
     if (this.radioValue === 'register') {

@@ -27,6 +27,7 @@ import Filtering4Keyst10400 from '~/classes/filtering4Keyst10400';
 export default class extends Vue {
   /**
    * ユーザー情報リスト
+   * @return Keyst10400Module.userInfoList
    */
   get userInfoList(): UserInfo4Keyst10400[] {
     let userInfoList: UserInfo4Keyst10400[] = [];
@@ -38,6 +39,7 @@ export default class extends Vue {
   }
   /**
    * フィルタリング
+   * @return Keyst10400Module.filtering
    */
   get filtering(): Filtering4Keyst10400 {
     return Keyst10400Module.filtering;
