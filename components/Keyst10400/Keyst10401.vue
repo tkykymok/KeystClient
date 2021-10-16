@@ -60,49 +60,82 @@ export default class extends Vue {
   public selectedSkill: string = '';
 
   /**
-   * キーワードでユーザー情報リスト絞り込む
+   * カタカナをひらがなに変換する
+   * @param kata
+   * @return hira
    */
-  async tempKeywordSearchUsers() {
-    var users: UserInfo4Keyst10400[] = [];
-    for (var user of this._userInfoList) {
-      if (user.userName.indexOf(this.keyword) !== -1 || user.userNameKana.indexOf(this.keyword) !== -1) {
-        users.push(user);
-      }
-    }
-    Keyst10400Module.SET_USER_INFO_LIST(users);
+  formatKataToHira(kata: string): string {
+    var hira = kata.replace(/[\u30A1-\u30FA]/g, ch =>
+      String.fromCharCode(ch.charCodeAt(0) - 0x60)
+    );
+    return hira;
   }
 
   /**
-   * チームでユーザー情報リストを絞り込む
+   * キーワードでユーザー情報一覧を絞り込む
+   * @param users
+   * @return tempUsers
    */
-  async tempTeamSearchUsers() {
-    var users: UserInfo4Keyst10400[] = [];
-    for (var user of this._userInfoList) {
+  tempKeywordSearchUsers(users: UserInfo4Keyst10400[]): UserInfo4Keyst10400[] {
+    var tempUsers: UserInfo4Keyst10400[] = [];
+    for (var user of users) {
+      // ユーザー名(カタカナ)をユーザー名(ひらがな)に変換する
+      var userNameHira = this.formatKataToHira(user.userNameKana);
+      // キーワードに「ユーザー名」か「ユーザ名(カタカナ)」か「ユーザー名(ひらがな)」が含まれる場合
+      if (user.userName.indexOf(this.keyword) !== -1 ||
+      user.userNameKana.indexOf(this.keyword) !== -1 ||
+      userNameHira.indexOf(this.keyword) !== -1) {
+        tempUsers.push(user);
+      }
+    }
+    return tempUsers;
+  }
+
+  /**
+   * チームでユーザー情報一覧を絞り込む
+   * @param users
+   * @return tempUsers
+   */
+  tempTeamSearchUsers(users: UserInfo4Keyst10400[]): UserInfo4Keyst10400[] {
+    var tempUsers: UserInfo4Keyst10400[] = [];
+    for (var user of users) {
       if (user.team !== null && user.team !== '') {
-        if (user.team.indexOf(this.selectedTeam) !== -1) {
-          users.push(user);
+        // 選択したチームとユーザーの「チーム」が一致する場合
+        if (user.team === this.selectedTeam) {
+          tempUsers.push(user);
+        }
+        // チームを選択しない場合
+        else if (this.selectedTeam === '') {
+          return users;
         }
       }
     }
-    Keyst10400Module.SET_USER_INFO_LIST(users);
+    return tempUsers;
   }
 
   /**
-   * スキルでユーザー情報リストを絞り込む
+   * スキルでユーザー情報一覧を絞り込む
+   * @param users
+   * @return tempUsers
    */
-  async tempSkillSearchUsers() {
-    var users: UserInfo4Keyst10400[] = [];
-    for (var user of this._userInfoList) {
+  tempSkillSearchUsers(users: UserInfo4Keyst10400[]): UserInfo4Keyst10400[] {
+    var tempUsers: UserInfo4Keyst10400[] = [];
+    for (var user of users) {
       if (user.skillList !== null && user.skillList !== []) {
         for (var skill of user.skillList) {
-          if (skill.skillName.indexOf(this.selectedSkill) !== -1) {
-            users.push(user);
+          // 選択したスキルとユーザーの「スキル」が一致する場合
+          if (skill.skillName === this.selectedSkill) {
+            tempUsers.push(user);
             break;
+          }
+          // スキルを選択しない場合
+          else if (this.selectedSkill === '') {
+            return users;
           }
         }
       }
     }
-    Keyst10400Module.SET_USER_INFO_LIST(users);
+    return tempUsers;
   }
   
   /**
@@ -110,13 +143,17 @@ export default class extends Vue {
    */
   async keywordSearchUsers() {
     await Keyst10400Module.initialize();
+    var users: UserInfo4Keyst10400[] = this._userInfoList;
+    // チームを選択している場合
     if (this.selectedTeam !== '') {
-      this.tempTeamSearchUsers();
+      users = this.tempTeamSearchUsers(users);
     }
+    // スキルを選択している場合
     if (this.selectedSkill !== '') {
-      this.tempSkillSearchUsers();
+      users = this.tempSkillSearchUsers(users);
     }
-    this.tempKeywordSearchUsers();
+    users = this.tempKeywordSearchUsers(users);
+    Keyst10400Module.SET_USER_INFO_LIST(users);
   }
 
   /**
@@ -124,13 +161,17 @@ export default class extends Vue {
    */
   async teamSearchUsers() {
     await Keyst10400Module.initialize();
+    var users: UserInfo4Keyst10400[] = this._userInfoList;
+    // キーワードを入力している場合
     if (this.keyword !== '') {
-      this.tempKeywordSearchUsers();
+      users = this.tempKeywordSearchUsers(users);
     }
+    // スキルを選択している場合
     if (this.selectedSkill !== '') {
-      this.tempSkillSearchUsers();
+      users = this.tempSkillSearchUsers(users);
     }
-    this.tempTeamSearchUsers();
+    users = this.tempTeamSearchUsers(users);
+    Keyst10400Module.SET_USER_INFO_LIST(users);
   }
 
   /**
@@ -138,14 +179,19 @@ export default class extends Vue {
    */
   async skillSearchUsers() {
     await Keyst10400Module.initialize();
+    var users: UserInfo4Keyst10400[] = this._userInfoList;
+    // キーワードを入力している場合
     if (this.keyword !== '') {
-      this.tempKeywordSearchUsers();
+      users = this.tempKeywordSearchUsers(users);
     }
+    // チームを選択している場合
     if (this.selectedTeam !== '') {
-      this.tempTeamSearchUsers();
+      users = this.tempTeamSearchUsers(users);
     }
-    this.tempSkillSearchUsers();
+    users = this.tempSkillSearchUsers(users);
+    Keyst10400Module.SET_USER_INFO_LIST(users);
   }
+
 }
 </script>
 
