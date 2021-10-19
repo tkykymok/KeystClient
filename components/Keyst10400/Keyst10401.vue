@@ -6,27 +6,20 @@
         <div class="w-1/4 p-4">
           <p class="font-bold">キーワード</p>
           <input v-model='keyword' @input="keywordSearchUsers()"
-            type="search" name="search" placeholder="キーワードを入力" class="border border-black rounded-md p-1 mt-1 w-full">
+            type="search" name="search" placeholder="キーワードを入力"
+            class='p-1 w-full align-top border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
         </div>
         <div class="w-1/4 p-4">
           <p class="font-bold">チーム</p>
-          <select v-model='selectedTeam' @change="teamSearchUsers()"
-            name="team" class="border border-black rounded-md p-1 mt-1 w-full">
-            <option value=''>チーム一覧</option>
-            <option v-for='(team, idx) of filtering.teamList' :key='idx' :value='team'>
-              {{ team }}
-            </option>
-          </select>
+          <Team
+            :team.sync='selectedTeam'
+          />
         </div>
         <div class="w-1/4 p-4">
           <p class="font-bold">スキル</p>
-          <select v-model='selectedSkill' @change="skillSearchUsers()"
-            name="skill" class="border border-black rounded-md p-1 mt-1 w-full">
-            <option value=''>スキル一覧</option>
-            <option v-for='(skillName, idx) of filtering.skillNameList' :key='idx' :value='skillName'>
-              {{ skillName }}
-            </option>
-          </select>
+          <Skills
+            :skills.sync='selectedSkill'
+          />
         </div>
       </div>
     </div>
@@ -37,27 +30,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue, Watch } from 'nuxt-property-decorator';
 import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
+import Team from '~/components/SelectOptions/Team.vue';
+import Skills from '~/components/SelectOptions/Skills.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
-import Filtering4Keyst10400 from '~/classes/filtering4Keyst10400';
 import { Keyst10400Module } from '~/store';
 
 @Component({
   name: 'Keyst10401',
   components: {
-    Keyst10402
+    Keyst10402,
+    Team,
+    Skills
   }
 })
 export default class extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
-  @Prop({ required: true })
-  filtering!: Filtering4Keyst10400;
 
   public keyword: string = '';
-  public selectedTeam: string = '';
-  public selectedSkill: string = '';
+  public selectedTeam: string = 'チーム一覧';
+  public selectedSkill: string = 'スキル一覧';
+
+  /**
+   * プルダウン(チーム)を監視する関数
+   */
+  @Watch('selectedTeam', { immediate: true, deep: true })
+  watchSelectedTeam() {
+    this.teamSearchUsers();
+  }
+
+  /**
+   * プルダウン(スキル)を監視する関数
+   */
+  @Watch('selectedSkill', { immediate: true, deep: true })
+  watchSelectedSkill() {
+    this.skillSearchUsers();
+  }
 
   /**
    * カタカナをひらがなに変換する
@@ -105,7 +115,7 @@ export default class extends Vue {
           tempUsers.push(user);
         }
         // チームを選択しない場合
-        else if (this.selectedTeam === '') {
+        else if (this.selectedTeam === 'チーム一覧') {
           return users;
         }
       }
@@ -129,7 +139,7 @@ export default class extends Vue {
             break;
           }
           // スキルを選択しない場合
-          else if (this.selectedSkill === '') {
+          else if (this.selectedSkill === 'スキル一覧') {
             return users;
           }
         }
