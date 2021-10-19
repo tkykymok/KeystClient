@@ -23,6 +23,7 @@ export default {
     { src: '@/plugins/vue-ctk-date-time-picker.ts', mode: 'client' },
     { src: '~/plugins/vuex-cookies.ts', mode: 'client' },
     { src: '~/plugins/vue-js-modal.ts', mode: 'client', ssr: true },
+    { src: '~/plugins/vue-simple-suggest.ts', mode: 'client' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
