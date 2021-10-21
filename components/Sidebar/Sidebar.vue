@@ -9,7 +9,7 @@
       <button
         class='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
         type='button'
-        v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
+        @click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
       >
         <font-awesome-icon icon='bars' />
       </button>
@@ -24,7 +24,7 @@
       <!-- Collapse -->
       <div
         class='md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded'
-        v-bind:class='collapseShow'
+        :class='collapseShow'
       >
         <!-- Collapse header -->
         <div
@@ -43,7 +43,7 @@
               <button
                 type='button'
                 class='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
-                v-on:click="toggleCollapseShow('hidden')"
+                @click="toggleCollapseShow('hidden')"
               >
                 <font-awesome-icon icon='times' />
               </button>
@@ -63,57 +63,64 @@
           <li class='items-center'>
             <NuxtLink
               to='/dashboard'
-              class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
+              class='flex text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
-
-              <font-awesome-icon
-                icon='tv'
-                class=' mr-2 text-sm'
-              />
-              ダッシュボード
+              <div class='flex' style='width: 30px; height: 20px'>
+                <font-awesome-icon
+                  icon='tv'
+                  class='mr-2 text-lg h-full'
+                />
+              </div>
+              <span>ダッシュボード</span>
             </NuxtLink>
           </li>
 
           <li class='items-center'>
             <NuxtLink
               to='/keyst10200'
-              class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
+              class='flex text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
-              <font-awesome-icon
-                icon='tools'
-                class=' mr-2 text-sm'
-              />
-              スキルシート
+              <div class='flex' style='width: 30px; height: 20px'>
+                <font-awesome-icon
+                  icon='tools'
+                  class='mr-2 text-lg h-full'
+                />
+              </div>
+              <span>スキルシート</span>
             </NuxtLink>
           </li>
 
           <li class='items-center'>
             <NuxtLink
-              to='/admin/tables'
-              class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
+              to='/keyst10300'
+              class='flex text-xs py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
-              <font-awesome-icon
-                icon='table'
-                class='mr-2 text-sm'
-              />
-              Tables
+              <div class='flex' style='width: 30px; height: 20px'>
+                <font-awesome-icon
+                  icon='calendar-alt'
+                  class='mr-2 text-lg h-full'
+                />
+              </div>
+              <span>1on1予約</span>
             </NuxtLink>
           </li>
 
           <li class='items-center'>
             <NuxtLink
-              to='/admin/maps'
-              class='text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
+              to='/keyst10400'
+              class='flex text-xs uppercase py-3 font-bold block text-gray-700 hover:text-gray-500'
               active-class='text-green-500 hover:text-green-600'
             >
-              <font-awesome-icon
-                icon='map-marked'
-                class='mr-2 text-sm'
-              />
-              Maps
+              <div class='flex' style='width: 30px; height: 20px'>
+                <font-awesome-icon
+                  icon='user-friends'
+                  class='mr-2 text-lg h-full'
+                />
+              </div>
+              <span>メンバー一覧</span>
             </NuxtLink>
           </li>
         </ul>
@@ -131,27 +138,31 @@
         <ul class='md:flex-col md:min-w-full flex flex-col list-none md:mb-4'>
           <li class='items-center'>
             <NuxtLink
-              class='text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+              class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
               to='/keyst10600'
             >
-              <font-awesome-icon
-                icon='info-circle'
-                class='mr-2 text-sm'
-              />
-              お知らせ
+              <div class='flex' style='width: 30px; height: 20px'>
+                <font-awesome-icon
+                  icon='info-circle'
+                  class='mr-2 text-lg h-full'
+                />
+              </div>
+              <span>お知らせ</span>
             </NuxtLink>
           </li>
 
           <li class='items-center'>
             <NuxtLink
-              class='text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
-              to='/auth/register'
+              class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+              to='/signUp'
             >
-              <font-awesome-icon
-                icon='clipboard-list'
-                class='mr-2 text-sm'
-              />
-              Register
+              <div class='flex' style='width: 30px; height: 20px'>
+                <font-awesome-icon
+                  icon='user-plus'
+                  class='mr-2 text-lg h-full'
+                />
+              </div>
+              <span>新規ユーザー登録</span>
             </NuxtLink>
           </li>
         </ul>
@@ -173,3 +184,6 @@ export default class Sidebar extends Vue {
 
 }
 </script>
+<style>
+
+</style>
