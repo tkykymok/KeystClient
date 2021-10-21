@@ -27,15 +27,15 @@ import 'vue-simple-suggest/dist/styles.css';
     VueSimpleSuggest
   }
 })
-export default class PrjCodeSuggest extends SelectOptionBase {
-  /** 入力パラメータ prjCode */
-  @PropSync('prjCode', { required: false, default: null })
-  _prjCode!: string;
+export default class CustCodeSuggest extends SelectOptionBase {
+  /** 入力パラメータ custCode */
+  @PropSync('custCode', { required: false, default: null })
+  _custCode!: string;
 
   selected: selectOption | null = null;
 
   created() {
-    this.getPrjCodeOptions();
+    this.getCustCodeOptions();
   }
 
   /**
@@ -51,19 +51,18 @@ export default class PrjCodeSuggest extends SelectOptionBase {
 
   /**
    * 入力したキーワードを監視する関数
-   * valueがObserverになるため、JSONに変換してcodeをprjCodeに代入。
+   * valueがObserverになるため、JSONに変換してcodeをcustCodeに代入。
    */
   @Watch('selected', { immediate: true, deep: true })
   watchSelected() {
-    console.log(this.selected);
     if (this.selected !== null) {
       var selectedFormatJson = JSON.parse(JSON.stringify(this.selected));
-      this._prjCode = selectedFormatJson.code;
+      this._custCode = selectedFormatJson.code;
     }
   }
 
-  async getPrjCodeOptions() {
-    const { data } = await $axios.get('/selectOption/prjCode');
+  async getCustCodeOptions() {
+    const { data } = await $axios.get('/selectOption/custName');
     this.selectOptionList = data;
     // 先頭の要素を削除する。
     this.selectOptionList.shift();

@@ -9,7 +9,7 @@
         <span class="mr-1">更新・詳細</span>
         <input type="radio" name="search" value="update" v-model='radioValue' ref="target" @change='PrjCodeDisplay'>
       </div>
-      <PrjCode
+      <PrjCodeSuggest
         v-if='prjCodeFlg'
         :prjCode.sync='prjMaster.prjCode'
       />
@@ -35,6 +35,7 @@ import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10501 from '~/components/Keyst10500/Keyst10501.vue';
 import PrjCode from '~/components/SelectOptions/PrjCode.vue';
+import PrjCodeSuggest from '~/components/SelectOptions/PrjCodeSuggest.vue';
 import { Keyst10500Module } from '~/store';
 import { Context } from '@nuxt/types';
 import { AuthenticationModule } from '~/utils/store-accessor';
@@ -43,7 +44,8 @@ import { AuthenticationModule } from '~/utils/store-accessor';
   name: 'Keyst10500',
   components: {
     Keyst10501,
-    PrjCode
+    PrjCode,
+    PrjCodeSuggest
   },
   async asyncData(context: Context) {
     // 管理者の場合

@@ -10,13 +10,13 @@
       filter-by-query
       mode='select'
       @blur='blur'
-      class='w-full align-top border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
     />
+    <p>Chosen element: {{ selected }}</p>
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, PropSync, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue } from 'nuxt-property-decorator';
 import { $axios } from '~/utils/api';
 import SelectOptionBase, { selectOption } from '~/components/SelectOptions/SelectOptionBase';
 import VueSimpleSuggest from 'vue-simple-suggest';
@@ -27,7 +27,7 @@ import 'vue-simple-suggest/dist/styles.css';
     VueSimpleSuggest
   }
 })
-export default class PrjCodeSuggest extends SelectOptionBase {
+export default class PrjCodeSuggestSample extends SelectOptionBase {
   /** 入力パラメータ prjCode */
   @PropSync('prjCode', { required: false, default: null })
   _prjCode!: string;
@@ -49,24 +49,9 @@ export default class PrjCodeSuggest extends SelectOptionBase {
     }
   }
 
-  /**
-   * 入力したキーワードを監視する関数
-   * valueがObserverになるため、JSONに変換してcodeをprjCodeに代入。
-   */
-  @Watch('selected', { immediate: true, deep: true })
-  watchSelected() {
-    console.log(this.selected);
-    if (this.selected !== null) {
-      var selectedFormatJson = JSON.parse(JSON.stringify(this.selected));
-      this._prjCode = selectedFormatJson.code;
-    }
-  }
-
   async getPrjCodeOptions() {
     const { data } = await $axios.get('/selectOption/prjCode');
     this.selectOptionList = data;
-    // 先頭の要素を削除する。
-    this.selectOptionList.shift();
   }
 }
 </script>

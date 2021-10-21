@@ -9,7 +9,7 @@
         <span class="mr-1">更新・詳細</span>
         <input type="radio" name="search" value="update" v-model='radioValue' @change='CustCodeDisplay'>
       </div>
-      <CustCode
+      <CustCodeSuggest
         v-if='custCodeFlg'
         :custCode.sync='custMaster.custCode'
       />
@@ -32,6 +32,7 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 import CustMaster from '~/classes/custMaster';
 import CustCode from '~/components/SelectOptions/CustCode.vue';
+import CustCodeSuggest from '~/components/SelectOptions/CustCodeSuggest.vue';
 import Keyst10701 from '~/components/Keyst10700/Keyst10701.vue';
 import { Keyst10700Module } from '~/store';
 import { Context } from '@nuxt/types';
@@ -40,8 +41,9 @@ import { AuthenticationModule } from '~/utils/store-accessor';
 @Component({
   name: 'Keyst10700',
   components: {
+    Keyst10701,
     CustCode,
-    Keyst10701
+    CustCodeSuggest
   },
   async asyncData(context: Context) {
     // 管理者ではない場合
