@@ -7,12 +7,14 @@ import Keyst10400 from '~/store/keyst10400';
 import Keyst10500 from '~/store/keyst10500';
 import Messages from '~/store/messages';
 import Keyst10600 from '~/store/keyst10600';
+import Keyst10700 from '~/store/keyst10700';
 
 let Keyst10200Module: Keyst10200;
 let Keyst10300Module: Keyst10300;
 let Keyst10400Module: Keyst10400;
 let Keyst10500Module: Keyst10500;
 let Keyst10600Module: Keyst10600;
+let Keyst10700Module: Keyst10700;
 let MessagesModule: Messages;
 let AuthenticationModule: Authentication;
 
@@ -24,7 +26,7 @@ function initialiseStores(store: Store<any>): void {
   MessagesModule = getModule(Messages, store);
   Keyst10300Module = getModule(Keyst10300, store);
   Keyst10600Module = getModule(Keyst10600, store);
+  Keyst10700Module = getModule(Keyst10700, store);
 }
 
-
-export { initialiseStores, Keyst10200Module, Keyst10300Module, Keyst10400Module, Keyst10500Module, Keyst10600Module, MessagesModule, AuthenticationModule};
+export { initialiseStores, Keyst10200Module, Keyst10300Module, Keyst10400Module, Keyst10500Module, Keyst10600Module, Keyst10700Module, MessagesModule, AuthenticationModule};

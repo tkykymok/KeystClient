@@ -1,5 +1,5 @@
 <template>
-  <div v-if='showImage' class="w-full h-full p-6 flex justify-center items-center z-10 fixed top-0 left-0 bg-black bg-opacity-50" @click="closeImage">
+  <div v-if='showImage' class="w-full h-full p-6 flex justify-center items-center z-10 fixed top-0 left-0 bg-black bg-opacity-50" @click="closeImageModal">
     <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-64 h-64 rounded-full border-none shadow-lg">
   </div>
 </template>
@@ -19,11 +19,17 @@ export default class extends Vue {
 
   public showImage: boolean = false;
 
-  openImage() {
+  /**
+   * プロフィール画像モーダルを表示する(Keyst10402で使用)
+   */
+  openImageModal() {
     this.showImage = true;
   }
 
-  closeImage() {
+  /**
+   * プロフィール画像モーダル非表示イベント
+   */
+  closeImageModal() {
     this.showImage = false;
   }
 

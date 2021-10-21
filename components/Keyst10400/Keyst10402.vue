@@ -1,7 +1,7 @@
 <template>
   <div>
     <table class="w-full mt-16">
-      <tr class="flex justify-between border-t-2 border-b-2">
+      <tr class="flex justify-around border-t-2 border-b-2">
         <th @click="sortBy('name'); sortNameUsers" :class="addClass('name')" class="w-1/6 cursor-pointer">
           名前
         </th>
@@ -11,32 +11,37 @@
         <th class="w-1/6">
           スキル
         </th>
-        <th class="w-1/6">
+        <th v-if='loginUserInfo.adminFlg'
+          class="w-1/6">
           案件・スキルシート
         </th>
       </tr>
       <tr v-for='(userInfo, idx) in _userInfoList' :key='idx'
-        class="p-2 flex justify-between items-center border-b-2">
+        class="p-2 flex justify-around items-center border-b-2">
         <th class="w-1/6 flex justify-center items-center">
           <button @click="showImageModal(userInfo.userId)">
             <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
-          <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
+          <div>
+            <p class="ml-4 font-normal text-xs">{{ userInfo.userNameKana }}</p>
+            <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
+          </div>
         </th>
         <th class="w-1/6 font-normal">{{ userInfo.team }}</th>
         <th class="w-1/6 font-normal">
           <span v-for='(skill, idx) in userInfo.skillList' :key='idx'>{{ skill.skillName }} </span>
         </th>
-        <th class="w-1/6 font-normal">
-          <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showModal(userInfo.userId)">案件</button>
+        <th v-if='loginUserInfo.adminFlg'
+          class="w-1/6 font-normal">
+          <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showPrjModal(userInfo.userId)">案件</button>
           <button
-            @click='$router.push({ path: "/keyst10200"})'
+            @click='$router.push({ path: `/keyst10200?userId=${userInfo.userId}`})'
             class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
             スキルシート
           </button>
         </th>
         <Keyst10403
-          :prjInfo.sync='userInfo.prjInfo'
+          :prjInfoList.sync='userInfo.prjInfoList'
           :userId='userInfo.userId'
           ref='keyst10403Refs'
         />
@@ -55,6 +60,10 @@ import { Component, PropSync, Vue, Ref } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
+import { Keyst10400Module } from '~/store';
+import { Gender } from '~/constant/gender';
+import { AuthenticationModule } from '~/utils/store-accessor';
+import LoginUserInfo from '~/classes/loginUserInfo';
 
 @Component({
   name: 'Keyst10402',
@@ -66,23 +75,38 @@ import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
 export default class Keyst10402 extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
-
   @Ref() keyst10403Refs!: Keyst10403[];
   @Ref() keyst10404Refs!: Keyst10404[];
 
-  showModal(userId: number) {
+  /** ログインユーザー情報 */
+  public loginUserInfo: LoginUserInfo = AuthenticationModule.loginUserInfo;
+  public genderConstant = Gender;
+
+  /**
+   * 案件情報モーダル表示イベント
+   * @param userId
+   */
+  showPrjModal(userId: number) {
     const target: Keyst10403 | undefined = this.keyst10403Refs.find(obj => obj.userId === userId);
-    target?.open();
+    target?.openPrjModal();
   }
 
+  /**
+   * プロフィール画像モーダル表示イベント
+   * @param userId
+   */
   showImageModal(userId: number) {
     const target: Keyst10404 | undefined = this.keyst10404Refs.find(obj => obj.userId === userId);
-    target?.openImage();
+    target?.openImageModal();
   }
 
   public sortKey: string = '';
   public sortAsc: boolean = true;
 
+  /**
+   * sortKeyに値(name or team)をセットし、sortAscの真偽値を変更する
+   * @param key
+   */
   sortBy(key: string) {
     if (this.sortKey === key) {
       this.sortAsc = !this.sortAsc;
@@ -92,6 +116,10 @@ export default class Keyst10402 extends Vue {
     this.sortKey = key;
   }
 
+  /**
+   * 昇順(▲)降順(▼)アイコン表示イベント
+   * @param key
+   */
   addClass(key: string) {
     if (this.sortKey === key && this.sortAsc) {
       return 'asc';
@@ -101,6 +129,9 @@ export default class Keyst10402 extends Vue {
     }
   }
 
+  /**
+   * ユーザー情報リストを名前順で並び替えイベント
+   */
   get sortNameUsers(): UserInfo4Keyst10400[] {
     if (this.sortKey != '') {
       var set = 1;
@@ -109,13 +140,16 @@ export default class Keyst10402 extends Vue {
       } else {
         set = -1;
       }
-      this.$store.commit('keyst10400/SORT_NAME_USER_INFO_LIST', set);
+      Keyst10400Module.SORT_NAME_USER_INFO_LIST(set);
       return this._userInfoList;
     } else {
       return this._userInfoList;
     }
   }
 
+  /**
+   * ユーザー情報リストをチーム順で並び替えイベント
+   */
   get sortTeamUsers(): UserInfo4Keyst10400[] {
     if (this.sortKey != '') {
       var set = 1;
@@ -124,7 +158,7 @@ export default class Keyst10402 extends Vue {
       } else {
         set = -1;
       }
-      this.$store.commit('keyst10400/SORT_TEAM_USER_INFO_LIST', set);
+      Keyst10400Module.SORT_TEAM_USER_INFO_LIST(set);
       return this._userInfoList;
     } else {
       return this._userInfoList;

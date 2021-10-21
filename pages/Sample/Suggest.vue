@@ -1,15 +1,15 @@
 <template>
-  <PrjCodeSuggest />
+  <PrjCodeSuggestSample />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import PrjCodeSuggest from '~/components/SelectOptions/PrjCodeSuggest.vue';
+import PrjCodeSuggestSample from '~/components/SelectOptions/PrjCodeSuggestSample.vue';
 
 @Component({
   name: 'Suggest',
   components: {
-    PrjCodeSuggest
+    PrjCodeSuggestSample
   }
 })
 export default class extends Vue {
