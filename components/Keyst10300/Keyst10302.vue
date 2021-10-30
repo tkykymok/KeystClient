@@ -115,10 +115,6 @@
       </tbody>
     </table>
 
-    <!-- <div v-if='!reserveInfoList.length' class='block h-fulln bg-gray-300 text-center pt-40 mt-10 overflow-y-hidden'>
-      担当者が日時を登録するまでお待ち下さい。
-    </div> -->
-
     <modal
       name='modal-content'
       :height='330'
@@ -181,7 +177,9 @@
       </div>
     </modal>
   </div>
-  <div v-else class='mt-10'>
+  <div
+    v-if='!reserveInfoList.length && !loginUserInfo.adminFlg'
+    class='mt-10'>
     担当者が日時を登録するまでお待ち下さい。
   </div>
 </div>
