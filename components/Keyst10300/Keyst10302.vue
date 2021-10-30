@@ -1,6 +1,8 @@
 // 予約状況テーブル
 <template>
+<div>
   <div
+    v-if='reserveInfoList.length'
     :class="loginUserInfo.adminFlg? 'w-full': 'w-2/5 overflow-y-scroll scroll'"
     :style="loginUserInfo.adminFlg? 'height :auto': 'height: 400px'"
   >
@@ -113,9 +115,9 @@
       </tbody>
     </table>
 
-    <div v-if='!reserveInfoList.length' class='block h-full bg-gray-300 text-center pt-40 mt-10'>
+    <!-- <div v-if='!reserveInfoList.length' class='block h-fulln bg-gray-300 text-center pt-40 mt-10 overflow-y-hidden'>
       担当者が日時を登録するまでお待ち下さい。
-    </div>
+    </div> -->
 
     <modal
       name='modal-content'
@@ -179,6 +181,10 @@
       </div>
     </modal>
   </div>
+  <div v-else class='mt-10'>
+    担当者が日時を登録するまでお待ち下さい。
+  </div>
+</div>
 </template>
 
 <script lang='ts'>
@@ -244,11 +250,13 @@ export default class Keyst10302 extends Vue {
    * @param reserveInfo
    */
   deleteLine(reserveInfo: ReserveInfo) {
-    try {
-      const reqForm: Keyst10300DeleteQ =
-        _.assign(new Keyst10300DeleteQ(), _.pick(reserveInfo, _.keys(new Keyst10300DeleteQ())));
-      Keyst10300Module.deleteLine(reqForm);
-    } catch (error) {
+    if (confirm('行を削除しますか？')) {
+      try {
+        const reqForm: Keyst10300DeleteQ =
+          _.assign(new Keyst10300DeleteQ(), _.pick(reserveInfo, _.keys(new Keyst10300DeleteQ())));
+        Keyst10300Module.deleteLine(reqForm);
+      } catch (error) {
+      }
     }
   }
 
@@ -257,11 +265,13 @@ export default class Keyst10302 extends Vue {
    * @param reserveInfo
    */
   cancelReserve(reserveInfo: ReserveInfo) {
-    try {
-      const reqForm: Keyst10300CancelQ =
-        _.assign(new Keyst10300CancelQ(), _.pick(reserveInfo, _.keys(new Keyst10300CancelQ())));
-      Keyst10300Module.cancelReserve(reqForm);
-    } catch (error) {
+    if (confirm('予約を取り消しますか？')) {
+      try {
+        const reqForm: Keyst10300CancelQ =
+          _.assign(new Keyst10300CancelQ(), _.pick(reserveInfo, _.keys(new Keyst10300CancelQ())));
+        Keyst10300Module.cancelReserve(reqForm);
+      } catch (error) {
+      }
     }
   }
 
