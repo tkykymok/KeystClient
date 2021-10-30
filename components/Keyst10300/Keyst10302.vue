@@ -95,7 +95,7 @@
               :class="loginUserInfo.adminFlg? 'w-10': 'w-20'"
           >
             <button
-              v-if='!reserveInfo.userId && !reserveInfoList.some(obj => obj.userId === loginUserInfo.userId)'
+              v-if='!reserveInfo.userId && !reserveInfoList.some(obj => obj.userId === loginUserInfo.userId) && !isAbleToCancel(reserveInfo)'
               class='px-2 py-1 ml-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'
               @click='show(reserveInfo)'
             >
