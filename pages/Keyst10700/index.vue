@@ -93,9 +93,14 @@ export default class extends Vue {
       this.updateFlg = false;
     }
     if (this.radioValue === 'update') {
-      Keyst10700Module.search(custCode);
-      this.registerFlg = false;
-      this.updateFlg = true;
+      var result = Keyst10700Module.search(custCode);
+      result.then(matchFlg => {
+        // custCodeの値が顧客コードリストに存在する場合、顧客マスタを表示する
+        if (matchFlg) {
+          this.registerFlg = false;
+          this.updateFlg = true;
+        }
+      })
     }
   }
 }
