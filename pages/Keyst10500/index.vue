@@ -121,7 +121,6 @@ export default class extends Vue {
     if (this.radioValue === 'update') {
       var result = Keyst10500Module.search(prjCode);
       result.then(matchFlg => {
-        console.log(matchFlg);
         // prjCodeの値が案件コードリストに存在する場合、案件割当明細リストを表示する
         if (matchFlg) {
           this.registerFlg = false;
