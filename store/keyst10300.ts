@@ -99,6 +99,7 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
 
   @Action({ rawError: true })
   public async initialize() {
+<<<<<<< HEAD
     const { data } = await $axios.get('/keyst10300/initialize');
     this.SET_RESERVE_ID(data.reserveId)
     this.SET_TEAM(data.team);
@@ -179,6 +180,11 @@ export default class Keyst10300 extends VuexModule implements IKeyst10300 {
       '/keyst10300/cancelReserve', reqForm
     );
     await this.initialize();
+=======
+    alert('aaa');
+    // const { data } = await $axios.get('/keyst10300/initialize');
+    // await this.SET_RESERVE_HEADER_LIST(data.resrveHeaderList);
+>>>>>>> dbの値を渡す
   }
 
 }
