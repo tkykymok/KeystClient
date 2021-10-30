@@ -51,6 +51,7 @@ export default class Keyst10700 extends VuexModule implements IKeyst10700 {
   /**
    * 顧客マスタ検索
    * @param custCode
+   * @return matchFlg
    */
   @Action({ rawError: true })
   public async search(custCode: string) {
@@ -73,6 +74,7 @@ export default class Keyst10700 extends VuexModule implements IKeyst10700 {
       });
       this.SET_CUST_MASTER(data);
     }
+    return matchFlg;
   }
 
   /**

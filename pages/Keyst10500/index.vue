@@ -111,6 +111,7 @@ export default class extends Vue {
 
   /**
    * 案件マスタ・案件割当明細リスト検索イベント
+   * @param prjCode
    */
   Decision(prjCode: string) {
     if (this.radioValue === 'register') {

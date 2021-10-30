@@ -92,7 +92,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件割当明細検索
+   * 案件マスタ・案件割当明細検索
    * @param prjCode
    * @return matchFlg
    */
