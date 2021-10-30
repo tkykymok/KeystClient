@@ -2,11 +2,6 @@
 <template>
   <div class='w-1/2'>
     <p class='py-3 font-bold text-gray-600'>面談可能日時</p>
-<<<<<<< HEAD
-
-=======
-    <!-- <p>テスト：{{ _reserveHeader.reserveId }}</p> -->
->>>>>>> dbの値を渡す
     <div class='w-1/3'>
       <VueCtkDateTimePicker
         v-model='reserveDate'
