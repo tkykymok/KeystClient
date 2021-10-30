@@ -2,7 +2,6 @@
 <template>
   <div class='w-1/2'>
     <p class='py-3 font-bold text-gray-600'>面談可能日時</p>
-
     <div class='w-1/3'>
       <VueCtkDateTimePicker
         v-model='reserveDate'
@@ -42,13 +41,19 @@
       </div>
     </div>
     <div class='w-1/5 mt-4'>
-      <button class='px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none' @click='save'>登録</button>
+      <button
+        :class="!reserveDate || !fromTime || !toTime? 'px-2 py-1 bg-gray-500 text-white rounded-md active:outline-none focus:outline-none cursor-default':'px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'"
+        @click='save'
+        :disabled='!reserveDate || !fromTime || !toTime'
+      >
+        登録
+      </button>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, Prop, PropSync, Vue, Watch } from 'nuxt-property-decorator';
 import { Keyst10300Module } from '~/utils/store-accessor';
 import Keyst10300SaveQ from '~/classes/form/keyst10300SaveQ';
 import { getToday } from '~/utils/converter';
@@ -63,6 +68,8 @@ export default class Keyst10301 extends Vue{
   public reserveDate: string = '';
   public fromTime: string = '16:00:00';
   public toTime: string = '21:00:00';
+
+  public saveButtonDisabled: boolean = true;
 
   /** 今日の日付 */
   get today () {

@@ -5,28 +5,21 @@
       <div class="flex justify-around">
         <div class="w-1/4 p-4">
           <p class="font-bold">キーワード</p>
-          <input v-model='keyword' @input="filteredCheckKeyword()"
-            type="search" name="search" placeholder="キーワードを入力" class="border border-black rounded-md p-1 mt-1 w-full">
+          <input v-model='keyword' @input="keywordSearchUsers()"
+            type="search" name="search" placeholder="キーワードを入力"
+            class='p-1 w-full align-top border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
         </div>
         <div class="w-1/4 p-4">
           <p class="font-bold">チーム</p>
-          <select v-model='selectedTeam' @change="filteredCheckSelectedTeam()"
-            name="team" class="border border-black rounded-md p-1 mt-1 w-full">
-            <option value=''>チーム一覧</option>
-            <option v-for='(team, idx) of filtering.teamList' :key='idx' :value='team'>
-              {{ team }}
-            </option>
-          </select>
+          <Team
+            :team.sync='selectedTeam'
+          />
         </div>
         <div class="w-1/4 p-4">
           <p class="font-bold">スキル</p>
-          <select v-model='selectedSkill' @change="filteredCheckSelectedSkill()"
-            name="skill" class="border border-black rounded-md p-1 mt-1 w-full">
-            <option value=''>スキル一覧</option>
-            <option v-for='(skillName, idx) of filtering.skillNameList' :key='idx' :value='skillName'>
-              {{ skillName }}
-            </option>
-          </select>
+          <Skills
+            :skills.sync='selectedSkill'
+          />
         </div>
       </div>
     </div>
@@ -37,168 +30,178 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, PropSync, Vue } from 'nuxt-property-decorator';
+import { Component, PropSync, Vue, Watch } from 'nuxt-property-decorator';
 import Keyst10402 from '~/components/Keyst10400/Keyst10402.vue';
+import Team from '~/components/SelectOptions/Team.vue';
+import Skills from '~/components/SelectOptions/Skills.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
-import Filtering4Keyst10400 from '~/classes/filtering4Keyst10400';
 import { Keyst10400Module } from '~/store';
 
 @Component({
   name: 'Keyst10401',
   components: {
-    Keyst10402
+    Keyst10402,
+    Team,
+    Skills
   }
 })
 export default class extends Vue {
   @PropSync('userInfoList', { required: true, default: () => ([]) })
   _userInfoList!: UserInfo4Keyst10400[];
-  @Prop({ required: true })
-  filtering!: Filtering4Keyst10400;
 
   public keyword: string = '';
-  public selectedTeam: string = '';
-  public selectedSkill: string = '';
+  public selectedTeam: string = 'チーム一覧';
+  public selectedSkill: string = 'スキル一覧';
 
-  async filteredCheckKeyword(): Promise<UserInfo4Keyst10400[]> {
-    if (this.selectedTeam === '' && this.selectedSkill === '') {
-      await Keyst10400Module.initialize();
-      this.filteredUsers();
-      console.log('チームなし、スキルなし');
-      return this._userInfoList;
-    }
-    if (this.selectedTeam !== '' && this.selectedSkill === '') {
-      await Keyst10400Module.initialize();
-      this.selectedTeamUsers();
-      this.filteredUsers();
-      console.log('チームあり、スキルなし');
-      return this._userInfoList;
-    }
-    if (this.selectedTeam === '' && this.selectedSkill !== '') {
-      await Keyst10400Module.initialize();
-      this.selectedSkillUsers();
-      this.filteredUsers();
-      console.log('チームなし、スキルあり');
-      return this._userInfoList;
-    } 
-    if (this.selectedTeam !== '' && this.selectedSkill !== '') {
-      await Keyst10400Module.initialize();
-      this.selectedTeamUsers();
-      this.selectedSkillUsers();
-      this.filteredUsers();
-      console.log('チームあり、スキルあり');
-      return this._userInfoList;
-    }
-    return this._userInfoList;
+  /**
+   * プルダウン(チーム)を監視する関数
+   */
+  @Watch('selectedTeam', { immediate: true, deep: true })
+  watchSelectedTeam() {
+    this.teamSearchUsers();
   }
 
-  async filteredCheckSelectedTeam(): Promise<UserInfo4Keyst10400[]> {
-    if (this.keyword === '' && this.selectedSkill === '') {
-      await Keyst10400Module.initialize();
-      this.selectedTeamUsers();
-      console.log('キーワードなし、スキルなし');
-      return this._userInfoList;
-    }
-    if (this.keyword !== '' && this.selectedSkill === '') {
-      await Keyst10400Module.initialize();
-      this.filteredUsers();
-      this.selectedTeamUsers();
-      console.log('キーワードあり、スキルなし');
-      return this._userInfoList;
-    }
-    if (this.keyword === '' && this.selectedSkill !== '') {
-      await Keyst10400Module.initialize();
-      this.selectedSkillUsers();
-      this.selectedTeamUsers();
-      console.log('キーワードなし、スキルあり');
-      return this._userInfoList;
-    } 
-    if (this.keyword !== '' && this.selectedSkill !== '') {
-      await Keyst10400Module.initialize();
-      this.filteredUsers();
-      this.selectedSkillUsers();
-      this.selectedTeamUsers();
-      console.log('キーワードあり、スキルあり');
-      return this._userInfoList;
-    }
-    return this._userInfoList;
+  /**
+   * プルダウン(スキル)を監視する関数
+   */
+  @Watch('selectedSkill', { immediate: true, deep: true })
+  watchSelectedSkill() {
+    this.skillSearchUsers();
   }
 
-  async filteredCheckSelectedSkill(): Promise<UserInfo4Keyst10400[]> {
-    if (this.keyword === '' && this.selectedTeam === '') {
-      await Keyst10400Module.initialize();
-      this.selectedSkillUsers();
-      console.log('キーワードなし、チームなし');
-      return this._userInfoList;
-    }
-    if (this.keyword !== '' && this.selectedTeam === '') {
-      await Keyst10400Module.initialize();
-      this.filteredUsers();
-      this.selectedSkillUsers();
-      console.log('キーワードあり、チームなし');
-      return this._userInfoList;
-    }
-    if (this.keyword === '' && this.selectedTeam !== '') {
-      await Keyst10400Module.initialize();
-      console.log(this._userInfoList);
-      this.selectedTeamUsers();
-      console.log(this._userInfoList);
-      this.selectedSkillUsers();
-      console.log(this._userInfoList);
-      // console.log('キーワードなし、チームあり', this.selectedTeam);
-      return this._userInfoList;
-    } 
-    if (this.keyword !== '' && this.selectedTeam !== '') {
-      await Keyst10400Module.initialize();
-      this.filteredUsers();
-      this.selectedTeamUsers();
-      this.selectedSkillUsers();
-      console.log('キーワードあり、チームあり');
-      return this._userInfoList;
-    }
-    return this._userInfoList;
+  /**
+   * カタカナをひらがなに変換する
+   * @param kata
+   * @return hira
+   */
+  formatKataToHira(kata: string): string {
+    var hira = kata.replace(/[\u30A1-\u30FA]/g, ch =>
+      String.fromCharCode(ch.charCodeAt(0) - 0x60)
+    );
+    return hira;
   }
 
-  filteredUsers() {
-    var users: UserInfo4Keyst10400[] = [];
-    for (var user of this._userInfoList) {
-      for (var skill of user.skillList) {
-        if (skill.skillName.indexOf(this.keyword) !== -1 ||
-          user.userName.indexOf(this.keyword) !== -1 ||
-          user.userNameKana.indexOf(this.keyword) !== -1 ||
-          user.team.indexOf(this.keyword) !== -1) {
-          users.push(user);
-          break;
+  /**
+   * キーワードでユーザー情報一覧を絞り込む
+   * @param users
+   * @return tempUsers
+   */
+  tempKeywordSearchUsers(users: UserInfo4Keyst10400[]): UserInfo4Keyst10400[] {
+    var tempUsers: UserInfo4Keyst10400[] = [];
+    for (var user of users) {
+      // ユーザー名(カタカナ)をユーザー名(ひらがな)に変換する
+      var userNameHira = this.formatKataToHira(user.userNameKana);
+      // キーワードに「ユーザー名」か「ユーザ名(カタカナ)」か「ユーザー名(ひらがな)」が含まれる場合
+      if (user.userName.indexOf(this.keyword) !== -1 ||
+      user.userNameKana.indexOf(this.keyword) !== -1 ||
+      userNameHira.indexOf(this.keyword) !== -1) {
+        tempUsers.push(user);
+      }
+    }
+    return tempUsers;
+  }
+
+  /**
+   * チームでユーザー情報一覧を絞り込む
+   * @param users
+   * @return tempUsers
+   */
+  tempTeamSearchUsers(users: UserInfo4Keyst10400[]): UserInfo4Keyst10400[] {
+    var tempUsers: UserInfo4Keyst10400[] = [];
+    for (var user of users) {
+      if (user.team !== null && user.team !== '') {
+        // 選択したチームとユーザーの「チーム」が一致する場合
+        if (user.team === this.selectedTeam) {
+          tempUsers.push(user);
+        }
+        // チームを選択しない場合
+        else if (this.selectedTeam === 'チーム一覧') {
+          return users;
         }
       }
     }
-    Keyst10400Module.SET_USER_INFO_LIST(users);
-    return this._userInfoList
+    return tempUsers;
   }
 
-  selectedTeamUsers() {
-    var users: UserInfo4Keyst10400[] = [];
-    for (var user of this._userInfoList) {
-      if (user.team.indexOf(this.selectedTeam) !== -1) {
-        users.push(user);
-      }
-    }
-    Keyst10400Module.SET_USER_INFO_LIST(users);
-    return this._userInfoList
-  }
-
-  selectedSkillUsers() {
-    var users: UserInfo4Keyst10400[] = [];
-    for (var user of this._userInfoList) {
-      for (var skill of user.skillList) {
-        if (skill.skillName.indexOf(this.selectedSkill) !== -1) {
-          users.push(user);
-          break;
+  /**
+   * スキルでユーザー情報一覧を絞り込む
+   * @param users
+   * @return tempUsers
+   */
+  tempSkillSearchUsers(users: UserInfo4Keyst10400[]): UserInfo4Keyst10400[] {
+    var tempUsers: UserInfo4Keyst10400[] = [];
+    for (var user of users) {
+      if (user.skillList !== null && user.skillList !== []) {
+        for (var skill of user.skillList) {
+          // 選択したスキルとユーザーの「スキル」が一致する場合
+          if (skill.skillName === this.selectedSkill) {
+            tempUsers.push(user);
+            break;
+          }
+          // スキルを選択しない場合
+          else if (this.selectedSkill === 'スキル一覧') {
+            return users;
+          }
         }
       }
     }
-    Keyst10400Module.SET_USER_INFO_LIST(users);
-    return this._userInfoList
+    return tempUsers;
   }
+  
+  /**
+   * キーワード入力イベント
+   */
+  async keywordSearchUsers() {
+    await Keyst10400Module.initialize();
+    var users: UserInfo4Keyst10400[] = this._userInfoList;
+    // チームを選択している場合
+    if (this.selectedTeam !== '') {
+      users = this.tempTeamSearchUsers(users);
+    }
+    // スキルを選択している場合
+    if (this.selectedSkill !== '') {
+      users = this.tempSkillSearchUsers(users);
+    }
+    users = this.tempKeywordSearchUsers(users);
+    Keyst10400Module.SET_USER_INFO_LIST(users);
+  }
+
+  /**
+   * チーム変更イベント
+   */
+  async teamSearchUsers() {
+    await Keyst10400Module.initialize();
+    var users: UserInfo4Keyst10400[] = this._userInfoList;
+    // キーワードを入力している場合
+    if (this.keyword !== '') {
+      users = this.tempKeywordSearchUsers(users);
+    }
+    // スキルを選択している場合
+    if (this.selectedSkill !== '') {
+      users = this.tempSkillSearchUsers(users);
+    }
+    users = this.tempTeamSearchUsers(users);
+    Keyst10400Module.SET_USER_INFO_LIST(users);
+  }
+
+  /**
+   * スキル変更イベント
+   */
+  async skillSearchUsers() {
+    await Keyst10400Module.initialize();
+    var users: UserInfo4Keyst10400[] = this._userInfoList;
+    // キーワードを入力している場合
+    if (this.keyword !== '') {
+      users = this.tempKeywordSearchUsers(users);
+    }
+    // チームを選択している場合
+    if (this.selectedTeam !== '') {
+      users = this.tempTeamSearchUsers(users);
+    }
+    users = this.tempSkillSearchUsers(users);
+    Keyst10400Module.SET_USER_INFO_LIST(users);
+  }
+
 }
 </script>
 

@@ -2,7 +2,7 @@
   <div class='w-1/5'>
     <input
       list='prjCode'
-      v-model='_prjCode'
+      v-model='_custCode'
       class='p-1 w-full align-top border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
     />
     <datalist
@@ -21,17 +21,17 @@ import { $axios } from '~/utils/api';
 import SelectOptionBase, { selectOption } from '~/components/SelectOptions/SelectOptionBase';
 
 @Component({})
-export default class PrjCodeSuggest extends SelectOptionBase {
-  /** 入力パラメータ prjCode */
-  @PropSync('prjCode', { required: false, default: null })
-  _prjCode!: string;
+export default class CustCodeSuggest extends SelectOptionBase {
+  /** 入力パラメータ custCode */
+  @PropSync('custCode', { required: false, default: null })
+  _custCode!: string;
 
   created() {
-    this.getPrjCodeOptions();
+    this.getCustCodeOptions();
   }
 
-  async getPrjCodeOptions() {
-    const { data } = await $axios.get('/selectOption/prjCode');
+  async getCustCodeOptions() {
+    const { data } = await $axios.get('/selectOption/custName');
     this.selectOptionList = data;
   }
 }

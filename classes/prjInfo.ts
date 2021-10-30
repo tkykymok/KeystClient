@@ -3,4 +3,5 @@ export default class PrjInfo {
   prjName: string = '';
   contractPrice: string = '';
   prjStartDate: string = '';
+  prjEndDate: string = '';
 }

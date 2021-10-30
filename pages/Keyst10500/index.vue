@@ -9,19 +9,14 @@
         <span class="mr-1">更新・詳細</span>
         <input type="radio" name="search" value="update" v-model='radioValue' ref="target" @change='PrjCodeDisplay'>
       </div>
-      <PrjCode
-        v-if='PrjCodeFlg'
+      <PrjCodeSuggest
+        v-if='prjCodeFlg'
         :prjCode.sync='prjMaster.prjCode'
       />
       <button
         @click='Decision(prjMaster.prjCode)'
         class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
         決定
-      </button>
-      <button
-        @click='check'
-        class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
-        check
       </button>
     </div>
     <Keyst10501
@@ -40,30 +35,50 @@ import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10501 from '~/components/Keyst10500/Keyst10501.vue';
 import PrjCode from '~/components/SelectOptions/PrjCode.vue';
+import PrjCodeSuggest from '~/components/SelectOptions/PrjCodeSuggest.vue';
 import { Keyst10500Module } from '~/store';
-import { $axios } from '~/utils/api';
 import { Context } from '@nuxt/types';
+import { AuthenticationModule } from '~/utils/store-accessor';
 
 @Component({
   name: 'Keyst10500',
   components: {
     Keyst10501,
-    PrjCode
+    PrjCode,
+    PrjCodeSuggest
   },
   async asyncData(context: Context) {
-    const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
-    if (queryParam4PrjCode) {
-      let prjCode = queryParam4PrjCode.toString();
-      await Keyst10500Module.search(prjCode);
+    // 管理者の場合
+    if (AuthenticationModule.loginUserInfo.adminFlg) {
+      const queryParam4PrjCode: string | (string | null)[] = context.route.query.prjCode;
+      let prjCode: string = '';
+      // クエリストリングに値が設定されている場合
+      if (queryParam4PrjCode) {
+        prjCode = queryParam4PrjCode.toString();
+      }
+      await Keyst10500Module.search(prjCode).catch(error => {
+        if (error.response.status === 401 || error.response.status === 403) {
+          context.redirect('/login');
+        }
+      });
+    } else {
+      context.redirect('/login');
     }
   }
 })
 export default class extends Vue {
-  // 案件マスタ (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  /**
+   * 案件マスタ
+   * @return Keyst10500Module.prjMaster
+   */
   get prjMaster(): PrjMaster {
     return JSON.parse(JSON.stringify(Keyst10500Module.prjMaster));
   }
-  // 案件割当明細一覧 (initializeメソッドがないので空で取得する) (syncを使い子コンポーネントでstateの値を書き換える為JSON.parseを使用する)
+  
+  /**
+   * 案件割当明細リスト
+   * @return Keyst10500Module.prjUserAllocationList
+   */
   get prjUserAllocationList(): PrjUserAllocation[] {
     let prjUserAllocationList: PrjUserAllocation[] = [];
     Keyst10500Module.prjUserAllocationList.forEach(obj => {
@@ -74,49 +89,56 @@ export default class extends Vue {
   }
 
   public radioValue: string = '';
-  public PrjCodeFlg: boolean = false;
+  public prjCodeFlg: boolean = false;
   public registerFlg: boolean = false;
   public updateFlg: boolean = false;
 
+  /**
+   * prjCodeFlg、registerFlg、updateFlgの真偽値を変更する
+   */
   PrjCodeDisplay() {
     if (this.radioValue === 'register') {
-      this.PrjCodeFlg = false;
+      this.prjCodeFlg = false;
       this.registerFlg = false;
       this.updateFlg = false;
     }
     if (this.radioValue === 'update') {
-      this.PrjCodeFlg = true;
+      this.prjCodeFlg = true;
       this.registerFlg = false;
       this.updateFlg = false;
     }
   }
 
+  /**
+   * 案件マスタ・案件割当明細リスト検索イベント
+   */
   Decision(prjCode: string) {
     if (this.radioValue === 'register') {
-      Keyst10500Module.reset();
+      Keyst10500Module.RESET_PRJ_MASTER();
       this.registerFlg = true;
       this.updateFlg = false;
     }
     if (this.radioValue === 'update') {
-      Keyst10500Module.search(prjCode);
-      this.registerFlg = false;
-      this.updateFlg = true;
+      var result = Keyst10500Module.search(prjCode);
+      result.then(matchFlg => {
+        // prjCodeの値が案件コードリストに存在する場合、案件マスタ・案件割当明細リストを表示する
+        if (matchFlg) {
+          this.registerFlg = false;
+          this.updateFlg = true;
+        }
+      })
     }
   }
 
-  check() {
-    console.log('PrjMaster', this.prjMaster);
-    console.log('PrjUserAllocationList', this.prjUserAllocationList);
-    console.log('パラメータ', this.$route.query.prjCode);
-  }
-
   mounted() {
+    // クエリストリングに値が設定されている場合
     if (this.$route.query.prjCode) {
-      this.PrjCodeFlg = true;
+      this.prjCodeFlg = true;
       this.registerFlg = false;
       this.updateFlg = true;
       let element: any = this.$refs.target;
       element.checked = true;
+      this.radioValue = 'update';
     }
   }
 }

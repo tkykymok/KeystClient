@@ -8,4 +8,5 @@ export default class NotificationInfo {
   postEndDate: string = '' ;
   expiredFlag: boolean = false ;
   versionExKey: number | null = null;
+  isShown: boolean = false;
 }

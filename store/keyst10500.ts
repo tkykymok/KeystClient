@@ -9,6 +9,7 @@ import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
 import Keyst10500UpdateQ from '~/classes/form/keyst10500UpdateQ';
+import SelectOptionBase, { selectOption } from '~/components/SelectOptions/SelectOptionBase';
 
 export interface IKeyst10500 {
   prjMaster: PrjMaster | null;
@@ -23,13 +24,11 @@ export interface IKeyst10500 {
   name: 'keyst10500'
 })
 export default class Keyst10500 extends VuexModule implements IKeyst10500 {
-  // Stateを作成
-  // 案件マスタ
+  /** 案件マスタ */
   private _prjMaster: PrjMaster = new PrjMaster();
-  // 案件割当明細一覧
+  /** 案件割当明細リスト */
   private _prjUserAllocationList: PrjUserAllocation[] = [];
 
-  // 上記のStateにアクセスするgetterを作成
   get prjMaster(): PrjMaster {
     return this._prjMaster;
   }
@@ -39,7 +38,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件マスタを設定する。
+   * 案件マスタを設定する
    * @param value
    * @constructor
    */
@@ -49,22 +48,22 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 案件割当明細を設定する。
+   * 案件割当明細リストを設定する
    * @param value
    * @constructor
    */
   @Mutation
   SET_PRJ_USER_ALLOCATION_LIST(value: PrjUserAllocation[]) {
-    // 案件割当明細一覧を初期化する
+    // 案件割当明細リストを初期化する
     this._prjUserAllocationList.splice(0);
-    // サーバーから取得した案件割当明細一覧全件を追加する
+    // サーバーから取得した案件割当明細リスト全件を追加する
     value.forEach(obj => {
       this._prjUserAllocationList.push(obj);
     })
   }
 
   /**
-   * 案件マスタを空にする。
+   * 案件マスタを空にする
    * @constructor
    */
   @Mutation
@@ -73,7 +72,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 行追加(案件割当明細)
+   * 行追加(案件割当明細リスト)
    * @constructor
    */
   @Mutation
@@ -83,7 +82,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   }
 
   /**
-   * 行削除(案件割当明細)
+   * 行削除(案件割当明細リスト)
    * @param idx
    * @constructor
    */
@@ -92,14 +91,26 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
     this._prjUserAllocationList.splice(idx, 1);
   }
 
-  // actionメソッド内のerrorをthrowしたい場合は「rawError: true」を記述する
   /**
    * 案件割当明細検索
    * @param prjCode
+   * @return matchFlg
    */
   @Action({ rawError: true })
   public async search(prjCode: string) {
-    if (prjCode != '') {
+    // 案件コードリストを取得
+    const { data } = await $axios.get('/selectOption/prjCode');
+    var selectOptionList: selectOption[] = data;
+    selectOptionList.shift();
+    // prjCodeの値が案件コードリストに存在するかチェック
+    var matchFlg = false;
+    selectOptionList.forEach(option => {
+      if (option.code === prjCode) {
+        matchFlg = true;
+      }
+    })
+    // prjCodeの値が案件コードリストに存在する場合
+    if (matchFlg) {
       const { data } = await $axios.get(
         '/keyst10500/search', {
         params: {prjCode: prjCode}
@@ -107,14 +118,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
       this.SET_PRJ_MASTER(data.prjMaster);
       this.SET_PRJ_USER_ALLOCATION_LIST(data.prjUserAllocation);
     }
-  }
-
-  /**
-   * 案件マスタリセット
-   */
-  @Action({ rawError: true })
-  public async reset() {
-    this.RESET_PRJ_MASTER();
+    return matchFlg;
   }
 
   /**
@@ -124,16 +128,14 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   @Action({ rawError: true })
   public async save(reqForm: Keyst10500SaveQ) {
     await $axios.post('/keyst10500/save', reqForm);
-    // 取得APIを書いていないので、画面的には変わらない
   }
 
   /**
-   * 案件マスタ・案件割当明細更新
+   * 案件マスタ・案件割当明細リスト更新
    * @param reqForm
    */
   @Action({ rawError: true })
   public async update(reqForm: Keyst10500UpdateQ) {
     await $axios.put('/keyst10500/update', reqForm);
-    // 取得APIを書いていないので、画面的には変わらない
   }
 }
