@@ -1,9 +1,14 @@
 // 予約状況テーブル
 <template>
+<div>
   <div
+    v-if='reserveInfoList.length'
     :class="loginUserInfo.adminFlg? 'w-full': 'w-2/5 overflow-y-scroll scroll'"
     :style="loginUserInfo.adminFlg? 'height :auto': 'height: 400px'"
   >
+    <p
+      v-if='reserveInfoList.length'
+      class='py-3 font-bold text-gray-600'>予約状況</p>
     <table
       v-if='reserveInfoList.length'
       class='shadow-md w-full table-fixed' style='height: auto'
@@ -90,7 +95,7 @@
               :class="loginUserInfo.adminFlg? 'w-10': 'w-20'"
           >
             <button
-              v-if='!reserveInfo.userId && !reserveInfoList.some(obj => obj.userId === loginUserInfo.userId)'
+              v-if='!reserveInfo.userId && !reserveInfoList.some(obj => obj.userId === loginUserInfo.userId) && !isAbleToCancel(reserveInfo)'
               class='px-2 py-1 ml-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'
               @click='show(reserveInfo)'
             >
@@ -110,8 +115,12 @@
       </tbody>
     </table>
 
-    <modal name='modal-content'>
+    <modal
+      name='modal-content'
+      :height='330'
+      >
       <div class='p-8'>
+        <p class='text-center'>ワタシノキモチ</p>
         <div class='flex justify-center'>
           <input
             type='radio'
@@ -123,7 +132,7 @@
           >
           <label for='sun' class='cursor-pointer checked:bg-gray-900'>
             <img src='/_nuxt/assets/img/sun.png' alt=''
-                 :class="selectedReserveInfo.feeling === 1?'bg-yellow-200' : ''"
+                 :class="selectedReserveInfo.feeling === 1?'bg-blue-200' : ''"
             >
           </label>
           <input
@@ -136,7 +145,7 @@
           >
           <label for='cloud' class='cursor-pointer checked:bg-gray-900'>
             <img src='/_nuxt/assets/img/cloud.png' alt='' class='w-30 h-30 ml-8'
-                 :class="selectedReserveInfo.feeling === 2?'bg-yellow-200' : ''"
+                 :class="selectedReserveInfo.feeling === 2?'bg-blue-200' : ''"
             >
           </label>
           <input
@@ -149,7 +158,7 @@
           >
           <label for='rain' class='cursor-pointer checked:bg-gray-900'>
             <img src='/_nuxt/assets/img/rain.png' alt='' class='w-30 h-30 ml-8'
-                 :class="selectedReserveInfo.feeling === 3?'bg-yellow-200' : ''"
+                 :class="selectedReserveInfo.feeling === 3?'bg-blue-200' : ''"
             >
           </label>
         </div>
@@ -157,6 +166,7 @@
           <textarea
             v-model='selectedReserveInfo.remark'
             class='w-full p-2 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
+            placeholder="電話面談、WEB面談等の希望があれば記入してください。"
           />
           <button
             class='px-4 py-2 ml-2 bg-blue-500 text-white rounded-md hover:bg-blue-400 active:outline-none focus:outline-none'
@@ -167,6 +177,12 @@
       </div>
     </modal>
   </div>
+  <div
+    v-if='!reserveInfoList.length && !loginUserInfo.adminFlg'
+    class='mt-10'>
+    担当者が日時を登録するまでお待ち下さい。
+  </div>
+</div>
 </template>
 
 <script lang='ts'>
@@ -232,11 +248,13 @@ export default class Keyst10302 extends Vue {
    * @param reserveInfo
    */
   deleteLine(reserveInfo: ReserveInfo) {
-    try {
-      const reqForm: Keyst10300DeleteQ =
-        _.assign(new Keyst10300DeleteQ(), _.pick(reserveInfo, _.keys(new Keyst10300DeleteQ())));
-      Keyst10300Module.deleteLine(reqForm);
-    } catch (error) {
+    if (confirm('行を削除しますか？')) {
+      try {
+        const reqForm: Keyst10300DeleteQ =
+          _.assign(new Keyst10300DeleteQ(), _.pick(reserveInfo, _.keys(new Keyst10300DeleteQ())));
+        Keyst10300Module.deleteLine(reqForm);
+      } catch (error) {
+      }
     }
   }
 
@@ -245,11 +263,13 @@ export default class Keyst10302 extends Vue {
    * @param reserveInfo
    */
   cancelReserve(reserveInfo: ReserveInfo) {
-    try {
-      const reqForm: Keyst10300CancelQ =
-        _.assign(new Keyst10300CancelQ(), _.pick(reserveInfo, _.keys(new Keyst10300CancelQ())));
-      Keyst10300Module.cancelReserve(reqForm);
-    } catch (error) {
+    if (confirm('予約を取り消しますか？')) {
+      try {
+        const reqForm: Keyst10300CancelQ =
+          _.assign(new Keyst10300CancelQ(), _.pick(reserveInfo, _.keys(new Keyst10300CancelQ())));
+        Keyst10300Module.cancelReserve(reqForm);
+      } catch (error) {
+      }
     }
   }
 
