@@ -125,56 +125,89 @@
           </li>
         </ul>
 
-        <!-- Divider -->
-        <hr class='my-4 md:min-w-full' />
-        <!-- Heading -->
-        <h6
-          class='md:min-w-full text-gray-800 text-xs uppercase font-bold block pt-1 pb-4 no-underline'
-        >
-          管理者メニュー
-        </h6>
-        <!-- Navigation -->
+        <div v-show='authenticationModule.loginUserInfo.adminFlg'>
+          <!-- Divider -->
+          <hr class='my-4 md:min-w-full' />
+          <!-- Heading -->
+          <h6
+            class='md:min-w-full text-gray-800 text-xs uppercase font-bold block pt-1 pb-4 no-underline'
+          >
+            管理者メニュー
+          </h6>
+          <!-- Navigation -->
+          <ul class='md:flex-col md:min-w-full flex flex-col list-none md:mb-4'>
+            <li class='items-center'>
+              <NuxtLink
+                class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+                to='/keyst10600'
+              >
+                <div class='flex' style='width: 30px; height: 20px'>
+                  <font-awesome-icon
+                    icon='info-circle'
+                    class='mr-2 text-lg h-full'
+                  />
+                </div>
+                <span>お知らせ</span>
+              </NuxtLink>
+            </li>
 
-        <ul class='md:flex-col md:min-w-full flex flex-col list-none md:mb-4'>
-          <li class='items-center'>
-            <NuxtLink
-              class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
-              to='/keyst10600'
-            >
-              <div class='flex' style='width: 30px; height: 20px'>
-                <font-awesome-icon
-                  icon='info-circle'
-                  class='mr-2 text-lg h-full'
-                />
-              </div>
-              <span>お知らせ</span>
-            </NuxtLink>
-          </li>
+            <li class='items-center'>
+              <NuxtLink
+                class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+                to='/keyst10500'
+              >
+                <div class='flex' style='width: 30px; height: 20px'>
+                  <font-awesome-icon
+                    icon='hand-point-up'
+                    class='mr-2 text-lg h-full'
+                  />
+                </div>
+                <span>案件マスタ登録・一覧</span>
+              </NuxtLink>
+            </li>
 
-          <li class='items-center'>
-            <NuxtLink
-              class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
-              to='/signUp'
-            >
-              <div class='flex' style='width: 30px; height: 20px'>
-                <font-awesome-icon
-                  icon='user-plus'
-                  class='mr-2 text-lg h-full'
-                />
-              </div>
-              <span>新規ユーザー登録</span>
-            </NuxtLink>
-          </li>
-        </ul>
+            <li class='items-center'>
+              <NuxtLink
+                class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+                to='/keyst10700'
+              >
+                <div class='flex' style='width: 30px; height: 20px'>
+                  <font-awesome-icon
+                    icon='handshake'
+                    class='mr-2 text-lg h-full'
+                  />
+                </div>
+                <span>顧客マスタ登録</span>
+              </NuxtLink>
+            </li>
+
+            <li class='items-center'>
+              <NuxtLink
+                class='flex text-gray-700 hover:text-gray-500 text-xs uppercase py-3 font-bold block'
+                to='/signUp'
+              >
+                <div class='flex' style='width: 30px; height: 20px'>
+                  <font-awesome-icon
+                    icon='user-plus'
+                    class='mr-2 text-lg h-full'
+                  />
+                </div>
+                <span>新規ユーザー登録</span>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
+import { AuthenticationModule } from '~/utils/store-accessor';
 
 @Component({})
 export default class Sidebar extends Vue {
+  public authenticationModule = AuthenticationModule;
 
   collapseShow: string = 'hidden';
 
