@@ -8,6 +8,7 @@ import { $axios } from '~/utils/api';
 import CustMaster from '~/classes/custMaster';
 import Keyst10700UpdateQ from '~/classes/form/keyst10700UpdateQ';
 import Keyst10700SaveQ from '~/classes/form/keyst10700SaveQ';
+import SelectOptionBase, { selectOption } from '~/components/SelectOptions/SelectOptionBase';
 
 export interface IKeyst10700 {
   custMaster: CustMaster | null;
@@ -53,7 +54,19 @@ export default class Keyst10700 extends VuexModule implements IKeyst10700 {
    */
   @Action({ rawError: true })
   public async search(custCode: string) {
-    if (custCode != '') {
+    // 顧客コードリストを取得
+    const { data } = await $axios.get('/selectOption/custName');
+    var selectOptionList: selectOption[] = data;
+    selectOptionList.shift();
+    // custCodeの値が顧客コードリストに存在するかチェック
+    var matchFlg = false;
+    selectOptionList.forEach(option => {
+      if (option.code === custCode) {
+        matchFlg = true;
+      }
+    })
+    // custCodeの値が顧客コードリストに存在する場合
+    if (matchFlg) {
       const { data } = await $axios.get(
         '/keyst10700/search', {
         params: {custCode: custCode}

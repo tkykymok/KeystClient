@@ -9,6 +9,7 @@ import PrjMaster from '~/classes/prjMaster';
 import PrjUserAllocation from '~/classes/prjUserAllocation';
 import Keyst10500SaveQ from '~/classes/form/keyst10500SaveQ';
 import Keyst10500UpdateQ from '~/classes/form/keyst10500UpdateQ';
+import SelectOptionBase, { selectOption } from '~/components/SelectOptions/SelectOptionBase';
 
 export interface IKeyst10500 {
   prjMaster: PrjMaster | null;
@@ -93,10 +94,23 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
   /**
    * 案件割当明細検索
    * @param prjCode
+   * @return matchFlg
    */
   @Action({ rawError: true })
   public async search(prjCode: string) {
-    if (prjCode != '') {
+    // 案件コードリストを取得
+    const { data } = await $axios.get('/selectOption/prjCode');
+    var selectOptionList: selectOption[] = data;
+    selectOptionList.shift();
+    // prjCodeの値が案件コードリストに存在するかチェック
+    var matchFlg = false;
+    selectOptionList.forEach(option => {
+      if (option.code === prjCode) {
+        matchFlg = true;
+      }
+    })
+    // prjCodeの値が案件コードリストに存在する場合
+    if (matchFlg) {
       const { data } = await $axios.get(
         '/keyst10500/search', {
         params: {prjCode: prjCode}
@@ -104,6 +118,7 @@ export default class Keyst10500 extends VuexModule implements IKeyst10500 {
       this.SET_PRJ_MASTER(data.prjMaster);
       this.SET_PRJ_USER_ALLOCATION_LIST(data.prjUserAllocation);
     }
+    return matchFlg;
   }
 
   /**

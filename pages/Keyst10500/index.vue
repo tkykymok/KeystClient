@@ -119,9 +119,15 @@ export default class extends Vue {
       this.updateFlg = false;
     }
     if (this.radioValue === 'update') {
-      Keyst10500Module.search(prjCode);
-      this.registerFlg = false;
-      this.updateFlg = true;
+      var result = Keyst10500Module.search(prjCode);
+      result.then(matchFlg => {
+        console.log(matchFlg);
+        // prjCodeの値が案件コードリストに存在する場合、案件割当明細リストを表示する
+        if (matchFlg) {
+          this.registerFlg = false;
+          this.updateFlg = true;
+        }
+      })
     }
   }
 
@@ -133,6 +139,7 @@ export default class extends Vue {
       this.updateFlg = true;
       let element: any = this.$refs.target;
       element.checked = true;
+      this.radioValue = 'update';
     }
   }
 }
