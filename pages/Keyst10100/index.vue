@@ -65,9 +65,8 @@
       <tr class="">
         <th rowspan="3" class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">プロフィール画像</th>
         <td rowspan="3" class="p-3 text-gray-800 border border-b">
-          <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag || memberInfo.prfImgStrgDrctry == null" type="file" value="" />
+          <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag || memberInfo.prfImgStrgDrctry == null" type="file" @change='onFileUploaded($event)' id="inputFile" value="" />
           <img :src="memberInfo.prfImgStrgDrctry" v-else @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">
-          <input type="text" class="__hidden" />
         </td>
         <td class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">支店番号</td>
         <td class="p-3 text-gray-800 border border-b">
@@ -214,6 +213,9 @@ import Keyst10100SaveQ1 from '~/classes/form/keyst10100SaveQ1';
 
 })
 export default class extends Vue {
+  inputFile: File | null = null;
+  prfImgStrgDrctry: string = '';
+  
 
   /**
    * メンバー情報
@@ -222,23 +224,33 @@ export default class extends Vue {
     return JSON.parse(JSON.stringify(Keyst10100Module.MemberInfo));
   }
 
-  get prfImgStrgDrctry(): String {
-    return Keyst10100Module.MemberInfo.prfImgStrgDrctry;
-  }
-
   /**
    * プロフィール登録
    */
   async save() {
     // プロフィールをリクエストFormに移送する。
     let reqForm: Keyst10100SaveQ = _.assign(new Keyst10100SaveQ(), _.pick(this.memberInfo, _.keys(new Keyst10100SaveQ())));
+    let skillList = '';
+    let flag: boolean = false;
+    this.memberInfo.skillList.forEach(skill => {
+      if (flag == true) {
+        skillList += ',';
+      }
+      skillList += skill.skillCode;
+      if (flag == false) {
+        flag = true;
+      }
+    });
+    reqForm.skills = skillList;
+    this.$set(this.memberInfo, 'prfImgStrgDrctry', this.prfImgStrgDrctry);
+    Keyst10100Module.SET_USER_BASIC_INFO(this.memberInfo);
+    reqForm.prfImgStrgDrctry = this.prfImgStrgDrctry;
     await Keyst10100Module.save(reqForm).catch(error => {
       if (error.response.status === 401) {
         this.$router.push('/login');
       }
     });
   }
-
 
   /**
    * 編集可否フラグを切り替える
@@ -276,6 +288,18 @@ export default class extends Vue {
    * yyyy年MM月dd日の形式に変換する
    */
   public convertDateToYearMonthDay = convertDateToYearMonthDay;
+
+  /**
+   * ファイル名取得
+   */
+  onFileUploaded(event: any) {
+    this.inputFile = event.target.files[0];
+    this.prfImgStrgDrctry = 'https://keystone.s3.ap-northeast-1.amazonaws.com/' + this.inputFile?.name;
+  }
+
+  /**
+   * S3URL生成
+   */
 }
 
 </script>

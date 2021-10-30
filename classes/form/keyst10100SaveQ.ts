@@ -1,4 +1,5 @@
 import Keyst10100SaveQ1 from '~/classes/form/keyst10100SaveQ1';
+import Skill from '../skill';
 
 export default class Keyst10100SaveQ {
   userId: number | null = null;
@@ -25,6 +26,7 @@ export default class Keyst10100SaveQ {
   accountNumber: number | null = null;
   accountName: string = '';
   prfImgStrgDrctry: string = '';
+  skills: string = '';
   versionExKey: number | null = null;
-  skillList: Keyst10100SaveQ1[] = [];
+  skillList: Skill[] = [];
 }
