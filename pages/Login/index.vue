@@ -55,7 +55,7 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Watch } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator';
 import AuthenticationQ from '~/classes/form/authenticationQ';
 import { AuthenticationModule, MessagesModule } from '~/utils/store-accessor';
 
@@ -77,7 +77,7 @@ export default class extends Vue {
       this.$set(loginForm, 'loginId', this.loginId);
       this.$set(loginForm, 'loginPw', this.loginPw);
       await AuthenticationModule.login(loginForm);
-      await this.$router.push('/keyst10200');
+      await this.$router.push('/keyst10000');
     } catch (error) {
     }
   }

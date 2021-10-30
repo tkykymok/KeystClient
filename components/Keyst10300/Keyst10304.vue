@@ -7,20 +7,12 @@
         :disable-flag='!loginUserInfo.adminFlg'
       />
 
-      <!-- TODO 選択リスト部品に置き換える -->
       <!-- 管理者：予約状況一覧が取れたら非活性  一般：常に非活性 -->
-      <select
-        name="team"
-        v-model="team"
-        class='p-1 ml-4 border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'
-        :disabled='reserveInfoList.length? true : !loginUserInfo.adminFlg'
-        :class="reserveInfoList.length? 'bg-gray-200': ''"
-      >
-        <option value=''>チーム選択</option>
-        <option value="A">Aチーム</option>
-        <option value="B">Bチーム</option>
-        <option value="C">Cチーム</option>
-      </select>
+      <Team
+        :team.sync='team'
+        :disable-flag='reserveInfoList.length? true : !loginUserInfo.adminFlg'
+        class='ml-4'
+      />
     </div>
   </div>
 </template>
@@ -30,10 +22,12 @@ import { Component, Prop, PropSync, Vue, Watch } from 'nuxt-property-decorator';
 import { AuthenticationModule, Keyst10300Module } from '~/utils/store-accessor';
 import ReserveInfo from '~/classes/reserveInfo';
 import Month from '~/components/SelectOptions/Month.vue';
+import Team from '~/components/SelectOptions/Team.vue';
 
 @Component({
   components: {
-    Month
+    Month,
+    Team
   }
 })
 export default class Keyst10304 extends Vue{

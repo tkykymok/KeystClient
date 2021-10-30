@@ -1,5 +1,6 @@
 import { Store } from 'vuex';
 import { getModule } from 'vuex-module-decorators';
+import Keyst10100 from '~/store/keyst10100';
 import Keyst10200 from '~/store/keyst10200';
 import Keyst10300 from '~/store/keyst10300';
 import Authentication from '~/store/authentication';
@@ -8,7 +9,10 @@ import Keyst10500 from '~/store/keyst10500';
 import Messages from '~/store/messages';
 import Keyst10600 from '~/store/keyst10600';
 import Keyst10700 from '~/store/keyst10700';
+import Keyst10000 from '~/store/keyst10000';
 
+let Keyst10000Module: Keyst10000;
+let Keyst10100Module: Keyst10100;
 let Keyst10200Module: Keyst10200;
 let Keyst10300Module: Keyst10300;
 let Keyst10400Module: Keyst10400;
@@ -19,6 +23,8 @@ let MessagesModule: Messages;
 let AuthenticationModule: Authentication;
 
 function initialiseStores(store: Store<any>): void {
+  Keyst10000Module = getModule(Keyst10000, store);
+  Keyst10100Module = getModule(Keyst10100, store);
   Keyst10200Module = getModule(Keyst10200, store);
   AuthenticationModule = getModule(Authentication, store);
   Keyst10400Module = getModule(Keyst10400, store);
@@ -29,4 +35,4 @@ function initialiseStores(store: Store<any>): void {
   Keyst10700Module = getModule(Keyst10700, store);
 }
 
-export { initialiseStores, Keyst10200Module, Keyst10300Module, Keyst10400Module, Keyst10500Module, Keyst10600Module, Keyst10700Module, MessagesModule, AuthenticationModule};
+export { initialiseStores, Keyst10000Module, Keyst10100Module, Keyst10200Module, Keyst10300Module, Keyst10400Module, Keyst10500Module, Keyst10600Module, Keyst10700Module, MessagesModule, AuthenticationModule};
