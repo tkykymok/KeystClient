@@ -4,7 +4,7 @@
       <p class="font-bold">条件を指定して検索</p>
       <div class="flex justify-around">
         <div class="w-1/4 p-4">
-          <p class="font-bold">キーワード</p>
+          <p class="font-bold">名前</p>
           <input v-model='keyword' @input="keywordSearchUsers()"
             type="search" name="search" placeholder="キーワードを入力"
             class='p-1 w-full align-top border-2 border-gray-300 active:outline-none focus:outline-none focus:shadow-outline rounded-md'>
@@ -23,8 +23,8 @@
         </div>
       </div>
     </div>
-    <Keyst10402 
-      :userInfoList.sync='userInfoList'
+    <Keyst10402
+      :userInfoList.sync='_userInfoList'
     />
   </div>
 </template>
@@ -147,7 +147,7 @@ export default class extends Vue {
     }
     return tempUsers;
   }
-  
+
   /**
    * キーワード入力イベント
    */
