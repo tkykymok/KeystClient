@@ -41,7 +41,23 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    'nuxt-fontawesome'
+    'nuxt-fontawesome',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: "AIzaSyD3UtAfW_EeW99wPbbrG8FXTRB5C2qRRRI",
+          authDomain: "keystone-9aa5b.firebaseapp.com",
+          projectId: "keystone-9aa5b",
+          storageBucket: "keystone-9aa5b.appspot.com",
+          messagingSenderId: "948370719014",
+          appId: "1:948370719014:web:1163c19a546afdf46381e7"
+        },
+        services: {
+          storage: true,
+        }
+      }
+    ]
   ],
 
   fontawesome: {
