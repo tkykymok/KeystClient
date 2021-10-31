@@ -65,8 +65,32 @@
       <tr class="">
         <th rowspan="3" class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">プロフィール画像</th>
         <td rowspan="3" class="p-3 text-gray-800 border border-b">
-          <input v-if="inputAreaControl.prfImgStrgDrctry.editableFlag || memberInfo.prfImgStrgDrctry == null" type="file" @change='onFileUploaded($event)' id="inputFile" value="" />
-          <img :src="memberInfo.prfImgStrgDrctry" v-else @click="switchEditableFlag(inputAreaControl.prfImgStrgDrctry)">
+          <div class='mb-2'>
+            <img
+              v-if='uploadImgUrl'
+              :src="uploadImgUrl"
+              class='rounded-full'
+              style='width: 150px; height: 150px'
+            >
+            <img
+              v-else
+              :src="memberInfo.prfImgStrgDrctry? memberInfo.prfImgStrgDrctry: require('@/assets/img/user.png')"
+              class='rounded-full'
+              style='width: 150px; height: 150px'
+            >
+          </div>
+          <div class='py-2'>
+            <label for='upload' class='p-2 cursor-pointer bg-gray-300 hover:bg-gray-400 rounded-md'>
+              <span aria-hidden='true'>画像をアップロードする</span>
+              <input
+                id='upload'
+                type="file"
+                style='display:none'
+                @change='onFileUploaded($event)'
+                ref='preview'
+              />
+            </label>
+          </div>
         </td>
         <td class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 w-2/12">支店番号</td>
         <td class="p-3 text-gray-800 border border-b">
@@ -189,7 +213,7 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Ref, Vue } from 'nuxt-property-decorator';
 import { Keyst10100Module } from '~/utils/store-accessor';
 import MemberInfo from '~/classes/memberInfo';
 import { convertDateToYearMonth, convertDateToYearMonthDay } from '~/utils/converter';
@@ -197,7 +221,6 @@ import { convertDateToYearMonth, convertDateToYearMonthDay } from '~/utils/conve
 import _ from 'lodash';
 import Keyst10100SaveQ from '~/classes/form/keyst10100SaveQ';
 import Keyst10100SaveQ1 from '~/classes/form/keyst10100SaveQ1';
-
 
 @Component({
   name: 'Keyst10100',
@@ -213,9 +236,9 @@ import Keyst10100SaveQ1 from '~/classes/form/keyst10100SaveQ1';
 
 })
 export default class extends Vue {
+  @Ref() preview: HTMLInputElement;
   inputFile: File | null = null;
-  prfImgStrgDrctry: string = '';
-  
+  uploadImgUrl = this.memberInfo.prfImgStrgDrctry;
 
   /**
    * メンバー情報
@@ -233,24 +256,37 @@ export default class extends Vue {
     let skillList = '';
     let flag: boolean = false;
     this.memberInfo.skillList.forEach(skill => {
-      if (flag == true) {
+      if (flag) {
         skillList += ',';
       }
       skillList += skill.skillCode;
-      if (flag == false) {
+      if (!flag) {
         flag = true;
       }
     });
     reqForm.skills = skillList;
-    this.$set(this.memberInfo, 'prfImgStrgDrctry', this.prfImgStrgDrctry);
-    Keyst10100Module.SET_USER_BASIC_INFO(this.memberInfo);
-    reqForm.prfImgStrgDrctry = this.prfImgStrgDrctry;
+
+    reqForm.prfImgStrgDrctry = this.uploadImgUrl;
     await Keyst10100Module.save(reqForm).catch(error => {
       if (error.response.status === 401) {
         this.$router.push('/login');
       }
     });
   }
+
+  /**
+   * firebaseへ画像アップロード後、ダウンロードURLを取得する。
+   */
+  async onFileUploaded(event: any) {
+    if (event.target.files.length) {
+      this.inputFile = event.target.files[0];
+      const storageRef = this.$fire.storage.ref();
+      const fileRef = storageRef.child(this.inputFile!.name);
+      await fileRef.put(this.inputFile);
+      this.uploadImgUrl = await fileRef.getDownloadURL();
+    }
+  }
+
 
   /**
    * 編集可否フラグを切り替える
@@ -289,17 +325,6 @@ export default class extends Vue {
    */
   public convertDateToYearMonthDay = convertDateToYearMonthDay;
 
-  /**
-   * ファイル名取得
-   */
-  onFileUploaded(event: any) {
-    this.inputFile = event.target.files[0];
-    this.prfImgStrgDrctry = 'https://keystone.s3.ap-northeast-1.amazonaws.com/' + this.inputFile?.name;
-  }
-
-  /**
-   * S3URL生成
-   */
 }
 
 </script>
