@@ -29,7 +29,7 @@
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
 import { Context } from '@nuxt/types';
-import { Keyst10000Module } from '~/utils/store-accessor';
+import { Keyst10000Module, Keyst10100Module } from '~/utils/store-accessor';
 import Keyst10001 from '~/components/Keyst10000/Keyst10001.vue';
 import Keyst10002 from '~/components/Keyst10000/Keyst10002.vue';
 
@@ -40,6 +40,7 @@ import Keyst10002 from '~/components/Keyst10000/Keyst10002.vue';
     Keyst10002
   },
   async asyncData(context: Context) {
+    await Keyst10100Module.initialize();
     await Keyst10000Module.initialize();
   }
 })

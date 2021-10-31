@@ -1,5 +1,5 @@
 <template>
-  <div class='h-screen mb-0'>
+  <div class='mb-0'>
     <div class='flex-auto pt-4'>
       <div>
         <table class='text-center w-full shadow-md'>
