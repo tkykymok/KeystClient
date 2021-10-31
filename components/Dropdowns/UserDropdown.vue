@@ -9,15 +9,12 @@
         @mouseover='showDropdown($event)'
         @mouseleave='hideDropdown($event)'
       >
-        <span
-          class='w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full'
-        >
-          <img
-            alt='...'
-            class='w-full rounded-full align-middle border-none shadow-lg'
-            :src='image'
-          />
-        </span>
+        <img
+          alt='...'
+          class='rounded-full align-middle border-none shadow-lg'
+          style='width: 50px; height: 50px'
+          :src="imageUrl? imageUrl: require('@/assets/img/user.png')"
+        />
       </div>
     </a>
     <div
@@ -50,12 +47,15 @@
 <script lang='ts'>
 import { Component, Vue } from 'nuxt-property-decorator';
 import { createPopper } from '@popperjs/core';
-import { AuthenticationModule } from '~/utils/store-accessor';
+import { AuthenticationModule, Keyst10100Module } from '~/utils/store-accessor';
 
 @Component({})
 export default class UserDropdown extends Vue {
   public dropdownPopoverShow: boolean = false;
-  public image: NodeRequireFunction = require('@/assets/img/user.png');
+
+  get imageUrl() {
+    return Keyst10100Module.MemberInfo.prfImgStrgDrctry;
+  }
 
   logout() {
     AuthenticationModule.DESTROY_JWT_LOGIN_USER_INFO();

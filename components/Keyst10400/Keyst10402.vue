@@ -1,6 +1,7 @@
 <template>
   <div>
     <table class="w-full mt-16">
+      <thead>
       <tr class="flex justify-around border-t-2 border-b-2">
         <th @click="sortBy('name'); sortNameUsers" :class="addClass('name')" class="w-1/6 cursor-pointer">
           名前
@@ -16,30 +17,32 @@
           案件・スキルシート
         </th>
       </tr>
+      </thead>
+      <tbody>
       <tr v-for='(userInfo, idx) in _userInfoList' :key='idx'
         class="p-2 flex justify-around items-center border-b-2">
-        <th class="w-1/6 flex justify-center items-center">
+        <td class="w-1/6 flex">
           <button @click="showImageModal(userInfo.userId)">
-            <img :src="require('~/assets/img/' + userInfo.prfImgStrgDrctry)" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
+            <img :src="userInfo.prfImgStrgDrctry" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
           </button>
           <div>
             <p class="ml-4 font-normal text-xs">{{ userInfo.userNameKana }}</p>
             <p class="ml-4 font-normal">{{ userInfo.userName }}</p>
           </div>
-        </th>
-        <th class="w-1/6 font-normal">{{ userInfo.team }}</th>
-        <th class="w-1/6 font-normal">
+        </td>
+        <td class="w-1/6 font-normal text-center">{{ userInfo.team }}</td>
+        <td class="w-1/6 font-normal">
           <span v-for='(skill, idx) in userInfo.skillList' :key='idx'>{{ skill.skillName }} </span>
-        </th>
-        <th v-if='loginUserInfo.adminFlg'
-          class="w-1/6 font-normal">
+        </td>
+        <td v-if='loginUserInfo.adminFlg'
+          class="w-1/6 font-normal text-center">
           <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showPrjModal(userInfo.userId)">案件</button>
           <button
             @click='$router.push({ path: `/keyst10200?userId=${userInfo.userId}`})'
             class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
             スキルシート
           </button>
-        </th>
+        </td>
         <Keyst10403
           :prjInfoList.sync='userInfo.prjInfoList'
           :userId='userInfo.userId'
@@ -51,6 +54,7 @@
           ref='keyst10404Refs'
         />
       </tr>
+      </tbody>
     </table>
   </div>
 </template>
