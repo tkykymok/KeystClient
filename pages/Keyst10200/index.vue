@@ -95,12 +95,15 @@ import Keyst10200DeleteQ from '~/classes/form/keyst10200DeleteQ';
   async asyncData(context: Context) {
     const queryParam4UserId: string | (string | null)[] = context.route.query.userId;
     let userId: number | null = null;
+    console.log(typeof queryParam4UserId);
 
     // クエリストリングに値が設定されている場合
     if (queryParam4UserId) {
       if (AuthenticationModule.loginUserInfo.adminFlg) {
         // 管理者の場合
-        userId = Number.parseInt(queryParam4UserId[0]!);
+        if (typeof queryParam4UserId === 'string') {
+          userId = Number.parseInt(queryParam4UserId);
+        }
       } else {
         // クエリストリングを空にする。
         context.app.router?.replace({ query: undefined });
