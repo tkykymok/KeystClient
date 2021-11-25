@@ -1,6 +1,6 @@
 <template>
   <div class='p-4'>
-    <Keyst10401 
+    <Keyst10401
       :userInfoList.sync='userInfoList'
     />
   </div>
