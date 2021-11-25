@@ -23,7 +23,11 @@
         class="p-2 flex justify-around items-center border-b-2">
         <td class="w-1/6 flex">
           <button @click="showImageModal(userInfo.userId)">
-            <img :src="userInfo.prfImgStrgDrctry" alt="" class="w-12 h-12 rounded-full border-none shadow-lg">
+            <img
+              :src="userInfo.prfImgStrgDrctry? userInfo.prfImgStrgDrctry: require('@/assets/img/user.png')"
+              alt=""
+              class="w-12 h-12 rounded-full border-none shadow-lg"
+            >
           </button>
           <div>
             <p class="ml-4 font-normal text-xs">{{ userInfo.userNameKana }}</p>
