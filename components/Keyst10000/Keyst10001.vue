@@ -12,7 +12,7 @@
               {{ notification.title }}
             </div>
             <div v-show='notification.isShown' class='border px-4 py-3 my-2 text-gray-700'>
-              {{ notification.content }}
+              <pre>{{ notification.content }}</pre>
             </div>
           </li>
         </ul>
