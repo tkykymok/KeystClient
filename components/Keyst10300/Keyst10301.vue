@@ -13,6 +13,7 @@
         label='日付'
         :min-date='today'
         auto-close
+        locale="en"
     />
     </div>
     <div class='flex mt-4'>
@@ -25,6 +26,7 @@
           label='時間'
           minuteInterval='30'
           right
+          locale="en"
       />
       </div>
       <p class='ml-4'>~</p>
@@ -37,6 +39,7 @@
           label='時間'
           minuteInterval='30'
           right
+          locale="en"
         />
       </div>
     </div>

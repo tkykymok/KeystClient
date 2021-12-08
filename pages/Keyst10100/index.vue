@@ -178,6 +178,7 @@
             formatted='YYYY-MM-DD'
             label='最終学歴年月日'
             auto-close
+            locale="en"
           />
           <span v-else @click="switchEditableFlag(inputAreaControl.finalEducationDate)">{{ convertDateToYearMonthDay(memberInfo.finalEducationDate) }}</span>
         </td>
