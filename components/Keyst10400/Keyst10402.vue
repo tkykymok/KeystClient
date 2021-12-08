@@ -42,7 +42,7 @@
           class="w-1/6 font-normal text-center">
           <button class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none' @click="showPrjModal(userInfo.userId)">案件</button>
           <button
-            @click='$router.push({ path: `/keyst10200?userId=${userInfo.userId}`})'
+            @click='onClickSkillSheetBtn(userInfo.userId)'
             class='px-2 py-1 my-4 bg-gray-600 text-white rounded-md hover:bg-gray-500 active:outline-none focus:outline-none'>
             スキルシート
           </button>
@@ -68,7 +68,7 @@ import { Component, PropSync, Vue, Ref } from 'nuxt-property-decorator';
 import Keyst10403 from '~/components/Keyst10400/Keyst10403.vue';
 import Keyst10404 from '~/components/Keyst10400/Keyst10404.vue';
 import UserInfo4Keyst10400 from '~/classes/userInfo4Keyst10400';
-import { Keyst10400Module } from '~/store';
+import { Keyst10200Module, Keyst10400Module } from '~/store';
 import { Gender } from '~/constant/gender';
 import { AuthenticationModule } from '~/utils/store-accessor';
 import LoginUserInfo from '~/classes/loginUserInfo';
@@ -106,6 +106,11 @@ export default class Keyst10402 extends Vue {
   showImageModal(userId: number) {
     const target: Keyst10404 | undefined = this.keyst10404Refs.find(obj => obj.userId === userId);
     target?.openImageModal();
+  }
+
+  onClickSkillSheetBtn(userId: number) {
+    Keyst10200Module.REFRESH();
+    this.$router.push({ path: `/keyst10200?userId=${userId}`})
   }
 
   public sortKey: string = '';

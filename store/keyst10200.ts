@@ -134,6 +134,14 @@ export default class Keyst10200 extends VuexModule implements IKeyst10200 {
     this._skillSheetHeader.evaluationOfSales = ''; // 営業評価
   }
 
+  @Mutation
+  REFRESH() {
+    // スキルシートヘッダーを初期化する。
+    Object.assign(this._skillSheetHeader, new SkillSheetHeader());
+    // スキルシート明細一覧を初期化する。
+    this._skillSheetDetailList.splice(0);
+  }
+
   /**
    * 初期表示
    */
