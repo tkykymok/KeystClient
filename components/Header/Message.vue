@@ -1,6 +1,6 @@
 <template>
-  <div class='w-full'>
-    <span v-for='(message, idx) of messageList' :key='idx' class='fixed w-full z-50'>
+  <div class='w-full fixed'>
+    <span v-for='(message, idx) of messageList' :key='idx' class='w-full z-50'>
       <input
         type='checkbox'
         :id='`message-${idx}`'
@@ -31,7 +31,7 @@
         </svg>
       </label>
     </span>
-  </div>
+    </div>
 </template>
 
 <script lang='ts'>
