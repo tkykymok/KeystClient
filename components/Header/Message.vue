@@ -1,10 +1,11 @@
 <template>
-  <div class='w-full fixed'>
-    <span v-for='(message, idx) of messageList' :key='idx' class='w-full z-50'>
+  <div class='w-full fixed' style='z-index: 1000'>
+    <span v-for='(message, idx) of messageList' :key='idx' class='w-full'>
       <input
         type='checkbox'
         :id='`message-${idx}`'
         class='hidden'
+        style='z-index: 1000'
         @click='removeMessage(message)'
       >
       <label class='cursor-pointer flex items-center justify-between w-full p-2 shadow opacity-100'
@@ -31,7 +32,7 @@
         </svg>
       </label>
     </span>
-    </div>
+  </div>
 </template>
 
 <script lang='ts'>
