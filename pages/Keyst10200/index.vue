@@ -95,7 +95,6 @@ import Keyst10200DeleteQ from '~/classes/form/keyst10200DeleteQ';
   async asyncData(context: Context) {
     const queryParam4UserId: string | (string | null)[] = context.route.query.userId;
     let userId: number | null = null;
-    console.log(typeof queryParam4UserId);
 
     // クエリストリングに値が設定されている場合
     if (queryParam4UserId) {

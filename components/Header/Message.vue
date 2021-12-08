@@ -1,13 +1,13 @@
 <template>
   <div class='w-full'>
-    <span v-for='(message, idx) of messageList' :key='idx'>
+    <span v-for='(message, idx) of messageList' :key='idx' class='fixed w-full z-50'>
       <input
         type='checkbox'
         :id='`message-${idx}`'
         class='hidden'
         @click='removeMessage(message)'
       >
-      <label class='cursor-pointer flex items-center justify-between w-full p-2 shadow opacity-75'
+      <label class='cursor-pointer flex items-center justify-between w-full p-2 shadow opacity-100'
              :class="
              (messageType === messageTypeConstant.Success.name)? 'bg-green-300 text-green-900'
              :(messageType === messageTypeConstant.Warning.name)? 'bg-yellow-300 text-yellow-900'

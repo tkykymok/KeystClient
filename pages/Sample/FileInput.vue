@@ -22,11 +22,9 @@ export default class FileInput extends Vue {
 
   onFileUploaded(event: any) {
     this.inputFile = event.target.files[0];
-    console.log(this.inputFile);
   }
 
   showFileName() {
-    console.log(this.inputFile?.name);
   }
 }
 </script>

@@ -283,7 +283,6 @@ export default class extends Vue {
    * @param id
    */
   selectNotification(id: number) {
-    console.log(id);
     this.selectedNotificationId = id;
   }
 

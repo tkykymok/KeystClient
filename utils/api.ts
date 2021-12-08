@@ -13,7 +13,6 @@ export function initializeAxios(axiosInstance: NuxtAxiosInstance) {
   });
   $axios.onResponse(response => {
     if (response.data.messageList) {
-      console.log(response);
       MessagesModule.SET_MESSAGE_LIST(response.data.messageList);
       if (response.status === 200) {
         MessagesModule.SET_MESSAGE_TYPE(MessageType.Success.name);
@@ -32,7 +31,6 @@ export function initializeAxios(axiosInstance: NuxtAxiosInstance) {
         MessagesModule.CLEAR_MESSAGE_LIST();
       }, 5000);
     }
-    console.log(error.response?.data); // TODO 確認用
   });
 }
 
