@@ -2,17 +2,18 @@
   <div class="p-4">
     <div class="p-4 flex justify-center items-center">
       <div class="mr-5">
-        <span class="mr-1">登録</span>
-        <input type="radio" name="search" value="register" v-model='radioValue' @change='PrjCodeDisplay'>
+        <label for='rgstCheck10500' class="mr-1">登録</label>
+        <input id='rgstCheck10500' type="radio" name="search" value="register" v-model='radioValue' @change='PrjCodeDisplay'>
       </div>
       <div class="mr-10">
-        <span class="mr-1">更新・詳細</span>
-        <input type="radio" name="search" value="update" v-model='radioValue' ref="target" @change='PrjCodeDisplay'>
+        <label for='updtCheck10500' class="mr-1">更新・詳細</label>
+        <input id='updtCheck10500' type="radio" name="search" value="update" v-model='radioValue' ref="target" @change='PrjCodeDisplay'>
       </div>
       <PrjCodeSuggest
         v-if='prjCodeFlg'
         :prjCode.sync='prjMaster.prjCode'
       />
+      <div v-else class='w-64'></div>
       <button
         @click='Decision(prjMaster.prjCode)'
         class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
@@ -74,7 +75,7 @@ export default class extends Vue {
   get prjMaster(): PrjMaster {
     return JSON.parse(JSON.stringify(Keyst10500Module.prjMaster));
   }
-  
+
   /**
    * 案件割当明細リスト
    * @return Keyst10500Module.prjUserAllocationList

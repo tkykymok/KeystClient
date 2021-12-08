@@ -30,8 +30,8 @@
             :class="selectedNotificationId === notification.notificationId? 'bg-teal-200':'hover:bg-teal-100'"
             @click='selectNotification(notification.notificationId)'
           >
-            <td class='p-3 w-1/5 text-gray-800 border-t border-gray-200'>{{ notification.title }}</td>
-            <td class='p-3 w-3/5 text-gray-800 border-t border-gray-200'>
+            <td class='p-3 w-2/5 text-left text-gray-800 border-t border-gray-200'>{{ notification.title }}</td>
+            <td class='p-3 w-2/5 text-left text-gray-800 border-t border-gray-200'>
               {{ convertDateToYearMonthDay(notification.postStartDate) }} 〜
               {{ convertDateToYearMonthDay(notification.postEndDate) }}
             </td>

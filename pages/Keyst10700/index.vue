@@ -2,17 +2,18 @@
   <div class="p-4">
     <div class="p-4 flex justify-center items-center">
       <div class="mr-5">
-        <span class="mr-1">登録</span>
-        <input type="radio" name="search" value="register" v-model='radioValue' @change='CustCodeDisplay'>
+        <label for='rgstCheck10700' class="mr-1">登録</label>
+        <input id='rgstCheck10700' type="radio" name="search" value="register" v-model='radioValue' @change='CustCodeDisplay'>
       </div>
       <div class="mr-10">
-        <span class="mr-1">更新・詳細</span>
-        <input type="radio" name="search" value="update" v-model='radioValue' @change='CustCodeDisplay'>
+        <label for='updtCheck10700' class="mr-1">更新・詳細</label>
+        <input id='updtCheck10700' type="radio" name="search" value="update" v-model='radioValue' @change='CustCodeDisplay'>
       </div>
       <CustCodeSuggest
         v-if='custCodeFlg'
         :custCode.sync='custMaster.custCode'
       />
+      <div v-else class='w-64'></div>
       <button
         @click='Decision(custMaster.custCode)'
         class='px-4 py-2 ml-8 bg-blue-600 text-white rounded-md hover:bg-blue-500 active:outline-none focus:outline-none'>
@@ -60,7 +61,7 @@ export default class extends Vue {
   get custMaster(): CustMaster {
     return JSON.parse(JSON.stringify(Keyst10700Module.custMaster));
   }
-  
+
   public radioValue: string = '';
   public custCodeFlg: boolean = false;
   public registerFlg: boolean = false;
